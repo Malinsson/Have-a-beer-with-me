@@ -11,7 +11,7 @@ const ProfileQRCode: React.FC<ProfileQRCodeProps> = ({ userId, size = 128 }) => 
     
     return (
         <div className="qr-wrapper" 
-        style={{ padding: '10px', background: 'white', display: 'inline-block' }}>
+            style={{ padding: '10px', background: 'white', display: 'inline-block' }}>
             <QRCode value={profileUrl} size={size} />
         </div>
     );
