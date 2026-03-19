@@ -3,7 +3,7 @@ import { Canvas } from '@react-three/fiber'
 import { useGLTF, useTexture, PresentationControls, Stage } from '@react-three/drei'
 import * as THREE from 'three'
 import beerCanSceneUrl from '../../../assets/3DModels/BeerCan3.glb?url'
-import beerCanLabelUrl from '../../../assets/3DModels/BeerCanLabel1.png'
+import beerCanLabelUrl from '../../../assets/3DModels/BeerCanLabel.png'
 
 function Model(props: any) {
   const { scene } = useGLTF(beerCanSceneUrl)
