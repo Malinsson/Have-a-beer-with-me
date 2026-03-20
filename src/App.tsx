@@ -1,11 +1,11 @@
 import CanPreview3D from './features/can-designer/components/CanPreview3D.tsx'
 import { Routes, Route } from 'react-router-dom'
-import Layout from './components/Layout.tsx'
+import { Layout } from './components/Layout.tsx'
 import './App.css'
 
 
 
-function App() {
+export function App() {
 
   <Layout>
     <Routes>
@@ -22,5 +22,3 @@ function App() {
     </>
   )
 }
-
-export default App
