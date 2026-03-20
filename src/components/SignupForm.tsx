@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { type ChangeEvent } from "react";
 
-interface LoginResponse {
+interface SignupResponse {
     token: string;
     user: {
         id: string;
         username: string;
         password: string;
+        occupation: string;
+
     };
   }
 
-export const LoginForm: React.FC = () => {
+export const SignupForm: React.FC = () => {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -35,7 +37,7 @@ export const LoginForm: React.FC = () => {
         setError(null);
 
         try {
-            const response = await fetch("/api/login", {
+            const response = await fetch("/api/register", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username: username.trim(), password }),
@@ -46,7 +48,7 @@ export const LoginForm: React.FC = () => {
                 throw new Error(errData.message ?? "Something went wrong, please try again.");
             }
 
-            const data: LoginResponse = await response.json();
+            const data: SignupResponse = await response.json();
             console.log('Auth successful:', data);
             clearForm();
             // TODO: Store token and redirect to /design
@@ -60,6 +62,7 @@ export const LoginForm: React.FC = () => {
     
     return (
         <form onSubmit={handleSubmit} noValidate>
+
             <input 
                 type="text" 
                 placeholder="Username"
@@ -79,20 +82,18 @@ export const LoginForm: React.FC = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required    
                 minLength={8}
-                autoComplete={"current-password"}
+                autoComplete="new-password"
             />
-
-            <a href="/Create your own bear">Har inget konto? Skapa nu</a>
 
             {error && <p role="alert">{error}</p>}
 
             <button type="submit" disabled={isLoading}>
                 {isLoading
-                    ? "Signing in…"
-                    : "Sign in"}
+                    ? "Creating account…"
+                    : "Create account"}
             </button>
         </form>
     );
 };
 
-export default LoginForm;
+export default SignupForm;
