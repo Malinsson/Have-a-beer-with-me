@@ -9,8 +9,8 @@ function App() {
 
   <Layout>
     <Routes>
-      <Route path="/" element={<Home />}></Route>
-      <Route path="/design" element={<DesignBeerCan />}></Route>
+      <Route path="/" element={<HomePage />}></Route>
+      <Route path="/edit" element={<EditorPage />}></Route>
       <Route path="/profile/:id" element={<ProfilePage />}></Route>
     </Routes>
   </Layout>
