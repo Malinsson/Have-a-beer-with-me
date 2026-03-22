@@ -7,7 +7,7 @@ export const HomePage = () => {
         <div className="min-h-screen font-sans text-gray-900 bg-white">
             <section 
                 className="relative h-[80vh] w-full bg-cover bg-center flex flex-col justify-between p-6 overflow-hidden" 
-                style={{ backgroundImage: `url('https://aytacwholesale.co.uk/cdn/shop/files/Drinks-cola.png?v=1745917071&width=640')` }}
+                style={{ backgroundImage: `url('https://images.unsplash.com/photo-1595642527404-0a937af8634c?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')` }}
             >
                 {/* Top Text (Ta en öl...) */}
                 <div className="pt-10">
@@ -24,11 +24,11 @@ export const HomePage = () => {
 
                     {/* Using mt-6 instead of mt-50 for standard spacing */}
                     <a 
-                    className="mt-6 bg-[#001d4a] text-white px-6 py-3 rounded-full flex items-center gap-3 font-bold text-xs uppercase tracking-widest shadow-lg"
-                    href="#"
+                        className="mt-6 bg-[#001d4a] text-white px-6 py-3 rounded-full flex items-center gap-3 font-bold text-xs uppercase tracking-widest shadow-lg"
+                        href="#"
                     >
-                    Bygg din öl nu 
-                    <FaArrowRight />
+                        Bygg din öl nu 
+                        <FaArrowRight />
                     </a>
                 </div>
             </section>

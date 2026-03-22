@@ -8,7 +8,7 @@ interface NavLink {
 const NAV_LINKS: NavLink[] = [
     { label: "Home", href: "/" },
     { label: "Design", href: "/design" },
-    { label: "Profile", href: "/profile" },
+    { label: "Profile", href: "/profile/1" },
 ];
 
 export const Header: React.FC = () => {
@@ -18,7 +18,7 @@ export const Header: React.FC = () => {
     const closeMenu = () => setMenuOpen(false);
 
     return (
-        <header className="relative p-4 flex items-center justify-between w-full bg-white z-50">
+        <header className="fixed top-0 left-0 right-0 p-4 flex items-center justify-between w-full bg-white z-50">
             <div className="w-12 h-12 relative z-[60]">
                 <img 
                     src="../src/assets/images/yrgo.png" 
