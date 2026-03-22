@@ -1,3 +1,6 @@
+import { Carousel } from "../assets/carousel/Carousel"
+import { slides } from "../assets/carousel/carouselData.json"
+
 export const HomePage = () => {
     return (
         <div className="container mx-auto p-4">
@@ -10,17 +13,9 @@ export const HomePage = () => {
                 </a>
 
             </div>
-            <div className="carusel mt-8">
-                <div className="carusel-item">
-                    <img src="/assets/can1.png" alt="Can 1" className="w-full h-auto rounded-lg shadow-md" />
-                </div>
-                <div className="carusel-item">
-                    <img src="/assets/can2.png" alt="Can 2" className="w-full h-auto rounded-lg shadow-md" />
-                </div>
-                <div className="carusel-item">
-                    <img src="/assets/can3.png" alt="Can 3" className="w-full h-auto rounded-lg shadow-md" />
-                </div>
-            </div>
+
+            <Carousel data={slides} />
+
             <div>
                 <p>Vi bjuder på unika virituella öl och dryck - gör det personligt..... Skapa din öl redan nu!</p>
                 <a className="bg-blue-500"
