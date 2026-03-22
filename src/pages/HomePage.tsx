@@ -1,5 +1,6 @@
 import { Carousel } from "../assets/carousel/Carousel"
 import { slides } from "../assets/carousel/carouselData.json"
+import { FaArrowRight } from "react-icons/fa"
 
 export const HomePage = () => {
     return (
@@ -27,7 +28,7 @@ export const HomePage = () => {
                     href="#"
                     >
                     Bygg din öl nu 
-                    <i className="fa-solid fa-arrow-right"></i>
+                    <FaArrowRight />
                     </a>
                 </div>
             </section>
@@ -43,7 +44,7 @@ export const HomePage = () => {
                     </p>
                     <a href="#" className="inline-flex bg-[#001d4a] text-white px-6 py-3 rounded-full items-center gap-3 font-bold text-sm uppercase tracking-wider">
                         Brygg din öl nu 
-                        <i className="fa-solid fa-arrow-right"></i>
+                        <FaArrowRight />
                     </a>
                 </div>
             </section>

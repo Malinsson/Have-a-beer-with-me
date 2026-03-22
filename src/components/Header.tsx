@@ -5,8 +5,6 @@ interface NavLink {
     href: string;
 }
 
-const YRGO_RED = "#e30613";
-
 const NAV_LINKS: NavLink[] = [
     { label: "Home", href: "/" },
     { label: "Design", href: "/design" },
