@@ -1,1 +1,3 @@
 
+.nav--closed { display: none; }
+.nav--open   { display: block; }
