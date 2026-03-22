@@ -3,26 +3,50 @@ import { slides } from "../assets/carousel/carouselData.json"
 
 export const HomePage = () => {
     return (
-        <div className="container mx-auto p-4">
-            <div>
-                <h2>Ta en öl* med oss</h2>
-                <h2>Onsdag 22/4</h2>
-                <a className="bg-blue-500"
-                    href="">Bygg din öl nu 
+        <div className="min-h-screen font-sans text-gray-900 bg-white">
+            <section 
+                className="relative h-[80vh] w-full bg-cover bg-center flex flex-col justify-between p-6 overflow-hidden" 
+                style={{ backgroundImage: `url('https://aytacwholesale.co.uk/cdn/shop/files/Drinks-cola.png?v=1745917071&width=640')` }}
+            >
+                {/* Top Text (Ta en öl...) */}
+                <div className="pt-10">
+                    <h1 className="text-5xl font-black text-black leading-[0.9] uppercase tracking-tighter">
+                        Ta en öl* <br /> Med oss
+                    </h1>
+                </div>
+
+                {/* Bottom Text & Button (Onsdag...) */}
+                <div className="flex flex-col items-end pb-10">
+                    <h2 className="text-5xl font-black text-black uppercase text-right leading-[0.9]">
+                        Onsdag <br /> 22/4
+                    </h2>
+
+                    {/* Using mt-6 instead of mt-50 for standard spacing */}
+                    <a 
+                    className="mt-6 bg-[#001d4a] text-white px-6 py-3 rounded-full flex items-center gap-3 font-bold text-xs uppercase tracking-widest shadow-lg"
+                    href="#"
+                    >
+                    Bygg din öl nu 
                     <i className="fa-solid fa-arrow-right"></i>
-                </a>
+                    </a>
+                </div>
+            </section>
 
-            </div>
-
-            <Carousel data={slides} />
-
-            <div>
-                <p>Vi bjuder på unika virituella öl och dryck - gör det personligt..... Skapa din öl redan nu!</p>
-                <a className="bg-blue-500"
-                    href="">Bygg din öl nu 
-                    <i className="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
+            <section className="py-12 px-8 flex flex-col items-center text-center">
+                <div className="w-full max-w-sm mb-8">
+                    <Carousel data={slides} />
+                </div>
+                <div className="max-w-xs">
+                    <p className="text-xl font-medium leading-tight mb-6">
+                        Vi bjuder på unika virituella öl och dryck - gör det personligt..... 
+                        Skapa din öl redan nu!
+                    </p>
+                    <a href="#" className="inline-flex bg-[#001d4a] text-white px-6 py-3 rounded-full items-center gap-3 font-bold text-sm uppercase tracking-wider">
+                        Brygg din öl nu 
+                        <i className="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </section>
         </div>
     );
 }
