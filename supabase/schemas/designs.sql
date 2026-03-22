@@ -1,14 +1,9 @@
-create table "designs" (
-  "id" integer primary key generated always as identity,
-    "user_id" INTEGER not null references "users"(id) on delete cascade,
-    "first_name" text not null,
-    "last_name" text not null,
-    "label_preset" text not null,
-    "font_preset" text not null,
-    "font_color" text not null,
-    "description" text,
-    "tags" text[],
-    "custom_image_url" text,
-    "created_at" timestamptz default now(),
-    "updated_at" timestamptz default now() 
+create table if not exists public.designs (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz default now(),
+  user_id uuid default auth.uid() references auth.users(id) on update cascade on delete cascade,
+  design_data jsonb,
+  name text,
+  share_id text not null unique
 );
