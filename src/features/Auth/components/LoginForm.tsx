@@ -1,23 +1,15 @@
 import React, { useState } from "react";
 import { type ChangeEvent } from "react";
-
-interface LoginResponse {
-    token: string;
-    user: {
-        id: string;
-        username: string;
-        password: string;
-    };
-  }
+import supabase from "../../../lib/supabase";
 
 export const LoginForm: React.FC = () => {
-    const [username, setUsername] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
     const clearForm = () => {
-        setUsername("");
+        setEmail("");
         setPassword("");
         setError(null);
     };
@@ -25,9 +17,13 @@ export const LoginForm: React.FC = () => {
     const handleSubmit = async (e: ChangeEvent) => {
         e.preventDefault();
 
-        // Validate inputs before making an API call
-        if (!username.trim() || !password.trim()) {
-            setError("Username and password are required.");
+        if (!email.trim() || !password.trim()) {
+            setError("Email and password are required.");
+            return;
+        }
+
+        if (!supabase) {
+            setError("Supabase is not configured. Check your VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.");
             return;
         }
 
@@ -35,21 +31,25 @@ export const LoginForm: React.FC = () => {
         setError(null);
 
         try {
-            const response = await fetch("/api/login", {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: username.trim(), password }),
+            const { data, error: signInError } = await supabase.auth.signInWithPassword({
+                email: email.trim(),
+                password,
             });
-            
-            if (!response.ok) {
-                const errData = await response.json().catch(() => ({}));
-                throw new Error(errData.message ?? "Something went wrong, please try again.");
+
+            if (signInError) {
+                if (signInError.status === 400) {
+                    throw new Error("Invalid email or password.");
+                }
+                throw signInError;
             }
 
-            const data: LoginResponse = await response.json();
+            if (!data.user) {
+                throw new Error("Login failed. No user was returned.");
+            }
+
             console.log('Auth successful:', data);
             clearForm();
-            // TODO: Store token and redirect to /design
+            // TODO: Redirect to protected page.
 
         } catch (err) {
             setError(err instanceof Error ? err.message : 'An unknown error occurred');
@@ -62,11 +62,11 @@ export const LoginForm: React.FC = () => {
         <form onSubmit={handleSubmit} noValidate>
             <input 
                 type="text" 
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
-                autoComplete="username"
+                autoComplete="email"
                 autoCapitalize="none"
                 autoCorrect="off"
                 spellCheck={false}

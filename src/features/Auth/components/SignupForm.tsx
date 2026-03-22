@@ -1,57 +1,70 @@
 import React, { useState } from "react";
 import { type ChangeEvent } from "react";
-
-interface SignupResponse {
-    token: string;
-    user: {
-        id: string;
-        username: string;
-        password: string;
-        occupation: string;
-
-    };
-  }
+import supabase from "../../../lib/supabase";
 
 export const SignupForm: React.FC = () => {
-    const [username, setUsername] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState<string | null>(null);
 
     const clearForm = () => {
-        setUsername("");
+        setEmail("");
         setPassword("");
         setError(null);
     };
 
-    const handleSubmit = async (e: ChangeEvent) => {
+    const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // Validate inputs before making an API call
-        if (!username.trim() || !password.trim()) {
-            setError("Username and password are required.");
+        if (!email.trim() || !password.trim()) {
+            setError("Email and password are required.");
+            return;
+        }
+
+        if (!supabase) {
+            setError("Supabase is not configured. Check your VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.");
             return;
         }
 
         setIsLoading(true);
         setError(null);
+        setSuccess(null);
 
         try {
-            const response = await fetch("/api/register", {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: username.trim(), password }),
+            const { data, error: signUpError } = await supabase.auth.signUp({
+                email: email.trim(),
+                password
             });
-            
-            if (!response.ok) {
-                const errData = await response.json().catch(() => ({}));
-                throw new Error(errData.message ?? "Something went wrong, please try again.");
+
+            if (signUpError) {
+                if (signUpError.status === 422) {
+                    throw new Error('Signup failed. This email may already be registered, or the password does not meet policy requirements.');
+                }
+                throw signUpError;
             }
 
-            const data: SignupResponse = await response.json();
-            console.log('Auth successful:', data);
+            if (!data.user?.id) {
+                throw new Error("User was created, but no user id was returned.");
+            }
+
+            const { error: userError } = await supabase
+                .from('profiles')
+                .upsert(
+                    {
+                        id: data.user.id,
+                        username: email.trim().toLowerCase(),
+                    },
+                    { onConflict: 'id' }
+                );
+
+            if (userError) {
+                throw userError;
+            }
+
+            setSuccess("Account created. If email confirmation is enabled, check your inbox before signing in.");
             clearForm();
-            // TODO: Store token and redirect to /design
 
         } catch (err) {
             setError(err instanceof Error ? err.message : 'An unknown error occurred');
@@ -62,17 +75,13 @@ export const SignupForm: React.FC = () => {
     
     return (
         <form onSubmit={handleSubmit} noValidate>
-
-            <input 
-                type="text" 
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+            <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
-                autoComplete="username"
-                autoCapitalize="none"
-                autoCorrect="off"
-                spellCheck={false}
+                autoComplete="email"
             />
 
             <input 
@@ -86,6 +95,7 @@ export const SignupForm: React.FC = () => {
             />
 
             {error && <p role="alert">{error}</p>}
+            {success && <p role="status">{success}</p>}
 
             <button type="submit" disabled={isLoading}>
                 {isLoading
