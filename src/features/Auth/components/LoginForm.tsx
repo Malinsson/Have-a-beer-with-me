@@ -14,16 +14,16 @@ export const LoginForm: React.FC = () => {
         setError(null);
     };
 
-    const handleSubmit = async (e: ChangeEvent) => {
+    const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (!email.trim() || !password.trim()) {
-            setError("Email and password are required.");
+        if (!email.trim() || !password) {
+            setError('Mejladress och lösenord krävs.');
             return;
         }
 
         if (!supabase) {
-            setError("Supabase is not configured. Check your VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.");
+            setError('Supabase är inte konfigurerat. Kontrollera dina VITE_SUPABASE_URL och VITE_SUPABASE_ANON_KEY.');
             return;
         }
 
@@ -32,19 +32,19 @@ export const LoginForm: React.FC = () => {
 
         try {
             const { data, error: signInError } = await supabase.auth.signInWithPassword({
-                email: email.trim(),
+                email: email.trim().toLowerCase(),
                 password,
             });
 
             if (signInError) {
                 if (signInError.status === 400) {
-                    throw new Error("Invalid email or password.");
+                    throw new Error("Ogiltig mejladress eller lösenord.");
                 }
                 throw signInError;
             }
 
             if (!data.user) {
-                throw new Error("Login failed. No user was returned.");
+                throw new Error("Inloggning misslyckades. Inget användarobjekt returnerades.");
             }
 
             console.log('Auth successful:', data);
@@ -52,7 +52,7 @@ export const LoginForm: React.FC = () => {
             // TODO: Redirect to protected page.
 
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'An unknown error occurred');
+            setError(err instanceof Error ? err.message : 'Ett okänt fel inträffade');
         } finally {
             setIsLoading(false);
         }
@@ -62,11 +62,11 @@ export const LoginForm: React.FC = () => {
         <form onSubmit={handleSubmit} noValidate>
             <input 
                 type="text" 
-                placeholder="Email"
+                placeholder="Mejladress"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                autoComplete="email"
+                autoComplete="mejladress"
                 autoCapitalize="none"
                 autoCorrect="off"
                 spellCheck={false}
@@ -74,7 +74,7 @@ export const LoginForm: React.FC = () => {
 
             <input 
                 type="password" 
-                placeholder="Password"
+                placeholder="Lösenord"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required    
@@ -88,8 +88,8 @@ export const LoginForm: React.FC = () => {
 
             <button type="submit" disabled={isLoading}>
                 {isLoading
-                    ? "Signing in…"
-                    : "Sign in"}
+                    ? "Loggar in…"
+                    : "Logga in"}
             </button>
         </form>
     );

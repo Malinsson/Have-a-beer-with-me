@@ -18,13 +18,13 @@ export const SignupForm: React.FC = () => {
     const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (!email.trim() || !password.trim()) {
-            setError("Email and password are required.");
+        if (!email.trim() || !password) {
+            setError('Mejladress och lösenord krävs.');
             return;
         }
 
         if (!supabase) {
-            setError("Supabase is not configured. Check your VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.");
+            setError('Supabase är inte konfigurerat. Kontrollera dina VITE_SUPABASE_URL och VITE_SUPABASE_ANON_KEY.');
             return;
         }
 
@@ -34,19 +34,19 @@ export const SignupForm: React.FC = () => {
 
         try {
             const { data, error: signUpError } = await supabase.auth.signUp({
-                email: email.trim(),
+                email: email.trim().toLowerCase(),
                 password
             });
 
             if (signUpError) {
                 if (signUpError.status === 422) {
-                    throw new Error('Signup failed. This email may already be registered, or the password does not meet policy requirements.');
+                    throw new Error('Kontot finns redan. Prova att logga in istället.');
                 }
                 throw signUpError;
             }
 
             if (!data.user?.id) {
-                throw new Error("User was created, but no user id was returned.");
+                throw new Error('Konto skapades inte. Inget användar-ID returnerades.');
             }
 
             const { error: userError } = await supabase
@@ -63,11 +63,11 @@ export const SignupForm: React.FC = () => {
                 throw userError;
             }
 
-            setSuccess("Account created. If email confirmation is enabled, check your inbox before signing in.");
+            setSuccess('Konto skapat! Skapa din öl nu.');
             clearForm();
 
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'An unknown error occurred');
+            setError(err instanceof Error ? err.message : 'Okänt fel inträffade');
         } finally {
             setIsLoading(false);
         }
@@ -77,21 +77,21 @@ export const SignupForm: React.FC = () => {
         <form onSubmit={handleSubmit} noValidate>
             <input
                 type="email"
-                placeholder="Email"
+                placeholder="Mejladress"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                autoComplete="email"
+                autoComplete="mejladress"
             />
 
             <input 
                 type="password" 
-                placeholder="Password"
+                placeholder="Lösenord"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required    
                 minLength={8}
-                autoComplete="new-password"
+                autoComplete="nytt-lösenord"
             />
 
             {error && <p role="alert">{error}</p>}
@@ -99,8 +99,8 @@ export const SignupForm: React.FC = () => {
 
             <button type="submit" disabled={isLoading}>
                 {isLoading
-                    ? "Creating account…"
-                    : "Create account"}
+                    ? "Skapar konto…"
+                    : "Skapa konto"}
             </button>
         </form>
     );
