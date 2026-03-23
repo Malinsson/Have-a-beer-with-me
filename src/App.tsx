@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { Layout } from './components/Layout.tsx'
 import { HomePage } from './pages/HomePage.tsx'
-import { EditorPage } from './pages/EditorPage.tsx'
+import { EditorPage } from './pages/DesignerPage.tsx'
 import { ProfilePage } from './pages/ProfilePage.tsx'
 import './App.css'
 

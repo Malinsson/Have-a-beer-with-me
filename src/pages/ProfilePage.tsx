@@ -4,7 +4,6 @@ import { TiCameraOutline } from "react-icons/ti";
 import { FiArrowUpCircle } from "react-icons/fi";
 
 
-
 export const ProfilePage = () => {
     return (
         <div id="top" className="container mx-auto p-4">

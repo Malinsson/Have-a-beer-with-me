@@ -1,0 +1,1 @@
+// This is the view when you tap on a can on the shelf on your profile.
