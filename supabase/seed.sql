@@ -39,7 +39,6 @@ on conflict (id) do nothing;
 
 insert into public.profiles (
 	id,
-	username,
 	first_name,
 	last_name,
 	qr_code,
@@ -50,7 +49,6 @@ insert into public.profiles (
 values
 	(
 		'11111111-1111-1111-1111-111111111111',
-		'erlich',
 		'Erlich',
 		'Bachman',
 		'https://example.com/qr/erlich',
@@ -60,7 +58,6 @@ values
 	),
 	(
 		'22222222-2222-2222-2222-222222222222',
-		'richard',
 		'Richard',
 		'Hendricks',
 		'https://example.com/qr/richard',
@@ -70,7 +67,6 @@ values
 	)
 on conflict (id) do update
 set
-	username = excluded.username,
 	first_name = excluded.first_name,
 	last_name = excluded.last_name,
 	qr_code = excluded.qr_code,

@@ -3,7 +3,6 @@ import { useState } from 'react';
 
 interface Profile {
   id: string;
-  username: string;
   first_name: string;
   last_name: string;
   qr_code: string;
@@ -45,8 +44,8 @@ export const ListUsers: React.FC = () => {
       <ul>
         {profiles.map(profile => (
           <li key={profile.id}>
+            <p>{profile.id}</p>
             <h2>{profile.first_name} {profile.last_name}</h2>
-            <p>Username: {profile.username}</p>
           </li>
         ))}
       </ul>

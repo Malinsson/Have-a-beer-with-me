@@ -1,7 +1,6 @@
 create table if not exists public.profiles (
   id uuid primary key default auth.uid(),
   created_at timestamptz not null default now(),
-  username text not null unique,
   first_name text,
   last_name text,
   qr_code text,
