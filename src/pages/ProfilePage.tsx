@@ -1,7 +1,10 @@
 import { Carousel } from "../assets/carousel/Carousel"
 import { slides } from "../assets/carousel/carouselData.json"
-import { TiCameraOutline } from "react-icons/ti";
-import { FiArrowUpCircle } from "react-icons/fi";
+// import { TiCameraOutline } from "react-icons/ti";
+import { HiOutlineQrcode } from "react-icons/hi";
+import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
+
+
 
 
 export const ProfilePage = () => {
@@ -14,29 +17,31 @@ export const ProfilePage = () => {
                     <Carousel data={slides} />
                 </div>
                 <div className="flex flex-row items-center gap-4">
-                    <a 
+                    <FaArrowLeftLong />
+                    <p>Front</p>
+                    <FaArrowRightLong />
+
+                    {/* <a 
                         className="text-black px-6 py-3 rounded-full flex items-center font-bold text-xs uppercase border border-black tracking-widest shadow-lg"
-                        href="#"
-                    >
-                        Se min ölhylla
+                        href="#">Se min ölhylla
                     </a>
                     <a className="bg-blue-950 text-white px-2 py-2 rounded-full flex items-center font-bold text-2xl uppercase tracking-widest shadow-lg"
                         href="">
                         <TiCameraOutline />
-                    </a>
+                    </a> */}
                 </div>
-                    <a className="underline"
-                        href="">Problem att scanna? Scrolla ned
-                    </a>
-                    <div id="QrCode" className="w-64 h-64 flex flex-col items-center justify-center">
-                        <img className="w-32 h-32 object-contain" 
+                    <div id="QrCode" className="w-64 flex flex-col items-center">
+                        <img className="w-26 h-26 object-contain" 
                             src="/src/assets/images/QR_code.svg" 
                             alt="qr-code" />
-                        <p>QrCode number</p>
+                        <p>Burk ID</p>
+                        <p className="font-bold">4444</p>
                     </div>
-                    <a href="#top">
-                        <FiArrowUpCircle className="text-6xl"/>
-                    </a>
+                    <div className="fixed bottom-6 right-6 bg-blue-950 rounded-full p-3 z-40">
+                        <a href="">
+                            <HiOutlineQrcode className="text-5xl text-white" />
+                        </a>
+                    </div>
             </section>
         </div>
     );
