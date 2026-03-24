@@ -9,6 +9,7 @@ type UseImageUploaderParams = {
 }
 
 export const useImageUploader = ({ onUploadComplete }: UseImageUploaderParams) => {
+    
   const { imageSrc, onFileChange, clearImage } = useImageSelection()
   const { crop, setCrop, imgRef, getCroppedBlob } = useImageCrop()
 

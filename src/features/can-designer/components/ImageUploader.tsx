@@ -1,6 +1,7 @@
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import { useImageUploader } from '../hooks/useImageUploader.ts'
+import './ImageUploader.css'
 
 
 export function ImageUploader({ onUploadComplete }: { onUploadComplete: (url: string) => void }) {
@@ -10,21 +11,26 @@ export function ImageUploader({ onUploadComplete }: { onUploadComplete: (url: st
 
 
   return (
-    <div>
-      <input type="file" accept="image/*" onChange={onFileChange} />
+    <div className="image-uploader">
+      <input 
+        type="file" 
+        accept="image/*" 
+        onChange={onFileChange}
+        className="file-input"
+      />
 
       {imageSrc && (
-        <>
+        <div className="crop-container">
           <ReactCrop crop={crop} onChange={setCrop} aspect={1}>
-            <img ref={imgRef} src={imageSrc} />
+            <img ref={imgRef} src={imageSrc} alt="Image to crop" />
           </ReactCrop>
 
-          <button onClick={handleUpload} disabled={uploading}>
+          <button onClick={handleUpload} disabled={uploading} className="upload-btn">
             {uploading ? 'Laddar upp...' : 'Ladda upp'}
           </button>
 
-          {error && <p role="alert">{error}</p>}
-        </>
+          {error && <p role="alert" className="error-message">{error}</p>}
+        </div>
       )}
     </div>
   )
