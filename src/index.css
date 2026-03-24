@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@theme {
+    --color-yrgo-red: #E51236;
+    --color-dark-blue: #001A52;
+
+}
+
 * {
     box-sizing: border-box;
     font-family: 'Inter', sans-serif;
