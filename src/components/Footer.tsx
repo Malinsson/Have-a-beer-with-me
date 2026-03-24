@@ -1,7 +1,9 @@
+import bomarkeWhiteLogo from '../assets/images/logo/bomarke-white.png';
+
 export const Footer = () => {
     return (
-        <footer className="bg-red-500 p-4 pt-30 bottom-0 w-full">
-            <p className="text-center text-white">&copy; 2026 Have a Beer with Me. All rights reserved.</p>
+        <footer className="bg-yrgo-red p-4 pt-30 bottom-0 w-full">
+            <img src={bomarkeWhiteLogo} alt="Bomarke Logo" />
         </footer>
     );
 }
