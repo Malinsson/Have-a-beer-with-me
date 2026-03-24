@@ -15,7 +15,7 @@ export const BeerShelfPage = () => {
             </div>
             <div className="flex justify-center my-8">
                 <a href="">
-                    <div className="flex flex-row items-center gap-3 bg-blue-950 rounded-full p-3 w-fit">
+                    <div className="flex flex-row items-center gap-3 bg-dark-blue rounded-full p-3 w-fit">
                         <p className="text-white text-2xl">Scanna</p>
                         <HiOutlineQrcode className="text-3xl text-white" />
                     </div>
