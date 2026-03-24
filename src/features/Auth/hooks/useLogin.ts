@@ -10,7 +10,9 @@ export const useLogin = () => {
 
     const login = async (email: string, password: string): Promise<boolean> => {
 
-        if (!email.trim() || !password) {
+        const normalizedEmail = email.trim().toLowerCase();
+
+        if (!normalizedEmail || !password) {
             setError('Mejladress och lösenord krävs.');
             return false;
         }
@@ -25,7 +27,7 @@ export const useLogin = () => {
 
         try {
             const { data, error: signInError } = await supabase.auth.signInWithPassword({
-                email: email.trim().toLowerCase(),
+                email: normalizedEmail,
                 password,
             });
 

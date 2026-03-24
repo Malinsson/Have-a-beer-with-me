@@ -10,7 +10,9 @@ export const useSignup = () => {
 
     const signup = async (email: string, password: string): Promise<boolean> => {
 
-        if (!email.trim() || !password) {
+        const normalizedEmail = email.trim().toLowerCase();
+
+        if (!normalizedEmail || !password) {
             setError('Mejladress och lösenord krävs.');
             return false;
         }
@@ -25,25 +27,51 @@ export const useSignup = () => {
         setSuccess(null);
 
         try {
-            const { data, error: signUpError } = await supabase.auth.signUp({
-                email: email.trim().toLowerCase(),
-                password
-            });
+            // Check for existing guest session to upgrade an anonymous user to a registered account
+            const {
+                data: { session },
+            } = await supabase.auth.getSession();
 
-            if (signUpError) {
-                setError(getAuthErrorMessage(signUpError, 'signup'));
-                return false;
+            let userId: string | null = null;
+
+            if (session?.user?.is_anonymous) {
+                const { data: upgradedData, error: upgradeError } = await supabase.auth.updateUser({
+                    email: normalizedEmail,
+                    password,
+                });
+
+                if (upgradeError) {
+                    setError(getAuthErrorMessage(upgradeError, 'signup'));
+                    return false;
+                }
+
+                userId = upgradedData.user?.id ?? session.user.id;
+
+            } else {
+                // No session — proceed with normal sign-up
+                const { data, error: signUpError } = await supabase.auth.signUp({
+                    email: normalizedEmail,
+                    password,
+                });
+
+                if (signUpError) {
+                    setError(getAuthErrorMessage(signUpError, 'signup'));
+                    return false;
+                }
+
+                userId = data.user?.id ?? null;
             }
 
-            if (!data.user?.id) {
+            if (!userId) {
                 throw new Error('Konto skapades inte. Inget användar-ID returnerades.');
             }
 
+            // Automatically create a profile for the new user
             const { error: userError } = await supabase
                 .from('profiles')
                 .upsert(
                     {
-                        id: data.user.id,
+                        id: userId,
                     },
                     { onConflict: 'id' }
                 );
