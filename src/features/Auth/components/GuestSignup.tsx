@@ -5,7 +5,6 @@ export function GuestSignup() {
 
 useEffect(() => {
 
-
   const initAuth = async () => {
     
       if (!supabase) {
@@ -22,5 +21,7 @@ useEffect(() => {
 
   initAuth()
 }, [])
+
+  return null;
 
 }

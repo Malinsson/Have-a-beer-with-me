@@ -54,9 +54,11 @@ export const useSignup = () => {
 
             setSuccess('Konto skapat! Skapa din öl nu.');
             return true;
+
         } catch (err) {
             setError(getAuthErrorMessage(err, 'signup'));
             return false;
+            
         } finally {
             setIsLoading(false);
         }
