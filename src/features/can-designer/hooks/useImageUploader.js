@@ -4,11 +4,7 @@ import { useBlobUpload } from './useBlobUpload'
 
 
 // Combines image selection, cropping, and uploading into a single hook for easier use in components
-type UseImageUploaderParams = {
-  onUploadComplete: (url: string) => void
-}
-
-export const useImageUploader = ({ onUploadComplete }: UseImageUploaderParams) => {
+export const useImageUploader = ({ onUploadComplete }) => {
     
   const { imageSrc, onFileChange, clearImage } = useImageSelection()
   const { crop, setCrop, imgRef, getCroppedBlob } = useImageCrop()

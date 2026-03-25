@@ -29,28 +29,28 @@
 }
 
 @media (max-width: 768px) {
-  :global(.ReactCropHandleWhole) {
+  .ReactCropHandleWhole {
     width: 24px !important;
     height: 24px !important;
   }
 
-  :global(.ReactCropHandleWhole::after) {
+  .ReactCropHandleWhole::after {
     display: none;
   }
 
-  :global(.ReactCropEdgeN),
-  :global(.ReactCropEdgeS),
-  :global(.ReactCropEdgeE),
-  :global(.ReactCropEdgeW) {
+  .ReactCropEdgeN,
+  .ReactCropEdgeS,
+  .ReactCropEdgeE,
+  .ReactCropEdgeW {
     width: 12px;
     height: 12px;
     visibility: visible;
   }
 
-  :global(.ReactCropEdgeN):hover,
-  :global(.ReactCropEdgeS):hover,
-  :global(.ReactCropEdgeE):hover,
-  :global(.ReactCropEdgeW):hover {
+  .ReactCropEdgeN:hover,
+  .ReactCropEdgeS:hover,
+  .ReactCropEdgeE:hover,
+  .ReactCropEdgeW:hover {
     visibility: visible;
   }
 }

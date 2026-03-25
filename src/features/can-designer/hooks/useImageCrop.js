@@ -1,9 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
-import { type Crop } from 'react-image-crop'
 
 export const useImageCrop = () => {
-  const [crop, setCrop] = useState<Crop>()
-  const imgRef = useRef<HTMLImageElement>(null)
+  const [crop, setCrop] = useState()
+  const imgRef = useRef(null)
 
   // Set default crop box when image loads
   useEffect(() => {
@@ -32,8 +31,8 @@ export const useImageCrop = () => {
     }
   }, [imgRef.current?.src])
 
-  const getCroppedBlob = (): Promise<Blob> => {
-    const image = imgRef.current!
+  const getCroppedBlob = () => {
+    const image = imgRef.current
     if (!image || !crop) {
       return Promise.reject(new Error('Bild eller beskärning saknas.'))
     }
@@ -42,19 +41,22 @@ export const useImageCrop = () => {
     const scaleX = image.naturalWidth / image.width
     const scaleY = image.naturalHeight / image.height
 
-    canvas.width = crop!.width
-    canvas.height = crop!.height
-    const ctx = canvas.getContext('2d')!
+    canvas.width = crop.width
+    canvas.height = crop.height
+    const ctx = canvas.getContext('2d')
+    if (!ctx) {
+      return Promise.reject(new Error('Canvas-kontekst kunde inte skapas.'))
+    }
 
     ctx.drawImage(
       image,
-      crop!.x * scaleX,
-      crop!.y * scaleY,
-      crop!.width * scaleX,
-      crop!.height * scaleY,
+      crop.x * scaleX,
+      crop.y * scaleY,
+      crop.width * scaleX,
+      crop.height * scaleY,
       0, 0,
-      crop!.width,
-      crop!.height
+      crop.width,
+      crop.height
     )
 
     return new Promise((resolve, reject) => {

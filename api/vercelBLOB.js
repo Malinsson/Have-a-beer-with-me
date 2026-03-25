@@ -5,13 +5,13 @@ export const config = {
   runtime: 'edge',
 }
 
-export default async function handler(request: Request): Promise<Response> {
+export default async function handler(request) {
   if (request.method !== 'POST') {
     return new Response('Method not allowed', { status: 405 })
   }
 
   const formData = await request.formData()
-  const file = formData.get('file') as File | null
+  const file = formData.get('file')
 
   if (!file) {
     return Response.json({ error: 'No file provided' }, { status: 400 })

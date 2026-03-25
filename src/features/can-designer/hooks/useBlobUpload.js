@@ -1,18 +1,12 @@
 import { useState } from 'react'
 
-type UseBlobUploadParams = {
-  getCroppedBlob: () => Promise<Blob>
-  onUploadComplete: (url: string) => void
-  onUploadSuccess?: () => void
-}
-
 export const useBlobUpload = ({
   getCroppedBlob,
   onUploadComplete,
   onUploadSuccess,
-}: UseBlobUploadParams) => {
+}) => {
   const [uploading, setUploading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState(null)
 
   const handleUpload = async () => {
     if (uploading) return
@@ -30,7 +24,7 @@ export const useBlobUpload = ({
         throw new Error(responseText || `Uppladdningen misslyckades: ${res.status} ${res.statusText}`)
       }
 
-      const { url } = (await res.json()) as { url?: string }
+      const { url } = await res.json()
       if (!url) {
         throw new Error('Uppladdningen lyckades men ingen bild-URL returnerades.')
       }

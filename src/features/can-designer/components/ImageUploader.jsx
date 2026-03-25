@@ -1,10 +1,10 @@
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
-import { useImageUploader } from '../hooks/useImageUploader.ts'
+import { useImageUploader } from '../hooks/useImageUploader'
 import './ImageUploader.css'
 
 
-export function ImageUploader({ onUploadComplete }: { onUploadComplete: (url: string) => void }) {
+export function ImageUploader({ onUploadComplete }) {
     
   const { imageSrc, imgRef, onFileChange, crop, setCrop, handleUpload, uploading, error } =
     useImageUploader({ onUploadComplete })

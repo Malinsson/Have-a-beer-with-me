@@ -1,20 +1,10 @@
-import supabase from './lib/supabase.ts'
+import supabase from '../lib/supabase'
 import { useState } from 'react';
 
-interface Profile {
-  id: string;
-  first_name: string;
-  last_name: string;
-  qr_code: string;
-  linkedin_url: string;
-  instagram_url: string;
-  github_url: string;
-}
+export const ListUsers = () => {
 
-export const ListUsers: React.FC = () => {
-
-  const [profiles, setProfiles] = useState<Profile[]>([]);
-  const [error, setError] = useState<null | Error>(null);
+  const [profiles, setProfiles] = useState([]);
+  const [error, setError] = useState(null);
 
   const fetchProfiles = async () => {
     try {

@@ -1,6 +1,6 @@
 import { GuestSignup } from "../features/auth/components/GuestSignup";
 
-export const EditorPage: React.FC = () => {
+export const EditorPage = () => {
     return (
         <div>
             <GuestSignup />

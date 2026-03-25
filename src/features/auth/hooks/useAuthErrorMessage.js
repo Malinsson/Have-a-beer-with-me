@@ -1,16 +1,8 @@
-type AuthAction = 'login' | 'signup';
-
-type SupabaseLikeError = {
-    message?: string;
-    status?: number;
-    code?: string;
-};
-
-const isSupabaseLikeError = (value: unknown): value is SupabaseLikeError => {
+const isSupabaseLikeError = (value) => {
     return typeof value === 'object' && value !== null;
 };
 
-export const getAuthErrorMessage = (error: unknown, action: AuthAction): string => {
+export const getAuthErrorMessage = (error, action) => {
     if (!error) return '';
 
     if (isSupabaseLikeError(error)) {

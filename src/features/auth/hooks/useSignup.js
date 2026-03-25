@@ -4,11 +4,11 @@ import { getAuthErrorMessage } from './useAuthErrorMessage';
 
 export const useSignup = () => {
 
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
-    const [success, setSuccess] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
 
-    const signup = async (email: string, password: string): Promise<boolean> => {
+    const signup = async (email, password) => {
 
         const normalizedEmail = email.trim().toLowerCase();
 
@@ -32,7 +32,7 @@ export const useSignup = () => {
                 data: { session },
             } = await supabase.auth.getSession();
 
-            let userId: string | null = null;
+            let userId = null;
 
             if (session?.user?.is_anonymous) {
                 const { data: upgradedData, error: upgradeError } = await supabase.auth.updateUser({
@@ -76,10 +76,22 @@ export const useSignup = () => {
                     { onConflict: 'id' }
                 );
 
+            const { error: designError } = await supabase
+                .from('designs')
+                .upsert(
+                    {
+                        id: userId,
+                    },
+                    { onConflict: 'id' }
+                );
+
             if (userError) {
                 throw userError;
             }
-
+            if (designError) {
+                throw designError;
+            }
+            
             setSuccess('Konto skapat! Skapa din öl nu.');
             return true;
 
