@@ -6,7 +6,7 @@ import { useBlobUpload } from './useBlobUpload'
 // Combines image selection, cropping, and uploading into a single hook for easier use in components
 export const useImageUploader = ({ onUploadComplete }) => {
     
-  const { imageSrc, onFileChange, clearImage } = useImageSelection()
+  const { imageSrc, selectionError, onFileChange, clearImage } = useImageSelection()
   const { crop, setCrop, imgRef, getCroppedBlob } = useImageCrop()
 
   const clearAfterUpload = () => {
@@ -14,7 +14,7 @@ export const useImageUploader = ({ onUploadComplete }) => {
     setCrop(undefined)
   }
 
-  const { handleUpload, uploading, error } = useBlobUpload({
+  const { handleUpload, uploading, error: uploadError } = useBlobUpload({
     getCroppedBlob,
     onUploadComplete,
     onUploadSuccess: clearAfterUpload,
@@ -29,6 +29,6 @@ export const useImageUploader = ({ onUploadComplete }) => {
     clearImage: clearAfterUpload,
     handleUpload,
     uploading,
-    error,
+    error: selectionError || uploadError,
   }
 }
