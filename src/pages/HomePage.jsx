@@ -1,8 +1,12 @@
 import { Carousel } from "../assets/carousel/Carousel"
 import { slides } from "../assets/carousel/carouselData.js"
 import { FaArrowRight } from "react-icons/fa"
+import { useNavigate } from "react-router-dom";
+
 
 export const HomePage = () => {
+    const navigate = useNavigate();
+    
     return (
         <div className="min-h-screen font-sans text-gray-900 bg-white">
             <section 
@@ -23,13 +27,14 @@ export const HomePage = () => {
                     </h2>
 
                     {/* Using mt-6 instead of mt-50 for standard spacing */}
-                    <a 
-                        className="mt-6 bg-[#001d4a] text-white px-6 py-3 rounded-full flex items-center gap-3 font-bold text-xs uppercase tracking-widest shadow-lg"
-                        href="#"
+                    <button
+                        type="button"
+                        onClick={() => navigate("/intro")}
+                        className="bg-dark-blue rounded-full p-4 flex items-center gap-2 text-white uppercase text-sm"
                     >
-                        Bygg din öl nu 
-                        <FaArrowRight />
-                    </a>
+                        Bygg din öl nu
+                        <FaArrowRight className="text-white" />
+                    </button>
                 </div>
             </section>
 
@@ -42,10 +47,14 @@ export const HomePage = () => {
                         Vi bjuder på unika virituella öl och dryck - gör det personligt..... 
                         Skapa din öl redan nu!
                     </p>
-                    <a href="#" className="inline-flex bg-[#001d4a] text-white px-6 py-3 rounded-full items-center gap-3 font-bold text-sm uppercase tracking-wider">
-                        Brygg din öl nu 
-                        <FaArrowRight />
-                    </a>
+                    <button
+                        type="button"
+                        onClick={() => navigate("/intro")}
+                        className="bg-dark-blue rounded-full p-4 flex items-center gap-2 text-white uppercase text-sm"
+                    >
+                        Bygg din öl nu
+                        <FaArrowRight className="text-white" />
+                    </button>
                 </div>
             </section>
         </div>
