@@ -5,10 +5,10 @@ import { getAuthErrorMessage } from './useAuthErrorMessage';
 
 export const useLogin = () => {
 
-    const [error, setError] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const login = async (email: string, password: string): Promise<boolean> => {
+    const login = async (email, password) => {
 
         const normalizedEmail = email.trim().toLowerCase();
 

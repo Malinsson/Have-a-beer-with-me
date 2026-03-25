@@ -1,33 +1,31 @@
-import { useLogin } from "../hooks/useLogin";
 import { useAuthFields } from "../hooks/useAuthFields";
-import { type ChangeEvent } from "react";
+import { useSignup } from "../hooks/useSignup";
 
 
-export const LoginForm: React.FC = () => {
+export const SignupForm = () => {
 
     const { email, setEmail, password, setPassword, reset } = useAuthFields();
-    const { login, error, isLoading } = useLogin();
+    const { signup, error, success, isLoading } = useSignup();
 
-    const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const success = await login(email, password);
-        if (success) {
+        const created = await signup(email, password);
+        if (created) {
             reset();
         }
-    };
 
+    };
+    
     return (
         <form onSubmit={handleSubmit} noValidate>
-            <input 
-                type="text" 
+            <input
+                type="email"
                 placeholder="Mejladress"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 autoComplete="mejladress"
-                autoCapitalize="none"
-                autoCorrect="off"
-                spellCheck={false}
             />
 
             <input 
@@ -37,20 +35,19 @@ export const LoginForm: React.FC = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required    
                 minLength={8}
-                autoComplete={"current-password"}
+                autoComplete="nytt-lösenord"
             />
 
-            <a href="/Create your own bear">Har inget konto? Skapa nu</a>
-
             {error && <p role="alert">{error}</p>}
+            {success && <p role="status">{success}</p>}
 
             <button type="submit" disabled={isLoading}>
                 {isLoading
-                    ? "Loggar in…"
-                    : "Logga in"}
+                    ? "Skapar konto…"
+                    : "Skapa konto"}
             </button>
         </form>
     );
 };
 
-export default LoginForm;
+export default SignupForm;

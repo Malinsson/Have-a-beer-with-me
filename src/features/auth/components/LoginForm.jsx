@@ -1,32 +1,32 @@
-import { type ChangeEvent } from "react";
+import { useLogin } from "../hooks/useLogin";
 import { useAuthFields } from "../hooks/useAuthFields";
-import { useSignup } from "../hooks/useSignup";
 
 
-export const SignupForm: React.FC = () => {
+export const LoginForm = () => {
 
     const { email, setEmail, password, setPassword, reset } = useAuthFields();
-    const { signup, error, success, isLoading } = useSignup();
+    const { login, error, isLoading } = useLogin();
 
-
-    const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const created = await signup(email, password);
-        if (created) {
+        const success = await login(email, password);
+        if (success) {
             reset();
         }
-
     };
-    
+
     return (
         <form onSubmit={handleSubmit} noValidate>
-            <input
-                type="email"
+            <input 
+                type="text" 
                 placeholder="Mejladress"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 autoComplete="mejladress"
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
             />
 
             <input 
@@ -36,19 +36,20 @@ export const SignupForm: React.FC = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required    
                 minLength={8}
-                autoComplete="nytt-lösenord"
+                autoComplete={"current-password"}
             />
 
+            <a href="/Create your own bear">Har inget konto? Skapa nu</a>
+
             {error && <p role="alert">{error}</p>}
-            {success && <p role="status">{success}</p>}
 
             <button type="submit" disabled={isLoading}>
                 {isLoading
-                    ? "Skapar konto…"
-                    : "Skapa konto"}
+                    ? "Loggar in…"
+                    : "Logga in"}
             </button>
         </form>
     );
 };
 
-export default SignupForm;
+export default LoginForm;
