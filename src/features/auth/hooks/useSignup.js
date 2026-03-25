@@ -65,32 +65,6 @@ export const useSignup = () => {
             if (!userId) {
                 throw new Error('Konto skapades inte. Inget användar-ID returnerades.');
             }
-
-            // Automatically create a profile for the new user
-            const { error: userError } = await supabase
-                .from('profiles')
-                .upsert(
-                    {
-                        id: userId,
-                    },
-                    { onConflict: 'id' }
-                );
-
-            const { error: designError } = await supabase
-                .from('designs')
-                .upsert(
-                    {
-                        id: userId,
-                    },
-                    { onConflict: 'id' }
-                );
-
-            if (userError) {
-                throw userError;
-            }
-            if (designError) {
-                throw designError;
-            }
             
             setSuccess('Konto skapat! Skapa din öl nu.');
             return true;
