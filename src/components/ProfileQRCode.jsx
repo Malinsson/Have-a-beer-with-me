@@ -1,12 +1,7 @@
 import React from "react";
 import QRCode from "react-qr-code";
 
-interface ProfileQRCodeProps {
-  userId: string;
-  size?: number;
-}
-
-const ProfileQRCode: React.FC<ProfileQRCodeProps> = ({ userId, size = 128 }) => {
+const ProfileQRCode = ({ userId, size = 128 }) => {
     const profileUrl = `https://example.com/user/${userId}`;
     
     return (

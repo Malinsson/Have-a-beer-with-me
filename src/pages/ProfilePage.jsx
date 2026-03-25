@@ -1,11 +1,8 @@
 import { Carousel } from "../assets/carousel/Carousel"
-import { slides } from "../assets/carousel/carouselData.json"
-// import { TiCameraOutline } from "react-icons/ti";
+import { slides } from "../assets/carousel/carouselData.js"
 import { HiOutlineQrcode } from "react-icons/hi";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
-
-
-
+import QRCodeSvg from "../assets/images/QR_code.svg";
 
 export const ProfilePage = () => {
     return (
@@ -32,7 +29,7 @@ export const ProfilePage = () => {
                 </div>
                     <div id="QrCode" className="w-64 flex flex-col items-center">
                         <img className="w-26 h-26 object-contain" 
-                            src="/src/assets/images/QR_code.svg" 
+                            src={QRCodeSvg}
                             alt="qr-code" />
                         <p>Burk ID</p>
                         <p className="font-bold">4444</p>

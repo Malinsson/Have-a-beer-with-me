@@ -1,19 +1,11 @@
 import { CiImageOn } from "react-icons/ci";
 import { IoTextOutline } from "react-icons/io5";
 import { PiAlignCenterVertical } from "react-icons/pi";
-import type { DesignerMode } from "./types";
+// import type { DesignerMode } from "./types";
 import { TEXTURES, COLORS } from "./constants";
 
-interface FrontStepProps {
-    mode: DesignerMode;
-    selectedTexture: string | null;
-    selectedColor: string | null;
-    onModeChange: (mode: DesignerMode) => void;
-    onTextureSelect: (id: string) => void;
-    onColorSelect: (id: string) => void;
-}
 
-export const FrontStep: React.FC<FrontStepProps> = ({
+export const FrontStep = ({
     mode,
     selectedTexture,
     selectedColor,

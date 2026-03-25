@@ -1,18 +1,9 @@
 import React, { useState } from "react";
-import "./carousel.css";
+import "./Carousel.css";
 import { BsArrowLeftCircleFill, BsArrowRightCircleFill } from "react-icons/bs";
 
-interface SlideItem {
-    src: string;
-    alt: string;
-  }
-  
-  interface CarouselProps {
-    data: SlideItem[];
-  }
-
-export const Carousel: React.FC<CarouselProps> = ({ data }) => {
-    const [slide, setSlide] = useState<number>(0);
+export const Carousel = ({ data }) => {
+    const [slide, setSlide] = useState(0);
 
     const nextSlide = () => {
         setSlide(slide === data.length -1 ? 0 : slide + 1);

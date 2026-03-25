@@ -1,31 +1,41 @@
-import React, { useState } from "react";
-import { type ChangeEvent } from "react";
-import { IoSearchOutline } from "react-icons/io5";
+import React, { useState, useEffect } from "react";
+import { IoSearchOutline, IoCloseOutline } from "react-icons/io5";
+import { RxHamburgerMenu } from "react-icons/rx";
+import { CgProfile } from "react-icons/cg";
+import { useNavigate } from "react-router-dom";
+import Logo from "../assets/images/yrgo.png";
 
-
-interface NavLink {
-    label: string;
-    href: string;
-}
-
-const NAV_LINKS: NavLink[] = [
+const NAV_LINKS = [
     { label: "Hem", href: "/" },
     { label: "Min profil", href: "/profile/1" },
     { label: "Min ölhylla", href: "/profile/1/hylla" },
     { label: "Gör om min burk", href: "/design" },
 ];
 
-export const Header: React.FC = () => {
-    const [menuOpen, setMenuOpen] = useState<boolean>(false);
-    const [searchQuery, setSearchQuery] = useState<string>("");
+export const Header = () => {
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [isSignedIn, setIsSignedIn] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // Check if user is signed in by looking for token in localStorage
+        const token = localStorage.getItem("authToken");
+        setIsSignedIn(!!token);
+    }, []);
 
     const toggleMenu = () => setMenuOpen((prev) => !prev);
     const closeMenu = () => setMenuOpen(false);
 
-    const handleSearch = (e: ChangeEvent) => {
+    const handleSearch = (e) => {
         e.preventDefault();
         // Add your search logic here
         console.log("Search query:", searchQuery);
+        closeMenu();
+    };
+
+    const handleProfileClick = () => {
+        navigate("/profile/1");
         closeMenu();
     };
 
@@ -33,23 +43,35 @@ export const Header: React.FC = () => {
         <header className="sticky top-0 left-0 right-0 p-4 flex items-center justify-between w-full bg-white z-50">
             <div className="w-12 h-12 relative z-[60]">
                 <img 
-                    src="../src/assets/images/yrgo.png" 
+                    src={Logo}
                     alt="yrgo-logo" 
                     className="w-full h-full object-contain" 
                 />
             </div>
 
+            <div className="flex items-center gap-4">
+                {isSignedIn && (
+                    <button
+                        type="button"
+                        className="text-4xl relative z-[60] transition-transform duration-300 hover:opacity-70"
+                        onClick={handleProfileClick}
+                        aria-label="Go to profile"
+                    >
+                        <CgProfile className="text-3xl" />
+                    </button>
+                )}
 
-            <button
-                type="button"
-                className="text-4xl relative z-[60] transition-transform duration-300"
-                onClick={toggleMenu}
-                aria-label={menuOpen ? "Close menu" : "Open menu"}
-                aria-expanded={menuOpen}
-                aria-controls="nav-menu"
-            >
-                {menuOpen ? "✕" : "☰"}
-            </button>
+                <button
+                    type="button"
+                    className="text-4xl relative z-[60] transition-transform duration-300"
+                    onClick={toggleMenu}
+                    aria-label={menuOpen ? "Close menu" : "Open menu"}
+                    aria-expanded={menuOpen}
+                    aria-controls="nav-menu"
+                >
+                    {menuOpen ? <IoCloseOutline /> : <RxHamburgerMenu className="text-3xl"/>}
+                </button>
+            </div>
 
             <nav 
                 id="nav-menu" 

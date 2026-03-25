@@ -1,5 +1,5 @@
 import { Carousel } from "../assets/carousel/Carousel"
-import { slides } from "../assets/carousel/carouselData.json"
+import { slides } from "../assets/carousel/carouselData.js"
 import { FaArrowRight } from "react-icons/fa"
 
 export const HomePage = () => {

@@ -1,12 +1,7 @@
 import { ProgressDots } from "../../components/ProgressDots";
 import { OPTIONS } from "./constants";
 
-interface InfoStepProps {
-    selected: Set<string>;
-    onToggle: (id: string) => void;
-}
-
-export const InfoStep: React.FC<InfoStepProps> = ({ selected, onToggle }) => {
+export const InfoStep = ({ selected, onToggle }) => {
     return (
         <div className="flex flex-col gap-4 mt-6">
             <div className="flex flex-wrap gap-3 justify-center">

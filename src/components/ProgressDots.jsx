@@ -1,9 +1,5 @@
-interface ProgressDotsProps {
-    total: number;
-    current: number; // 1-based
-}
 
-export const ProgressDots: React.FC<ProgressDotsProps> = ({ total, current }) => {
+export const ProgressDots = ({ total, current }) => {
     return (
         <div className="flex justify-center gap-2 mt-4">
             {Array.from({ length: total }, (_, index) => (

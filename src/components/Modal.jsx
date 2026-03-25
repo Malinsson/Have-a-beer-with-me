@@ -1,10 +1,7 @@
 import { FaArrowRight } from "react-icons/fa6";
+import bomarkeLogoImg from '../assets/images/logo/bomarke.png';
 
-interface ModalProps {
-    onConfirm: () => void;
-}
-
-export const Modal: React.FC<ModalProps> = ({ onConfirm }) => {
+export const Modal = ({ onConfirm }) => {
     return (
         <div
             className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
@@ -14,7 +11,7 @@ export const Modal: React.FC<ModalProps> = ({ onConfirm }) => {
                 className="bg-white rounded-2xl p-4 py-20 mx-6 flex flex-col items-center gap-4 max-w-sm w-full"
                 onClick={(e) => e.stopPropagation()}
             >
-                <img src="./src/assets/images/logo/bomarke.png" alt="" />
+                <img src={bomarkeLogoImg} alt="bomarke logo" />
                 <h3 className="text-2xl text-center">
                     Din öl är färdig! <br /> Börja Mingla
                 </h3>

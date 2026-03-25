@@ -5,20 +5,21 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
  
-import type { DesignerMode, Step } from "../features/can-designer/types.ts";
+// import type { DesignerMode, Step } from "../features/can-designer/types.ts";
 import { FrontStep } from "../features/can-designer/FrontStep";
 import { BackStep } from "../features/can-designer/BackStep";
 import { InfoStep } from "../features/can-designer/InfoStep";
 import { Modal } from "../components/Modal";
+import slide1 from "../assets/carousel/img/slide1.jpg";
 
-const STEP_TITLE: Record<Step, string> = {
+const STEP_TITLE = {
     front: "Burk framsida",
     back:  "Burk baksida",
     info:  "Innehållsförteckning",
     social: "Kontaktuppgifter",
 };
 
-const STEP_SUBTITLE: Record<Step, string> = {
+const STEP_SUBTITLE = {
     front: "Anpassa Burkens Font",
     back:  "Vad inspirerar dig mest?",
     info:  "Jag är intresserad av",
@@ -27,17 +28,17 @@ const STEP_SUBTITLE: Record<Step, string> = {
 
 export const DesignerPage = () => {
     
-    const [step, setStep] = useState<Step>("front");
-    const [mode, setMode] = useState<DesignerMode>("image");
-    const [selectedTexture, setSelectedTexture] = useState<string | null>(null);
-    const [selectedColor, setSelectedColor] = useState<string | null>(null);
-    const [backText, setBackText] = useState<string>("");
-    const [selected, setSelected] = useState<Set<string>>(new Set());
-    const [modalOpen, setModalOpen] = useState<boolean>(false);
+    const [step, setStep] = useState("front");
+    const [mode, setMode] = useState("image");
+    const [selectedTexture, setSelectedTexture] = useState(null);
+    const [selectedColor, setSelectedColor] = useState(null);
+    const [backText, setBackText] = useState("");
+    const [selected, setSelected] = useState(new Set());
+    const [modalOpen, setModalOpen] = useState(false);
 
     const navigate = useNavigate();
   
-    const toggleOption = (id: string) => {
+    const toggleOption = (id) => {
         setSelected((prev) => {
             const next = new Set(prev);
             next.has(id) ? next.delete(id) : next.add(id);
@@ -50,7 +51,7 @@ export const DesignerPage = () => {
     
             <h2 className="text-3xl text-center">{STEP_TITLE[step]}</h2>
         
-            <img src="../src/assets/carousel/img/slide1.jpg" alt="" />
+            <img src={slide1} alt="design preview" />
         
             <h3 className="text-center mt-4">{STEP_SUBTITLE[step]}</h3>
         

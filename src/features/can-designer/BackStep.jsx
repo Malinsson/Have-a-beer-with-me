@@ -1,11 +1,6 @@
 import { ProgressDots } from "../../components/ProgressDots";
 
-interface BackStepProps {
-    value: string;
-    onChange: (text: string) => void;
-}
-
-export const BackStep: React.FC<BackStepProps> = ({ value, onChange }) => {
+export const BackStep = ({ value, onChange }) => {
     return (
         <div className="flex flex-col justify-center mt-6">
             <textarea
