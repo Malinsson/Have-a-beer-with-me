@@ -29,7 +29,7 @@ export const useBlobUpload = ({
         throw new Error('Uppladdningen lyckades men ingen bild-URL returnerades.')
       }
 
-      onUploadComplete(url)
+      await Promise.resolve(onUploadComplete(url))
       onUploadSuccess?.()
     } catch (caughtError) {
       const message = caughtError instanceof Error ? caughtError.message : 'Uppladdningen misslyckades.'

@@ -1,9 +1,11 @@
 export const defaultDesign = {
   imageUrl: null,
-  labelPreset: 'default',
+  texturePreset: 'default',
   textColor: '#000000',
   textFont: 'Arial, sans-serif',
   textAlignment: 'center',
   tags: [],
   description: '',
+  name: '',
+  department: '',
 }
