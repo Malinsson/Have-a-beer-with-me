@@ -30,7 +30,7 @@ export const CanDetailPage = () => {
     }, []);
 
     if (loading) return <p>Laddar...</p>;
-    if (!profile) return <p>Ingen profil hittades.</p>;
+    if (!canDesign) return <p>Ingen ölburk hittades.</p>;
 
     return (
         <div className="container mx-auto p-4">
