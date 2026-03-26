@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./Carousel.css";
 import { BsArrowLeftCircleFill, BsArrowRightCircleFill } from "react-icons/bs";
 
 export const Carousel = ({ data }) => {
@@ -14,22 +13,22 @@ export const Carousel = ({ data }) => {
     }
 
     return (
-        <div className="carousel">
+        <div className="relative flex justify-center items-center w-full h-auto">
             <BsArrowLeftCircleFill 
-                className="arrow arrow-left" 
+                className="absolute left-4 w-8 h-8 text-white drop-shadow-md" 
                 onClick={prevSlide} />
 
             {data.map((item, index) => {
                 return <img src={item.src} alt={item.alt} key={index} 
-                    className={slide === index ? "slide" : "slide slide-hidden"} />
+                    className={slide === index ? "w-full h-auto" : "w-full h-auto hidden"} />
             })}
             <BsArrowRightCircleFill 
-                className="arrow arrow-right" 
+                className="absolute right-4 w-8 h-8 text-white drop-shadow-md" 
                 onClick={nextSlide} />
 
-            <span className="indicators">
+            <span className="absolute bottom-4 flex gap-1">
                 {data.map((_, index) => {
-                    return ( <button key={index} onClick={() => setSlide(index)} className={slide === index ? "indicator" : "indicator indicator-inactive"}></button>
+                    return ( <button key={index} onClick={() => setSlide(index)} className={slide === index ? "w-2 h-2 bg-yrgo-red rounded-full border-none outline-none drop-shadow-md" : "w-2 h-2 bg-gray-500 rounded-full border-none outline-none drop-shadow-md"}></button>
                     );
                 })}
             </span>
