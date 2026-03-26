@@ -4,6 +4,7 @@ import { HiOutlineQrcode } from "react-icons/hi";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import QRCodeSvg from "../assets/images/QR_code.svg";
 import { CanView } from "../components/CanView.jsx";
+import { FetchQrCode } from "../components/FetchQrCode.jsx";
 
 export const ProfilePage = () => {
     return (
@@ -12,13 +13,7 @@ export const ProfilePage = () => {
     
             <section className="py-12 px-8 flex flex-col items-center text-center gap-6">
                 <CanView />
-                    <div id="QrCode" className="w-64 flex flex-col items-center">
-                        <img className="w-26 h-26 object-contain" 
-                            src={QRCodeSvg}
-                            alt="qr-code" />
-                        <p>Burk ID</p>
-                        <p className="font-bold">4444</p>
-                    </div>
+                    <FetchQrCode />
                     <div className="fixed bottom-6 right-6 bg-blue-950 rounded-full p-3 z-40">
                         <a href="">
                             <HiOutlineQrcode className="text-5xl text-white" />
