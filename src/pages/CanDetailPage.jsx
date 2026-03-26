@@ -7,7 +7,7 @@ import { useState, useEffect, use } from "react";
 import { supabase } from "../lib/supabase";
 
 export const CanDetailPage = () => {
-    const [canDesign, setCanDesing] = useState(null);
+    const [canDesign, setCanDesign] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
