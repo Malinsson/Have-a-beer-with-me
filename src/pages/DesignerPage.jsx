@@ -3,7 +3,6 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaArrowRight } from "react-icons/fa";
  
 // import type { DesignerMode, Step } from "../features/can-designer/types.ts";
 import { FrontStep } from "../features/can-designer/FrontStep";
@@ -11,6 +10,7 @@ import { BackStep } from "../features/can-designer/BackStep";
 import { InfoStep } from "../features/can-designer/InfoStep";
 import { Modal } from "../components/Modal";
 import slide1 from "../assets/carousel/img/slide1.jpg";
+import { Button } from "../components/Button";
 
 const STEP_TITLE = {
     front: "Burk framsida",
@@ -84,56 +84,20 @@ export const DesignerPage = () => {
             {/* Bottom buttons */}
             <div className="flex justify-center gap-4 mt-8">
                 {step === "front" && (
-                    <button
-                        type="button"
-                        onClick={() => setStep("back")}
-                        className="bg-dark-blue rounded-full p-4 flex items-center gap-2 text-white uppercase"
-                    >
-                        Baksida
-                        <FaArrowRight className="text-white" />
-                    </button>
+                    <Button text="Baksida" onClick={() => setStep("back")} variant="primary" />
                 )}
 
                 {step === "back" && (
                     <>
-                        <button
-                            type="button"
-                            onClick={() => setModalOpen(true)}
-                            className="border border-black rounded-full p-4 flex items-center gap-2 uppercase"
-                        >
-                            Skippa
-                            <FaArrowRight />
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => { setStep("info")}}
-                            className="bg-dark-blue rounded-full p-4 flex items-center gap-2 text-white uppercase"
-                        >
-                            Gå vidare
-                            <FaArrowRight className="text-white" />
-                        </button>
+                        <Button text="Skippa" onClick={() => setModalOpen(true)} variant="outlined" />
+                        <Button text="Gå vidare" onClick={() => setStep("info")} variant="primary" />
                     </>
                 )}
 
                 {step === "info" && (
                     <>
-                        <button
-                            type="button"
-                            onClick={() => setModalOpen(true)}
-                            className="border border-black rounded-full p-4 flex items-center gap-2 uppercase"
-                        >
-                            Skippa
-                            <FaArrowRight />
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => setModalOpen(true)}
-                            className="bg-dark-blue rounded-full p-4 flex items-center gap-2 text-white uppercase"
-                        >
-                            Skapa ölburk
-                            <FaArrowRight className="text-white" />
-                            
-                        </button>
+                        <Button text="Skippa" onClick={() => setModalOpen(true)} variant="outlined" />
+                        <Button text="Skapa ölburk" onClick={() => setModalOpen(true)} variant="primary" />
                     </>
                 )}
             </div>

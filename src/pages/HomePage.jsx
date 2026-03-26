@@ -1,12 +1,12 @@
 import { Carousel } from "../assets/carousel/Carousel"
 import { slides } from "../assets/carousel/carouselData.js"
-import { FaArrowRight } from "react-icons/fa"
 import { useNavigate } from "react-router-dom";
+import { Button } from "../components/Button";
 
 
 export const HomePage = () => {
     const navigate = useNavigate();
-    
+
     return (
         <div className="min-h-screen font-sans text-gray-900 bg-white">
             <section 
@@ -27,14 +27,7 @@ export const HomePage = () => {
                     </h2>
 
                     {/* Using mt-6 instead of mt-50 for standard spacing */}
-                    <button
-                        type="button"
-                        onClick={() => navigate("/intro")}
-                        className="bg-dark-blue rounded-full p-4 flex items-center gap-2 text-white uppercase text-sm"
-                    >
-                        Bygg din öl nu
-                        <FaArrowRight className="text-white" />
-                    </button>
+                    <Button text="Bygg din öl nu" onClick={() => navigate("/intro")} variant="primary" />
                 </div>
             </section>
 
@@ -47,14 +40,7 @@ export const HomePage = () => {
                         Vi bjuder på unika virituella öl och dryck - gör det personligt..... 
                         Skapa din öl redan nu!
                     </p>
-                    <button
-                        type="button"
-                        onClick={() => navigate("/intro")}
-                        className="bg-dark-blue rounded-full p-4 flex items-center gap-2 text-white uppercase text-sm"
-                    >
-                        Bygg din öl nu
-                        <FaArrowRight className="text-white" />
-                    </button>
+                    <Button text="Bygg din öl nu" onClick={() => navigate("/intro")} variant="primary" />
                 </div>
             </section>
         </div>
