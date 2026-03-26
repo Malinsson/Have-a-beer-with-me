@@ -28,7 +28,7 @@ const StepButtons = ({ onSkip, onNext }) => (
       <button
         type="button"
         onClick={onSkip}
-        className="border border-black rounded-full p-4 flex items-center gap-2"
+        className="border border-black rounded-full p-4 flex items-center gap-2 uppercase"
       >
         Skippa <FaArrowRight />
       </button>

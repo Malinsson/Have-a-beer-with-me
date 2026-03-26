@@ -87,7 +87,7 @@ export const DesignerPage = () => {
                     <button
                         type="button"
                         onClick={() => setStep("back")}
-                        className="bg-dark-blue rounded-full p-4 flex items-center gap-2 text-white"
+                        className="bg-dark-blue rounded-full p-4 flex items-center gap-2 text-white uppercase"
                     >
                         Baksida
                         <FaArrowRight className="text-white" />
@@ -99,7 +99,7 @@ export const DesignerPage = () => {
                         <button
                             type="button"
                             onClick={() => setModalOpen(true)}
-                            className="border border-black rounded-full p-4 flex items-center gap-2"
+                            className="border border-black rounded-full p-4 flex items-center gap-2 uppercase"
                         >
                             Skippa
                             <FaArrowRight />
@@ -107,7 +107,7 @@ export const DesignerPage = () => {
                         <button
                             type="button"
                             onClick={() => { setStep("info")}}
-                            className="bg-dark-blue rounded-full p-4 flex items-center gap-2 text-white"
+                            className="bg-dark-blue rounded-full p-4 flex items-center gap-2 text-white uppercase"
                         >
                             Gå vidare
                             <FaArrowRight className="text-white" />
@@ -120,7 +120,7 @@ export const DesignerPage = () => {
                         <button
                             type="button"
                             onClick={() => setModalOpen(true)}
-                            className="border border-black rounded-full p-4 flex items-center gap-2"
+                            className="border border-black rounded-full p-4 flex items-center gap-2 uppercase"
                         >
                             Skippa
                             <FaArrowRight />
@@ -128,7 +128,7 @@ export const DesignerPage = () => {
                         <button
                             type="button"
                             onClick={() => setModalOpen(true)}
-                            className="bg-dark-blue rounded-full p-4 flex items-center gap-2 text-white"
+                            className="bg-dark-blue rounded-full p-4 flex items-center gap-2 text-white uppercase"
                         >
                             Skapa ölburk
                             <FaArrowRight className="text-white" />

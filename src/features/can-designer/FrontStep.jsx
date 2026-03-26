@@ -1,7 +1,8 @@
 import { CiImageOn } from "react-icons/ci";
 import { IoTextOutline } from "react-icons/io5";
 import { PiAlignCenterVertical } from "react-icons/pi";
-// import type { DesignerMode } from "./types";
+import { GoUpload } from "react-icons/go";
+
 import { TEXTURES, COLORS } from "./constants";
 
 
@@ -42,6 +43,7 @@ export const FrontStep = ({
 
             {/* Image mode — textures */}
             {mode === "image" && (
+                <>
                 <div className="flex justify-center gap-4">
                     {TEXTURES.map((texture) => (
                         <button
@@ -57,6 +59,13 @@ export const FrontStep = ({
                         </button>
                     ))}
                 </div>
+                <section className="flex border-1 items-center justify-between m-6">
+                    <div className="bg-gray-300 p-3 px-4 m-4">
+                        <GoUpload className="text-xl" />
+                    </div>
+                    <span className="uppercase m-4 text-xl">Ladda Upp</span>    
+                </section>
+                </>
             )}
 
             {/* Text mode — colors + font */}
