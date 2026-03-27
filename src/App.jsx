@@ -1,39 +1,30 @@
+import { Routes, Route } from 'react-router-dom'
 import './App.css'
-import { useState } from 'react';
-import { SignupForm } from './features/auth/components/SignupForm';
-import { LoginForm } from './features/auth/components/LoginForm';
-import { ListUsers } from './tests/ListUsers';
-import { ImageUploader } from './features/can-designer/components/ImageUploader';
-import { useSaveDesignImage } from './features/can-designer/hooks/useSaveDesignImage';
-import ProfileQRCode from './shared/components/ProfileQRCode';
 
+// Pages
+import { Layout } from './components/Layout.jsx'
+import { HomePage } from './pages/HomePage.jsx'
+import { IntroPage } from './pages/IntroPage.jsx'
+import { AuthPage } from './pages/AuthPage.jsx'
+import { ProfilePage } from './pages/ProfilePage.jsx'
+import { DesignerPage } from './pages/DesignerPage.jsx'
+import { BeerShelfPage } from './pages/BeerShelfPage.jsx'
+import { CanDetailPage } from './pages/CanDetailPage.jsx'
 
-
-function App() {
-
-  const { saveDesignImage } = useSaveDesignImage()
-  const [latestDesignId, setLatestDesignId] = useState(null)
-
-  const handleUploadComplete = async (url) => {
-    try {
-      const designId = await saveDesignImage(url)
-      setLatestDesignId(designId)
-      console.log('Bild uppladdad och sparat i designs.design_data.imageUrl:', url)
-    } catch (error) {
-      console.error('Kunde inte spara uppladdad bild URL i design_data.', error)
-    }
-  }
-
+export function App() {
   return (
     <>
-      <h1>Have a beer with me</h1>
-      <SignupForm />
-      <LoginForm />
-      <ListUsers />
-      <ImageUploader onUploadComplete={handleUploadComplete} />
-      <ProfileQRCode designId={latestDesignId} size={256} />
+      <Layout>
+        <Routes>
+          <Route path="/" element={<HomePage />}></Route>
+          <Route path="/auth" element={<AuthPage />}></Route>
+          <Route path="/intro" element={<IntroPage />}></Route>
+          <Route path="/design" element={<DesignerPage />}></Route>
+          <Route path="/profile/:id" element={<ProfilePage />}></Route>
+          <Route path="/profile/:id/hylla" element={<BeerShelfPage />}></Route>
+          <Route path="/detail" element={<CanDetailPage />}></Route>
+        </Routes>
+      </Layout>
     </>
   )
 }
-
-export default App
