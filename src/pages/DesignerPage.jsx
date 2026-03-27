@@ -1,0 +1,112 @@
+// import CanPreview3D from '../features/can-designer/components/CanPreview3D.tsx'
+{/* <CanPreview3D /> */}
+
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+ 
+// import type { DesignerMode, Step } from "../features/can-designer/types.ts";
+import { FrontStep } from "../features/can-designer/FrontStep";
+import { BackStep } from "../features/can-designer/BackStep";
+import { InfoStep } from "../features/can-designer/InfoStep";
+import { Modal } from "../components/Modal";
+import slide1 from "../assets/carousel/img/slide1.jpg";
+import { Button } from "../components/Button";
+
+const STEP_TITLE = {
+    front: "Burk framsida",
+    back:  "Burk baksida",
+    info:  "Innehållsförteckning",
+    social: "Kontaktuppgifter",
+};
+
+const STEP_SUBTITLE = {
+    front: "Anpassa Burkens Font",
+    back:  "Vad inspirerar dig mest?",
+    info:  "Jag är intresserad av",
+    social: "Vill du lägga till sociala medier?",
+};
+
+export const DesignerPage = () => {
+    
+    const [step, setStep] = useState("front");
+    const [mode, setMode] = useState("image");
+    const [selectedTexture, setSelectedTexture] = useState(null);
+    const [selectedColor, setSelectedColor] = useState(null);
+    const [backText, setBackText] = useState("");
+    const [selected, setSelected] = useState(new Set());
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const navigate = useNavigate();
+  
+    const toggleOption = (id) => {
+        setSelected((prev) => {
+            const next = new Set(prev);
+            next.has(id) ? next.delete(id) : next.add(id);
+            return next;
+        });
+    };
+
+    return (
+        <div className="container mx-auto p-4">
+    
+            <h2 className="text-3xl text-center">{STEP_TITLE[step]}</h2>
+        
+            <img src={slide1} alt="design preview" />
+        
+            <h3 className="text-center mt-4">{STEP_SUBTITLE[step]}</h3>
+        
+            {/* Steps */}
+            {step === "front" && (
+                <FrontStep
+                    mode={mode}
+                    selectedTexture={selectedTexture}
+                    selectedColor={selectedColor}
+                    onModeChange={setMode}
+                    onTextureSelect={setSelectedTexture}
+                    onColorSelect={setSelectedColor}
+                />
+            )}
+
+            {step === "back" && (
+                <BackStep
+                    value={backText}
+                    onChange={setBackText}
+                />
+            )}
+
+            {step === "info" && (
+                <InfoStep
+                    selected={selected}
+                    onToggle={toggleOption}
+                />
+             )}
+
+            {/* Bottom buttons */}
+            <div className="flex justify-center gap-4 mt-8">
+                {step === "front" && (
+                    <Button text="Baksida" onClick={() => setStep("back")} variant="primary" />
+                )}
+
+                {step === "back" && (
+                    <>
+                        <Button text="Skippa" onClick={() => setModalOpen(true)} variant="outlined" />
+                        <Button text="Gå vidare" onClick={() => setStep("info")} variant="primary" />
+                    </>
+                )}
+
+                {step === "info" && (
+                    <>
+                        <Button text="Skippa" onClick={() => setModalOpen(true)} variant="outlined" />
+                        <Button text="Skapa ölburk" onClick={() => setModalOpen(true)} variant="primary" />
+                    </>
+                )}
+            </div>
+                  
+            {/* Modal */}
+            {modalOpen && (
+                <Modal onConfirm={() => navigate("/profile/1")} />
+            )}
+
+        </div>
+    );
+};

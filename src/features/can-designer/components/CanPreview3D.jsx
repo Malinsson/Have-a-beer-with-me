@@ -5,7 +5,7 @@ import * as THREE from 'three'
 import beerCanSceneUrl from '../../../assets/3DModels/BeerCan3.glb?url'
 import beerCanLabelUrl from '../../../assets/3DModels/BeerCanLabel.png'
 
-function Model(props: any) {
+function Model(props) {
   const { scene } = useGLTF(beerCanSceneUrl)
   const labelTexture = useTexture(beerCanLabelUrl)
 
@@ -16,7 +16,7 @@ function Model(props: any) {
 
     scene.traverse((child) => {
       if (child instanceof THREE.Mesh && child.name === 'Main_boody002_1') {
-        const material = child.material as THREE.MeshStandardMaterial
+        const material = child.material
         material.map = labelTexture
         material.needsUpdate = true
       }

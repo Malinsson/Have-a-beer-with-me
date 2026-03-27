@@ -1,22 +1,10 @@
 import React, { useState } from "react";
-import { type ChangeEvent } from "react";
 
-interface SignupResponse {
-    token: string;
-    user: {
-        id: string;
-        username: string;
-        password: string;
-        occupation: string;
-
-    };
-  }
-
-export const SignupForm: React.FC = () => {
-    const [username, setUsername] = useState<string>("");
-    const [password, setPassword] = useState<string>('');
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
+export const SignupForm = () => {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const clearForm = () => {
         setUsername("");
@@ -24,7 +12,7 @@ export const SignupForm: React.FC = () => {
         setError(null);
     };
 
-    const handleSubmit = async (e: ChangeEvent) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Validate inputs before making an API call
@@ -48,7 +36,7 @@ export const SignupForm: React.FC = () => {
                 throw new Error(errData.message ?? "Something went wrong, please try again.");
             }
 
-            const data: SignupResponse = await response.json();
+            const data = await response.json();
             console.log('Auth successful:', data);
             clearForm();
             // TODO: Store token and redirect to /design

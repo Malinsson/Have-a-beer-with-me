@@ -1,4 +1,12 @@
+@import "tailwindcss";
+
+@theme {
+    --color-yrgo-red: #E51236;
+    --color-dark-blue: #001A52;
+    --color-dark-gray: #5B5B5B;
+}
+
 * {
     box-sizing: border-box;
-    margin: 0;
+    font-family: 'Inter', sans-serif;
 }
