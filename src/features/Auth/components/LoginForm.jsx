@@ -1,62 +1,29 @@
-import React, { useState } from "react";
+import { useLogin } from "../hooks/useLogin";
+import { useAuthFields } from "../hooks/useAuthFields";
+
 
 export const LoginForm = () => {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
 
-    const clearForm = () => {
-        setUsername("");
-        setPassword("");
-        setError(null);
-    };
+    const { email, setEmail, password, setPassword, reset } = useAuthFields();
+    const { login, error, isLoading } = useLogin();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Validate inputs before making an API call
-        if (!username.trim() || !password.trim()) {
-            setError("Username and password are required.");
-            return;
-        }
-
-        setIsLoading(true);
-        setError(null);
-
-        try {
-            const response = await fetch("/api/login", {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: username.trim(), password }),
-            });
-            
-            if (!response.ok) {
-                const errData = await response.json().catch(() => ({}));
-                throw new Error(errData.message ?? "Something went wrong, please try again.");
-            }
-
-            const data = await response.json();
-            console.log('Auth successful:', data);
-            clearForm();
-            // TODO: Store token and redirect to /design
-
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'An unknown error occurred');
-        } finally {
-            setIsLoading(false);
+        const success = await login(email, password);
+        if (success) {
+            reset();
         }
     };
-    
+
     return (
         <form onSubmit={handleSubmit} noValidate>
             <input 
                 type="text" 
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Mejladress"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
-                autoComplete="username"
+                autoComplete="mejladress"
                 autoCapitalize="none"
                 autoCorrect="off"
                 spellCheck={false}
@@ -64,7 +31,7 @@ export const LoginForm = () => {
 
             <input 
                 type="password" 
-                placeholder="Password"
+                placeholder="Lösenord"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required    
@@ -78,8 +45,8 @@ export const LoginForm = () => {
 
             <button type="submit" disabled={isLoading}>
                 {isLoading
-                    ? "Signing in…"
-                    : "Sign in"}
+                    ? "Loggar in…"
+                    : "Logga in"}
             </button>
         </form>
     );
