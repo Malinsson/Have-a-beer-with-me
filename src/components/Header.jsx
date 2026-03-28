@@ -5,6 +5,7 @@ import { CgProfile } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
 import Logo from "../assets/images/yrgo.png";
 import { useIsSignedIn } from "../shared/hooks/useIsSignedIn";
+import { useLogout } from "../features/Auth/hooks/useLogout";
 
 
 const NAV_LINKS = [
@@ -12,6 +13,7 @@ const NAV_LINKS = [
     { label: "Min profil", href: "/profile/1" },
     { label: "Min ölhylla", href: "/profile/1/hylla" },
     { label: "Gör om min burk", href: "/design" },
+    { label: "Logga ut", href: "/", action: "logout" },
 ];
 
 export const Header = () => {
@@ -20,7 +22,7 @@ export const Header = () => {
     const navigate = useNavigate();
 
     const isSignedIn = useIsSignedIn();
-
+    const { logout } = useLogout();
 
     const toggleMenu = () => setMenuOpen((prev) => !prev);
     const closeMenu = () => setMenuOpen(false);
@@ -34,6 +36,20 @@ export const Header = () => {
 
     const handleProfileClick = () => {
         navigate("/profile/1");
+        closeMenu();
+    };
+
+    const handleNavLinkClick = async (event, link) => {
+        if (link.action === "logout") {
+            event.preventDefault();
+            const didLogout = await logout();
+            closeMenu();
+            if (didLogout) {
+                window.location.assign("/");
+            }
+            return;
+        }
+
         closeMenu();
     };
 
@@ -87,7 +103,7 @@ export const Header = () => {
                             <li key={link.href}>
                                 <a 
                                     href={link.href} 
-                                    onClick={closeMenu}
+                                    onClick={(event) => handleNavLinkClick(event, link)}
                                     className="text-2xl font-regular tracking-tighter"
                                 >
                                     {link.label}
