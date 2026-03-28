@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProgressDots } from "../components/ProgressDots";
+import { SignupForm } from "../features/Auth/components/SignupForm";
 
 import can from "../assets/images/can.jpg";
 import cans from "../assets/images/cans.jpg";
@@ -9,13 +10,13 @@ import { Button } from "../components/Button";
 const STEP_TITLE = {
     first: "Skapa din egen öl",
     secound: "Dela din öl och scanna andras på eventet",
-    last:  "Vem är du?",
+    last:  "Skapa ett konto",
 };
 
 const STEP_SUBTITLE = {
     first: "Uttryck dig själv med en personligetikett",
     secound:  "Mingla och upptäck unika öl på eventet",
-    last:  "Informationen kommer stå på din öl",
+    last:  "Spara din design och alla du tar en öl med på din ölhylla.",
 };
 
 const STEP_IMG = {
@@ -64,30 +65,17 @@ const navigate = useNavigate();
 
             {step === "last" && (
                 <div className="flex flex-col p-4 justify-center items-center gap-6">
-                    <div className="border border-black rounded-lg px-6 py-6 w-full gap-4 flex flex-col">
-                        <label>Förname</label>
-                        <input 
-                            type="text" 
-                            placeholder="Anders"
-                            className="border border-neutral-400 rounded-lg px-4 py-2 w-full resize-none"
-                        />
-                        <label>Efternamn</label>
-                        <input 
-                            type="text" 
-                            placeholder="Andersson"
-                            className="border border-neutral-400 rounded-lg px-4 py-2 w-full resize-none"
-                        />
-                        <label>Jobb/Studier</label>
-                        <input 
-                        type="text" 
-                        placeholder="Webbutvecklare"
-                        className="border border-neutral-400 rounded-lg px-4 py-2 w-full resize-none"
-                    />
-                    </div>
+                        <SignupForm formId="intro-signup-form" hideSubmitButton />
                     <section>
                         <ProgressDots total={3} current={3} />
                     </section>
-                    <Button text="Börja designa din öl" onClick={() => navigate("/design")} variant="primary" />
+                    <Button
+                        text="Börja designa din öl"
+                        onClick={() => document.getElementById("intro-signup-form")?.requestSubmit()}
+                        variant="primary"
+                    />
+                    <Button text="Skippa" onClick={() => navigate("/design")} variant="outlined" />
+
                 </div>
             )}
 

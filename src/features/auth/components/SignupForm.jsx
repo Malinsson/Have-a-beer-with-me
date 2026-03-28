@@ -2,7 +2,7 @@ import { useAuthFields } from "../hooks/useAuthFields";
 import { useSignup } from "../hooks/useSignup";
 
 
-export const SignupForm = () => {
+export const SignupForm = ({ formId = "signup-form", hideSubmitButton = false }) => {
 
     const { email, setEmail, password, setPassword, reset } = useAuthFields();
     const { signup, error, success, isLoading } = useSignup();
@@ -18,34 +18,47 @@ export const SignupForm = () => {
     };
     
     return (
-        <form onSubmit={handleSubmit} noValidate>
+        <form
+        id={formId}
+        onSubmit={handleSubmit} noValidate autoComplete="off"
+        class="p-4 border border-var(--border-color) bg-white max-w-md mx-auto"
+        >
+            <label htmlFor="signupEmail" class="block text-sm font-medium py-1">Mejladress</label>
             <input
+            class="px-4 py-2 border border-var(--border-color) rounded-xl bg-white w-full mx-auto"
                 type="email"
                 placeholder="Mejladress"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                autoComplete="mejladress"
+                autoComplete="email"
             />
 
+            <label htmlFor="signupPassword" class="block text-sm font-medium mt-4 py-1">Lösenord</label>
             <input 
+            class="px-4 py-2 border border-var(--border-color) rounded-xl bg-white w-full mx-auto"
                 type="password" 
                 placeholder="Lösenord"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required    
                 minLength={8}
-                autoComplete="nytt-lösenord"
+                autoComplete="new-password"
             />
 
             {error && <p role="alert">{error}</p>}
             {success && <p role="status">{success}</p>}
 
-            <button type="submit" disabled={isLoading}>
-                {isLoading
-                    ? "Skapar konto…"
-                    : "Skapa konto"}
-            </button>
+            <a href="/auth/login" class="text-sm mt-2 inline-block underline">Har du redan ett konto? Logga in</a>
+
+            {!hideSubmitButton && (
+                <button class="mt-2 py-2 px-4 bg-dark-blue text-white rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    type="submit" disabled={isLoading}>
+                    {isLoading
+                        ? "Skapar konto…"
+                        : "Skapa konto"}
+                </button>
+            )}
         </form>
     );
 };

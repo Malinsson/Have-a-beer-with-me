@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { GuestSignup } from "../features/auth/components/GuestSignup";
  
 // import type { DesignerMode, Step } from "../features/can-designer/types.ts";
 import { FrontStep } from "../features/can-designer/FrontStep";
@@ -48,6 +49,7 @@ export const DesignerPage = () => {
 
     return (
         <div className="container mx-auto p-4">
+            <GuestSignup />
     
             <h2 className="text-3xl text-center">{STEP_TITLE[step]}</h2>
         
