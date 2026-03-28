@@ -4,6 +4,8 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { CgProfile } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
 import Logo from "../assets/images/yrgo.png";
+import { useIsSignedIn } from "../shared/hooks/useIsSignedIn";
+
 
 const NAV_LINKS = [
     { label: "Hem", href: "/" },
@@ -15,14 +17,10 @@ const NAV_LINKS = [
 export const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
-    const [isSignedIn, setIsSignedIn] = useState(false);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        // Check if user is signed in by looking for token in localStorage
-        const token = localStorage.getItem("authToken");
-        setIsSignedIn(!!token);
-    }, []);
+    const isSignedIn = useIsSignedIn();
+
 
     const toggleMenu = () => setMenuOpen((prev) => !prev);
     const closeMenu = () => setMenuOpen(false);
@@ -51,6 +49,7 @@ export const Header = () => {
             </div>
 
             <div className="flex items-center gap-4">
+
                 {isSignedIn && (
                     <button
                         type="button"
@@ -82,35 +81,47 @@ export const Header = () => {
                 `}
                 style={{ zIndex: 55 }}
             >
-                <ul className="flex flex-col gap-8">
-                    {NAV_LINKS.map((link) => (
-                        <li key={link.href}>
-                            <a 
-                                href={link.href} 
-                                onClick={closeMenu}
-                                className="text-2xl font-regular tracking-tighter"
-                            >
-                                {link.label}
-                            </a>
-                        </li>
-                    ))}
+                {isSignedIn && (
+                    <ul className="flex flex-col gap-8">
+                        {NAV_LINKS.map((link) => (
+                            <li key={link.href}>
+                                <a 
+                                    href={link.href} 
+                                    onClick={closeMenu}
+                                    className="text-2xl font-regular tracking-tighter"
+                                >
+                                    {link.label}
+                                </a>
+                            </li>
+                        ))}
 
-                    <form onSubmit={handleSearch} className="mt-12 w-full">
-                        <label className="text-2xl font-regular tracking-tighter">Sök burk-ID</label>
-                        <div className="flex justify-between gap-2 mt-4">
-                            <input
-                                type="text"
-                                placeholder="Sök öl burk..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full px-4 py-2 border-1 border-black rounded-lg"
-                            />
-                            <button type="submit" className="bg-blue-950 rounded-full p-2">
-                                <IoSearchOutline className="text-2xl text-white" />
-                            </button>
-                        </div>
-                    </form>
-                </ul>
+                        <form onSubmit={handleSearch} className="mt-12 w-full">
+                            <label className="text-2xl font-regular tracking-tighter">Sök burk-ID</label>
+                            <div className="flex justify-between gap-2 mt-4">
+                                <input
+                                    type="text"
+                                    placeholder="Sök öl burk..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="w-full px-4 py-2 border border-black rounded-lg"
+                                />
+                                <button type="submit" className="bg-blue-950 rounded-full p-2">
+                                    <IoSearchOutline className="text-2xl text-white" />
+                                </button>
+                            </div>
+                        </form>
+                    </ul>
+                )}
+                    
+                {!isSignedIn && (
+                    <a 
+                        href="/auth/login"
+                        onClick={closeMenu}
+                        className="text-2xl font-regular tracking-tighter"
+                    >
+                        Logga in
+                    </a>
+                )}
             </nav>
         </header>
     );
