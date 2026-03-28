@@ -65,7 +65,11 @@ const navigate = useNavigate();
 
             {step === "last" && (
                 <div className="flex flex-col p-4 justify-center items-center gap-6">
-                        <SignupForm formId="intro-signup-form" hideSubmitButton />
+                        <SignupForm
+                            formId="intro-signup-form"
+                            hideSubmitButton
+                            onSuccess={() => navigate("/design")}
+                        />
                     <section>
                         <ProgressDots total={3} current={3} />
                     </section>

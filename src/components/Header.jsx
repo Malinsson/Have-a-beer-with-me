@@ -41,11 +41,12 @@ export const Header = () => {
 
     return (
         <header className="sticky top-0 left-0 right-0 p-4 flex items-center justify-between w-full bg-white z-50">
-            <div className="w-12 h-12 relative z-[60]">
+            <div className="w-12 h-12 relative z-60">
                 <img 
                     src={Logo}
                     alt="yrgo-logo" 
                     className="w-full h-full object-contain" 
+                    onClick={() => navigate("/")}
                 />
             </div>
 
@@ -53,7 +54,7 @@ export const Header = () => {
                 {isSignedIn && (
                     <button
                         type="button"
-                        className="text-4xl relative z-[60] transition-transform duration-300 hover:opacity-70"
+                        className="text-4xl relative z-60 transition-transform duration-300 hover:opacity-70"
                         onClick={handleProfileClick}
                         aria-label="Go to profile"
                     >
@@ -63,7 +64,7 @@ export const Header = () => {
 
                 <button
                     type="button"
-                    className="text-4xl relative z-[60] transition-transform duration-300"
+                    className="text-4xl relative z-60 transition-transform duration-300"
                     onClick={toggleMenu}
                     aria-label={menuOpen ? "Close menu" : "Open menu"}
                     aria-expanded={menuOpen}

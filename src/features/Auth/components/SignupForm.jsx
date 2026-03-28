@@ -2,7 +2,7 @@ import { useAuthFields } from "../hooks/useAuthFields";
 import { useSignup } from "../hooks/useSignup";
 
 
-export const SignupForm = ({ formId = "signup-form", hideSubmitButton = false }) => {
+export const SignupForm = ({ formId = "signup-form", hideSubmitButton = false, onSuccess }) => {
 
     const { email, setEmail, password, setPassword, reset } = useAuthFields();
     const { signup, error, success, isLoading } = useSignup();
@@ -13,6 +13,7 @@ export const SignupForm = ({ formId = "signup-form", hideSubmitButton = false })
         const created = await signup(email, password);
         if (created) {
             reset();
+            onSuccess?.();
         }
 
     };
@@ -21,7 +22,7 @@ export const SignupForm = ({ formId = "signup-form", hideSubmitButton = false })
         <form
         id={formId}
         onSubmit={handleSubmit} noValidate autoComplete="off"
-        class="p-4 border border-var(--border-color) bg-white max-w-md mx-auto"
+        class="p-4 border border-var(--border-color) bg-white w-full mx-auto"
         >
             <label htmlFor="signupEmail" class="block text-sm font-medium py-1">Mejladress</label>
             <input
@@ -62,5 +63,3 @@ export const SignupForm = ({ formId = "signup-form", hideSubmitButton = false })
         </form>
     );
 };
-
-export default SignupForm;
