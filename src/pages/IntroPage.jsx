@@ -78,7 +78,7 @@ const navigate = useNavigate();
                         onClick={() => document.getElementById("intro-signup-form")?.requestSubmit()}
                         variant="primary"
                     />
-                    <Button text="Skippa" onClick={() => navigate("/design")} variant="outlined" />
+                    <Button text="Fortsätt som gäst" onClick={() => navigate("/design")} variant="outlined" />
 
                 </div>
             )}

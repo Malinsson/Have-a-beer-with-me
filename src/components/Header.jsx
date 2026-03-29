@@ -13,7 +13,7 @@ const NAV_LINKS = [
     { label: "Min profil", href: "/profile/1" },
     { label: "Min ölhylla", href: "/profile/1/hylla" },
     { label: "Gör om min burk", href: "/design" },
-    { label: "Logga ut", href: "/", action: "logout" },
+    { label: "Logga ut", href: "#", action: "logout" },
 ];
 
 export const Header = () => {
@@ -45,6 +45,7 @@ export const Header = () => {
             const didLogout = await logout();
             closeMenu();
             if (didLogout) {
+                // Redirect with hard reload to ensure all user data is cleared from memory
                 window.location.assign("/");
             }
             return;
