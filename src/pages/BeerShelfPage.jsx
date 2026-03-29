@@ -1,7 +1,7 @@
 // The beercan shelf page, where you can see all the cans you have collected.
 import { useSavedDesigns } from "../features/can-designer/hooks/displayCanDesign/useSavedDesigns.js";
 import { useState, useEffect, use } from "react";
-import { FaArrowLeftLong } from "react-icons/fa6";
+import { BackButton } from "../components/BackButton";
 import { HiOutlineQrcode } from "react-icons/hi";
 import { supabase } from "../lib/supabase.js";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +24,7 @@ export const BeerShelfPage = () => {
     return (
         <section className="container mx-auto p-4">
             <div className="flex items-center justify-between mb-6">
-                <FaArrowLeftLong className="border rounded-full p-2 text-4xl" />
+                <BackButton />
                 <h2 className="absolute left-1/2 transform -translate-x-1/2 text-2xl">
                     Min Barhylla
                 </h2>
