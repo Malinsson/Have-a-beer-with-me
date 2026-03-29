@@ -1,6 +1,3 @@
-// import CanPreview3D from '../features/can-designer/components/CanPreview3D.tsx'
-{/* <CanPreview3D /> */}
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
  
@@ -11,6 +8,7 @@ import { InfoStep } from "../features/can-designer/InfoStep";
 import { Modal } from "../components/Modal";
 import slide1 from "../assets/carousel/img/slide1.jpg";
 import { Button } from "../components/Button";
+import { BackButton } from "../components/BackButton";
 
 const STEP_TITLE = {
     front: "Burk framsida",
@@ -25,6 +23,8 @@ const STEP_SUBTITLE = {
     info:  "Jag är intresserad av",
     social: "Vill du lägga till sociala medier?",
 };
+
+const STEPS = ["front", "back", "info"];
 
 export const DesignerPage = () => {
     
@@ -46,10 +46,19 @@ export const DesignerPage = () => {
         });
     };
 
+    const handleBack = () => {
+        const currentIndex = STEPS.indexOf(step);
+        if (currentIndex === 0) navigate(-1);
+        else setStep(STEPS[currentIndex - 1]);
+    };
+
     return (
         <div className="container mx-auto p-4">
-    
-            <h2 className="text-3xl text-center">{STEP_TITLE[step]}</h2>
+
+            <div className="flex items-center justify-between mb-6">
+                <BackButton onClick={handleBack} />
+                <h2 className="absolute left-1/2 transform -translate-x-1/2 text-2xl">{STEP_TITLE[step]}</h2>
+            </div>
         
             <img src={slide1} alt="design preview" />
         
