@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import Logo from "../assets/images/yrgo.png";
 import { useIsSignedIn } from "../shared/hooks/useIsSignedIn";
 import { useLogout } from "../features/Auth/hooks/useLogout";
+import { useIsGuest } from "../shared/hooks/useIsGuest";
+import { LoginForm } from "../features/Auth/components/LoginForm";
 
 
 const NAV_LINKS = [
@@ -21,6 +23,7 @@ export const Header = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
 
+    const isGuest = useIsGuest();
     const isSignedIn = useIsSignedIn();
     const { logout } = useLogout();
 
@@ -98,7 +101,7 @@ export const Header = () => {
                 `}
                 style={{ zIndex: 55 }}
             >
-                {isSignedIn && (
+                {(isSignedIn || isGuest) && (
                     <ul className="flex flex-col gap-8">
                         {NAV_LINKS.map((link) => (
                             <li key={link.href}>
@@ -130,14 +133,13 @@ export const Header = () => {
                     </ul>
                 )}
                     
-                {!isSignedIn && (
-                    <a 
-                        href="/auth/login"
-                        onClick={closeMenu}
-                        className="text-2xl font-regular tracking-tighter"
-                    >
-                        Logga in
-                    </a>
+                {!isSignedIn && !isGuest && (
+                    <LoginForm
+                        onSuccess={() => {
+                            closeMenu();
+                            navigate("/profile/1");
+                        }}
+                    />
                 )}
             </nav>
         </header>
