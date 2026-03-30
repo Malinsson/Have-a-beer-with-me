@@ -6,13 +6,16 @@ export const NameStep = ({ onNext }) => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [department, setDepartment] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         const didSave = await saveName(firstName, lastName);
         if (didSave) {
             onNext({ firstName, lastName, department });
         }
+        setIsLoading(false);
     };
 
     const { saveName, error } = useNameStep();
@@ -60,14 +63,16 @@ export const NameStep = ({ onNext }) => {
                     />
                 </div>
             </div>
+            
+            {error && <p role="alert">{error}</p>}
 
             <Button
                 type="submit"
                 variant="primary"
                 text="Börja designa din öl"
+                disabled={isLoading}
             >      
             </Button>
-            {error && <p role="alert">{error}</p>}
         </form>
     );
 };
