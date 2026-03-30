@@ -8,19 +8,52 @@ import { useNavigate } from "react-router-dom";
 
 export const BeerShelfPage = () => {
     const [userId, setUserId] = useState(null);
+    const [authLoading, setAuthLoading] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
         const getUser = async () => {
             const { data: { user } } = await supabase.auth.getUser();
             if (user) setUserId(user.id);
+            setAuthLoading(false);
         }
         getUser();
     }, []);
 
     const { savedDesigns, loading, error } = useSavedDesigns(userId);
 
-    
+    if (authLoading) return (
+        <div className="flex justify-center items-center h-screen">
+            <p>Laddar din hylla...</p>
+        </div>
+    );
+
+    if (!userId) return (
+        <section className="container mx-auto p-4">
+            <div className="flex items-center justify-between mb-6">
+                <BackButton />
+                <h2 className="absolute left-1/2 transform -translate-x-1/2 text-2xl">
+                    Min Barhylla
+                </h2>
+            </div>
+            <div className="flex justify-center items-center h-40">
+                <img
+                    src="https://www.shutterstock.com/image-vector/soda-can-icon-vector-design-260nw-2379117639.jpg"
+                    alt="can"
+                />
+                <p className="text-center px-8">
+                    Du måste vara inloggad för att se din hylla.
+                </p>
+                <button
+                    onClick={() => navigate("/auth")}
+                    className="flex flex-row items-center gap-3 bg-dark-blue rounded-full p-3 w-fit"
+                >
+                    <p className="text-white text-2xl">Logga in</p>
+                </button>
+            </div>
+        </section>
+    );
+
     return (
         <section className="container mx-auto p-4">
             <div className="flex items-center justify-between mb-6">
