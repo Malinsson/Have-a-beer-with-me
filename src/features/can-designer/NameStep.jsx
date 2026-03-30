@@ -64,8 +64,9 @@ export const NameStep = ({ onNext }) => {
             <Button
                 type="submit"
                 variant="primary"
+                text="Börja designa din öl"
             >
-                Börja designa din öl
+                    
             </Button>
             {error && <p role="alert">{error}</p>}
         </form>
