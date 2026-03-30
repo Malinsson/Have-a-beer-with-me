@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { FrontStep } from "../features/can-designer/FrontStep";
 import { BackStep } from "../features/can-designer/BackStep";
 import { InfoStep } from "../features/can-designer/InfoStep";
+import { SocialStep } from "../features/can-designer/SocialStep";
 import { Modal } from "../components/Modal";
 import slide1 from "../assets/carousel/img/slide1.jpg";
 import { Button } from "../components/Button";
@@ -24,7 +25,7 @@ const STEP_SUBTITLE = {
     social: "Vill du lägga till sociala medier?",
 };
 
-const STEPS = ["front", "back", "info"];
+const STEPS = ["front", "back", "info", "social"];
 
 export const DesignerPage = () => {
     
@@ -34,6 +35,7 @@ export const DesignerPage = () => {
     const [selectedColor, setSelectedColor] = useState(null);
     const [backText, setBackText] = useState("");
     const [selected, setSelected] = useState(new Set());
+    const [socials, setSocials] = useState({ instagram: "", linkedin: "", github: "" });
     const [modalOpen, setModalOpen] = useState(false);
 
     const navigate = useNavigate();
@@ -50,6 +52,10 @@ export const DesignerPage = () => {
         const currentIndex = STEPS.indexOf(step);
         if (currentIndex === 0) navigate(-1);
         else setStep(STEPS[currentIndex - 1]);
+    };
+
+    const handleSocialChange = (field, value) => {
+        setSocials((prev) => ({ ...prev, [field]: value }));
     };
 
     return (
@@ -106,10 +112,25 @@ export const DesignerPage = () => {
                 {step === "info" && (
                     <>
                         <Button text="Skippa" onClick={() => setModalOpen(true)} variant="outlined" />
-                        <Button text="Skapa ölburk" onClick={() => setModalOpen(true)} variant="primary" />
+                        <Button text="Gå vidare" onClick={() => setStep("social")} variant="primary" />
                     </>
                 )}
             </div>
+
+            {step === "social" && (
+                <>
+                    <SocialStep
+                        instagram={socials.instagram}
+                        linkedin={socials.linkedin}
+                        github={socials.github}
+                        onChange={handleSocialChange}
+                    />
+                    <div className="flex justify-center gap-4 mt-8">
+                        <Button text="Skippa" onClick={() => setModalOpen(true)} variant="outlined" />
+                        <Button text="Skapa ölburk" onClick={() => setModalOpen(true)} variant="primary" />
+                    </div>
+                </>
+            )}
                   
             {/* Modal */}
             {modalOpen && (
