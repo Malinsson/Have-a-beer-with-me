@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { useNameStep } from "./hooks/useNameStep";
+import { Button } from "../../components/Button";
 
 export const NameStep = ({ onNext }) => {
-    const [first_name, setFirstName] = useState("");
-    const [last_name, setLastName] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [department, setDepartment] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const didSave = await saveName(first_name, last_name);
+        const didSave = await saveName(firstName, lastName);
         if (didSave) {
-            onNext({ first_name, last_name, department });
+            onNext({ firstName, lastName, department });
         }
     };
 
@@ -26,7 +27,7 @@ export const NameStep = ({ onNext }) => {
                         id="firstName"
                         type="text"
                         placeholder="Anders"
-                        value={first_name}
+                        value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                         required
                         className="mt-2 px-4 py-2 border border-gray-300 rounded-lg w-full"
@@ -39,7 +40,7 @@ export const NameStep = ({ onNext }) => {
                         id="lastName"
                         type="text"
                         placeholder="Andersson"
-                        value={last_name}
+                        value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
                         required
                         className="mt-2 px-4 py-2 border border-gray-300 rounded-lg w-full"
@@ -60,12 +61,12 @@ export const NameStep = ({ onNext }) => {
                 </div>
             </div>
 
-            <button
+            <Button
                 type="submit"
-                className="bg-dark-blue text-white py-2 px-4 rounded-full max-w-fit "
+                variant="primary"
             >
                 Börja designa din öl
-            </button>
+            </Button>
             {error && <p role="alert">{error}</p>}
         </form>
     );

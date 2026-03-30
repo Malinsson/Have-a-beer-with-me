@@ -16,6 +16,7 @@ const NAV_LINKS = [
     { label: "Min ölhylla", href: "/profile/1/hylla" },
     { label: "Gör om min burk", href: "/design" },
     { label: "Logga ut", href: "#", action: "logout" },
+    { label: "Skapa konto", href: "/login" },
 ];
 
 export const Header = () => {
@@ -71,14 +72,19 @@ export const Header = () => {
             <div className="flex items-center gap-4">
 
                 {isSignedIn && (
-                    <button
-                        type="button"
-                        className="text-4xl relative z-60 transition-transform duration-300 hover:opacity-70"
-                        onClick={handleProfileClick}
-                        aria-label="Go to profile"
-                    >
-                        <CgProfile className="text-3xl" />
-                    </button>
+                    <div className="flex gap-3 items-center">
+                        {isGuest && (
+                            <p className="inline text-xl">Gäst</p>
+                        )}
+                        <button
+                            type="button"
+                            className="text-4xl relative z-60 transition-transform duration-300 hover:opacity-70"
+                            onClick={handleProfileClick}
+                            aria-label="Go to profile"
+                        >
+                            <CgProfile className="text-3xl" />
+                        </button>
+                    </div>
                 )}
 
                 <button
@@ -106,6 +112,9 @@ export const Header = () => {
                         {NAV_LINKS.filter(link => {
                             if(link.action === "logout"){
                                 return isSignedIn && !isGuest
+                            }
+                            if(link.href === "/login"){
+                                return isGuest
                             }
                             return true
                         }).map((link) => (
@@ -139,12 +148,9 @@ export const Header = () => {
                 )}
                     
                 {!isSignedIn && !isGuest && (
-                    <LoginForm
-                        onSuccess={() => {
-                            closeMenu();
-                            navigate("/profile/1");
-                        }}
-                    />
+                    <div className="w-full max-w-sm mx-auto mt-12">
+                        <LoginForm onSuccess={closeMenu} />
+                    </div>
                 )}
             </nav>
         </header>
