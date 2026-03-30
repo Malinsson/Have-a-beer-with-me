@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { GuestSignup } from "../features/auth/components/GuestSignup";
  
 // import type { DesignerMode, Step } from "../features/can-designer/types.ts";
+import { NameStep } from "../features/can-designer/NameStep";
 import { FrontStep } from "../features/can-designer/FrontStep";
 import { BackStep } from "../features/can-designer/BackStep";
 import { InfoStep } from "../features/can-designer/InfoStep";
@@ -14,6 +15,7 @@ import slide1 from "../assets/carousel/img/slide1.jpg";
 import { Button } from "../components/Button";
 
 const STEP_TITLE = {
+    name: "Vem är du?",
     front: "Burk framsida",
     back:  "Burk baksida",
     info:  "Innehållsförteckning",
@@ -21,6 +23,7 @@ const STEP_TITLE = {
 };
 
 const STEP_SUBTITLE = {
+    name: "Informationen kommer att stå på din öl",
     front: "Anpassa Burkens Font",
     back:  "Vad inspirerar dig mest?",
     info:  "Jag är intresserad av",
@@ -29,7 +32,7 @@ const STEP_SUBTITLE = {
 
 export const DesignerPage = () => {
     
-    const [step, setStep] = useState("front");
+    const [step, setStep] = useState("name");
     const [mode, setMode] = useState("image");
     const [selectedTexture, setSelectedTexture] = useState(null);
     const [selectedColor, setSelectedColor] = useState(null);
@@ -52,12 +55,21 @@ export const DesignerPage = () => {
             <GuestSignup />
     
             <h2 className="text-3xl text-center">{STEP_TITLE[step]}</h2>
-        
-            <img src={slide1} alt="design preview" />
-        
+
+            {step !== "name" && (
+                <img src={slide1} alt="design preview" />
+            )}
+
             <h3 className="text-center mt-4">{STEP_SUBTITLE[step]}</h3>
         
             {/* Steps */}
+            {step === "name" && (
+                <NameStep 
+                    onNext={() => setStep("front")}
+                    
+                />
+                
+            )}
             {step === "front" && (
                 <FrontStep
                     mode={mode}

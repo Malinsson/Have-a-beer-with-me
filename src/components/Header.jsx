@@ -103,7 +103,12 @@ export const Header = () => {
             >
                 {(isSignedIn || isGuest) && (
                     <ul className="flex flex-col gap-8">
-                        {NAV_LINKS.map((link) => (
+                        {NAV_LINKS.filter(link => {
+                            if(link.action === "logout"){
+                                return isSignedIn && !isGuest
+                            }
+                            return true
+                        }).map((link) => (
                             <li key={link.href}>
                                 <a 
                                     href={link.href} 

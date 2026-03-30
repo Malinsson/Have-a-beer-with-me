@@ -74,7 +74,7 @@ const navigate = useNavigate();
                         <ProgressDots total={3} current={3} />
                     </section>
                     <Button
-                        text="Börja designa din öl"
+                        text="Skapa konto och fortsätt"
                         onClick={() => document.getElementById("intro-signup-form")?.requestSubmit()}
                         variant="primary"
                     />
