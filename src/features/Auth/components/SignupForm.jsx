@@ -2,7 +2,7 @@ import { useAuthFields } from "../hooks/useAuthFields";
 import { useSignup } from "../hooks/useSignup";
 
 
-export const SignupForm = ({ formId = "signup-form", hideSubmitButton = false, onSuccess }) => {
+export const SignupForm = ({ formId = "signup-form", hideSubmitButton = false, onSuccess, onSwitchToLogin }) => {
 
     const { email, setEmail, password, setPassword, reset } = useAuthFields();
     const { signup, error, success, isLoading } = useSignup();
@@ -50,7 +50,16 @@ export const SignupForm = ({ formId = "signup-form", hideSubmitButton = false, o
             {error && <p role="alert">{error}</p>}
             {success && <p role="status">{success}</p>}
 
-            <a href="/auth/login" className="text-sm mt-2 inline-block underline">Har du redan ett konto? Logga in</a>
+            <a
+                href="#"
+                onClick={(e) => {
+                    e.preventDefault();
+                    onSwitchToLogin?.();
+                }}
+                className="text-sm mt-2 inline-block underline"
+            >
+                Har du redan ett konto? Logga in
+            </a>
 
             {!hideSubmitButton && (
                 <button className="mt-2 py-2 px-4 bg-dark-blue text-white rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"

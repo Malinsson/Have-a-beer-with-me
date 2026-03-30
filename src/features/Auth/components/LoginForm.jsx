@@ -1,9 +1,8 @@
-import { useState } from "react";
 import { useLogin } from "../hooks/useLogin";
 import { useAuthFields } from "../hooks/useAuthFields";
 
 
-export const LoginForm = () => {
+export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
 
     const { email, setEmail, password, setPassword, reset } = useAuthFields();
     const { login, error, isLoading } = useLogin();
@@ -13,22 +12,21 @@ export const LoginForm = () => {
         const success = await login(email, password);
         if (success) {
             reset();
+            onSuccess?.();
         }
     };
-
-    const [showSignup, setShowSignup] = useState(false);
 
     return (
         <form onSubmit={handleSubmit} noValidate
         className="mt-2 p-4 bg-white max-w-md mx-auto"
         >
-            <div className="flex flex-col gap-1 border border-gray-300 p-4 justify-center">
+            <div className="flex flex-col gap-1 border border-var(--border-color) p-4 justify-center">
 
                 <div>
                     <label htmlFor="loginEmail" className="block text-sm font-medium text-gray-700">Mejladress</label>
 
                     <input 
-                    className="mt-2 px-4 py-2 border border-gray-300 rounded-xl bg-white max-w-md mx-auto"
+                    className="mt-2 px-4 py-2 border border-var(--border-color) rounded-xl bg-white max-w-md mx-auto"
                         id="loginEmail"
                         type="text" 
                         placeholder="Mejladress"
@@ -47,7 +45,7 @@ export const LoginForm = () => {
                     <label htmlFor="loginPassword" className="block text-sm font-medium text-gray-700">Lösenord</label>
 
                     <input 
-                    className="mt-2 px-4 py-2 border border-gray-300 rounded-xl bg-white max-w-md mx-auto"
+                    className="mt-2 px-4 py-2 border border-var(--border-color) rounded-xl bg-white max-w-md mx-auto"
                         id="loginPassword"
                         type="password" 
                         placeholder="Lösenord"
@@ -60,8 +58,11 @@ export const LoginForm = () => {
                 </div>
 
                 <a href="#"
-                onClick={() => setShowSignup(true)}
-                className="block mt-2 text-sm text-black"
+                onClick={(e) => {
+                    e.preventDefault();
+                    onSwitchToSignup?.();
+                }}
+                className="text-sm mt-2 inline-block underline"
                 >Har inget konto? Skapa nu</a>
 
             </div>
@@ -69,7 +70,7 @@ export const LoginForm = () => {
             {error && <p role="alert">{error}</p>}
 
             <button type="submit" disabled={isLoading}
-            className="mt-2 px-4 py-2 shadow-sm bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            className="mt-4 py-2 px-4 bg-dark-blue text-white rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                 {isLoading
                     ? "Loggar in…"
                     : "Logga in"}
