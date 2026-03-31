@@ -65,20 +65,15 @@ export const DesignerPage = () => {
     return (
         <div className="container mx-auto p-4">
             <GuestSignup />
-    
-            <h2 className="text-3xl text-center">{STEP_TITLE[step]}</h2>
-
+   
             {step !== "name" && (
                 <img src={slide1} alt="design preview" />
             )}
-
 
             <div className="flex items-center justify-between mb-6">
                 <BackButton onClick={handleBack} />
                 <h2 className="absolute left-1/2 transform -translate-x-1/2 text-2xl">{STEP_TITLE[step]}</h2>
             </div>
-        
-            <img src={slide1} alt="design preview" />
         
             <h3 className="text-center mt-4">{STEP_SUBTITLE[step]}</h3>
         
