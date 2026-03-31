@@ -32,7 +32,7 @@ const STEP_SUBTITLE = {
 
 export const DesignerPage = () => {
     
-    const [step, setStep] = useState("name");
+    const [step, setStep] = useState("front");
     const [mode, setMode] = useState("image");
     const [selectedTexture, setSelectedTexture] = useState(null);
     const [selectedColor, setSelectedColor] = useState(null);

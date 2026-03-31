@@ -1,9 +1,11 @@
 import { useState } from 'react'
 
+const asyncNoop = async () => {}
+
 export const useBlobUpload = ({
   getCroppedBlob,
-  onUploadComplete,
-  onUploadSuccess,
+  onUploadComplete = asyncNoop,
+  onUploadSuccess
 }) => {
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState(null)
@@ -21,7 +23,18 @@ export const useBlobUpload = ({
       const res = await fetch('/api/vercelBLOB', { method: 'POST', body: formData })
       if (!res.ok) {
         const responseText = await res.text()
-        throw new Error(responseText || `Uppladdningen misslyckades: ${res.status} ${res.statusText}`)
+        let serverMessage = responseText
+
+        try {
+          const parsed = JSON.parse(responseText)
+          if (parsed?.error) {
+            serverMessage = parsed.error
+          }
+        } catch {
+          // Keep plain text if response is not JSON.
+        }
+
+        throw new Error(serverMessage || `Uppladdningen misslyckades: ${res.status} ${res.statusText}`)
       }
 
       const { url } = await res.json()
@@ -31,6 +44,8 @@ export const useBlobUpload = ({
 
       await Promise.resolve(onUploadComplete(url))
       onUploadSuccess?.()
+      console.log('Uppladdning lyckades, bild-URL:', url)
+      
     } catch (caughtError) {
       const message = caughtError instanceof Error ? caughtError.message : 'Uppladdningen misslyckades.'
       setError(message)

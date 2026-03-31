@@ -2,6 +2,8 @@ import { CiImageOn } from "react-icons/ci";
 import { IoTextOutline } from "react-icons/io5";
 import { PiAlignCenterVertical } from "react-icons/pi";
 import { GoUpload } from "react-icons/go";
+import { ImageUploader } from "./components/ImageUploader";
+
 
 import { TEXTURES, COLORS } from "./constants";
 
@@ -23,7 +25,6 @@ export const FrontStep = ({
             {/* Mode switcher */}
             <div className="flex justify-center my-8 gap-8">
                 <button
-                    type="button"
                     onClick={() => onModeChange("image")}
                     className={mode === "image" ? activeClass : inactiveClass}
                     aria-pressed={mode === "image"}
@@ -32,7 +33,6 @@ export const FrontStep = ({
                 </button>
 
                 <button
-                    type="button"
                     onClick={() => onModeChange("text")}
                     className={mode === "text" ? activeClass : inactiveClass}
                     aria-pressed={mode === "text"}
@@ -59,12 +59,11 @@ export const FrontStep = ({
                         </button>
                     ))}
                 </div>
-                <section className="flex border-1 items-center justify-between m-6">
-                    <div className="bg-gray-300 p-3 px-4 m-4">
-                        <GoUpload className="text-xl" />
-                    </div>
-                    <span className="uppercase m-4 text-xl">Ladda Upp</span>    
+
+                <section className="flex border items-center relative w-3/4 mt-4 mb-14 mx-auto">
+                        <ImageUploader />
                 </section>
+
                 </>
             )}
 
