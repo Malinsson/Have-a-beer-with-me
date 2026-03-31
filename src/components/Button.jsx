@@ -11,7 +11,7 @@ export const Button = ({ text, onClick, variant = "primary", type = "button", di
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`${styles[variant]} rounded-full p-4 flex items-center gap-2 uppercase disabled:opacity-60 disabled:cursor-not-allowed`}
+      className={`${styles[variant]} px-7 py-2 flex items-center gap-2 uppercase disabled:opacity-60 disabled:cursor-not-allowed`}
     >
       {text}
       <FaArrowRight />

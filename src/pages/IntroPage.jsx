@@ -6,6 +6,9 @@ import { SignupForm } from "../features/Auth/components/SignupForm";
 import can from "../assets/images/can.jpg";
 import cans from "../assets/images/cans.jpg";
 import { Button } from "../components/Button";
+import { BackButton } from "../components/BackButton";
+
+const STEPS = ["first", "secound", "last"];
 
 const STEP_TITLE = {
     first: "Skapa din egen öl",
@@ -25,12 +28,19 @@ const STEP_IMG = {
 };
     
 export const IntroPage = () => {
-const [step, setStep] = useState("first");
-const navigate = useNavigate();
+    const [step, setStep] = useState("first");
+    const navigate = useNavigate();
+
+    const handleBack = () => {
+        const currentIndex = STEPS.indexOf(step);
+        if (currentIndex === 0) navigate(-1);
+        else setStep(STEPS[currentIndex - 1]);
+    };
 
     return (
         <>
             <div className="container mx-auto p-4">
+                <BackButton onClick={handleBack} />
                 <h2 className="text-3xl text-center">{STEP_TITLE[step]}</h2>
                 <h3 className="text-center mt-4">{STEP_SUBTITLE[step]}</h3>
             </div>

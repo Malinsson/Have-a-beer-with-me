@@ -1,21 +1,20 @@
-import { Carousel } from "../assets/carousel/Carousel"
-import { slides } from "../assets/carousel/carouselData.js"
 import { HiOutlineQrcode } from "react-icons/hi";
-import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
-import QRCodeSvg from "../assets/images/QR_code.svg";
 import { CanView } from "../components/CanView.jsx";
-import { ProfileQRCode } from "../shared/components/ProfileQRCode.jsx";
+import { useProfileInfo } from "../features/profile/hooks/useProfileInfo.js";
 
 export const ProfilePage = () => {
+
+    const { profile, loading, error } = useProfileInfo(userId);
+
     return (
         <div id="top" className="container mx-auto p-4">
-            <h2 className="text-center text-3xl font-normal">Mitt namn</h2>
+            <h2 className="text-center text-3xl font-normal">{profile?.first_name} {profile?.last_name}</h2>
     
             <section className="py-12 px-8 flex flex-col items-center text-center gap-6">
                 <CanView />
-                    <ProfileQRCode designId={latestDesignId} size={256} />
+                    <img src={profile?.qr_code} alt="user QR code" />
                     <div className="fixed bottom-6 right-6 bg-blue-950 rounded-full p-3 z-40">
-                        <a href="">
+                        <a href="profile/{profile?.id}">
                             <HiOutlineQrcode className="text-5xl text-white" />
                         </a>
                     </div>
