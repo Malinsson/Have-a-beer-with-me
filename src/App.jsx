@@ -12,6 +12,7 @@ import { BeerShelfPage } from './pages/BeerShelfPage.jsx'
 import { CanDetailPage } from './pages/CanDetailPage.jsx'
 import { LoginPage } from './pages/LoginPage.jsx'
 
+
 export function App() {
   return (
     <>
@@ -24,7 +25,7 @@ export function App() {
           <Route path="/design" element={<DesignerPage />}></Route>
           <Route path="/profile/:id" element={<ProfilePage />}></Route>
           <Route path="/profile/:id/hylla" element={<BeerShelfPage />}></Route>
-          <Route path="/detail" element={<CanDetailPage />}></Route>
+          <Route path="/can/:designId" element={<CanDetailPage />} />
         </Routes>
       </Layout>
     </>

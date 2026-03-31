@@ -1,5 +1,5 @@
-import supabase from '../../../lib/supabase'
-import { defaultDesign } from '../types/CanDesign'
+import supabase from '../../../../lib/supabase'
+import { defaultDesign } from '../../types/CanDesign'
 
 const generateShareId = () => {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) {

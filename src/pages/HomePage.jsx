@@ -21,7 +21,7 @@ export const HomePage = () => {
                 </div>
 
                 {/* Bottom Text & Button (Onsdag...) */}
-                <div className="flex flex-col items-end pb-10">
+                <div className="flex flex-col items-end gap-6">
                     <h2 className="text-5xl font-black text-black uppercase text-right leading-[0.9]">
                         Onsdag <br /> 22/4
                     </h2>
@@ -31,14 +31,15 @@ export const HomePage = () => {
                 </div>
             </section>
 
-            <section className="py-12 px-8 flex flex-col items-center text-center">
-                <div className="w-full max-w-sm mb-8">
+            <section className="py-12 px-8 flex flex-col">
+                <div className="w-full max-w-sm mb-8 items-center text-center">
                     <Carousel data={slides} />
                 </div>
-                <div className="max-w-xs">
-                    <p className="text-xl font-medium leading-tight mb-6">
-                        Vi bjuder på unika virituella öl och dryck - gör det personligt..... 
-                        Skapa din öl redan nu!
+                <div className="flex flex-col items-end">
+                    <p className="text-lg items-start mb-6">
+                        *Onsdag 22 April kl 15:00-16:30 är det LIA event på Visual Arena 
+                        på Lindholmen. Digitala Designers och Webbutvecklare möter branschen 
+                        med en mingelaktivitet!
                     </p>
                     <Button text="Bygg din öl nu" onClick={() => navigate("/intro")} variant="primary" />
                 </div>
