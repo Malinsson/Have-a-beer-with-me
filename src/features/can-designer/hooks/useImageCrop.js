@@ -18,7 +18,7 @@ export const useImageCrop = () => {
         unit: 'px',
         x,
         y,
-        width: size,
+        width: size * 0.75, // 3:4 aspect ratio
         height: size,
       })
     }

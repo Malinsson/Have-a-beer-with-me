@@ -31,16 +31,16 @@ export function ImageUploader({ onUploadComplete }) {
         <section className="fixed inset-0 z-100 bg-black/50 p-4 md:p-8 flex items-center justify-center">
           <div className="w-full max-w-5xl h-[85vh] bg-white rounded-xl p-4 md:p-6 flex flex-col">
             
-            <h2 className="text-xl text-center mt-6">Klicka för att beskära bilden</h2>
+            <h2 className="text-2xl text-center mt-10">Klicka för att beskära bilden</h2>
 
             <div className="flex-1 overflow-auto flex flex-col items-center justify-center">
 
-              <ReactCrop crop={crop} onChange={setCrop} aspect={1}>
+              <ReactCrop crop={crop} onChange={setCrop} aspect={3/4}>
                 <img ref={imgRef} src={imageSrc} alt="Image to crop" className="max-h-[70vh] object-contain" />
               </ReactCrop>
             </div>
 
-            <div className="mt-4 flex items-center justify-end gap-3">
+            <div className="mt-4 flex items-center justify-between gap-3">
               <button
                 type="button"
                 onClick={clearImage}
