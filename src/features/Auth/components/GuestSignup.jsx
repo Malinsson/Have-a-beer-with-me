@@ -2,6 +2,7 @@ import supabase from "../../../lib/supabase";
 import { useEffect } from "react";
 
 export function GuestSignup() {
+  
 
 useEffect(() => {
 

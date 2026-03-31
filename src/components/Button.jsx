@@ -1,6 +1,6 @@
 import { FaArrowRight } from "react-icons/fa";
 
-export const Button = ({ text, onClick, variant = "primary" }) => {
+export const Button = ({ text, onClick, variant = "primary", type = "button", disabled = false }) => {
   const styles = {
     primary: "bg-dark-blue text-white",
     outlined: "border border-black text-black",
@@ -8,9 +8,10 @@ export const Button = ({ text, onClick, variant = "primary" }) => {
 
   return (
     <button
-      type="button"
+      type={type}
       onClick={onClick}
-      className={`${styles[variant]} px-7 py-2 flex items-center gap-2 uppercase`}
+      disabled={disabled}
+      className={`${styles[variant]} px-7 py-2 flex items-center gap-2 uppercase disabled:opacity-60 disabled:cursor-not-allowed`}
     >
       {text}
       <FaArrowRight />

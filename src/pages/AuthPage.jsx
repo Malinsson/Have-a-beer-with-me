@@ -1,10 +1,12 @@
-// Login and register page
+import { SignupForm } from "../features/Auth/components/SignupForm";
+import { LoginForm } from "../features/Auth/components/LoginForm";
 
 export const AuthPage = () => {
     return (
         <div className="container mx-auto p-4">
             <h1>Auth Page</h1>
-            {/* Login and register form will go here */}
+            <LoginForm />
+            <SignupForm />
         </div>
     );
 }
