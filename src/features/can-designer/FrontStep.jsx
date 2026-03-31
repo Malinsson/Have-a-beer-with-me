@@ -1,9 +1,8 @@
 import { CiImageOn } from "react-icons/ci";
 import { IoTextOutline } from "react-icons/io5";
 import { PiAlignCenterVertical } from "react-icons/pi";
-import { GoUpload } from "react-icons/go";
 import { ImageUploader } from "./components/ImageUploader";
-
+import { BackButton } from "../../components/BackButton";
 
 import { TEXTURES, COLORS } from "./constants";
 
