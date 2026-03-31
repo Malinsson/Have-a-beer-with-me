@@ -11,8 +11,8 @@ export function ImageUploader({ onUploadComplete }) {
 
 
   return (
-    <div className="w-full min-h-16 flex items-center justify-center my-2 mx-4 relative">
-      <label htmlFor='imageUploader' className="w-full py-3 flex items-center justify-between cursor-pointer">
+    <div className="w-full min-h-16 flex items-center justify-center mx-4 relative">
+      <label htmlFor='imageUploader' className="w-full flex items-center justify-between cursor-pointer">
         <div className="bg-gray-300 p-3 px-4">
           <GoUpload className="text-lg" />
         </div>
@@ -65,7 +65,7 @@ export function ImageUploader({ onUploadComplete }) {
       )}
 
       {error && !imageSrc && (
-        <p role="alert" className="absolute -bottom-14 left-0 text-red-500 text-sm">{error}</p>
+        <p role="alert" className="absolute -bottom-11 left-0 text-red-500 text-sm">{error}</p>
       )}
     </div>
   )
