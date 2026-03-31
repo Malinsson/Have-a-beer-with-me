@@ -1,21 +1,21 @@
 import { ProgressDots } from "../../components/ProgressDots";
-import { OPTIONS } from "./constants";
+import { TAGS } from "./constants";
 
 export const InfoStep = ({ selected, onToggle }) => {
     return (
         <div className="flex flex-col gap-4 mt-6">
             <div className="flex flex-wrap gap-3 justify-center">
-                {OPTIONS.map((option) => (
+                {TAGS.map((tag) => (
                     <button
-                        key={option.id}
+                        key={tag.id}
                         type="button"
-                        onClick={() => onToggle(option.id)}
-                        aria-pressed={selected.has(option.id)}
+                        onClick={() => onToggle(tag.id)}
+                        aria-pressed={selected.has(tag.id)}
                         className={`border border-black rounded-full px-4 py-2 ${
-                            selected.has(option.id) ? "bg-dark-blue text-white" : "bg-white text-black"
+                            selected.has(tag.id) ? "bg-dark-blue text-white" : "bg-white text-black"
                         }`}
                     >
-                        {option.label}
+                        {tag.label}
                     </button>
                 ))}
             </div>

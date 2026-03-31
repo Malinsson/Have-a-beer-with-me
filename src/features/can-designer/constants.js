@@ -12,7 +12,7 @@ export const COLORS = [
   { id: "color-4", label: "White", hex: "#ffffff" },
 ];
  
-export const OPTIONS = [
+export const TAGS = [
   { id: "1", label: "UX" },
   { id: "2", label: "Backend" },
   { id: "3", label: "Frontend" },

@@ -1,28 +1,32 @@
 import { create } from "zustand";
 import supabase from "../lib/supabase";
 
+const initialName = { firstName: '', lastName: '' };
+const initialFront = {
+    imageUrl: null,
+    texturePreset: 'default',
+    textColor: '#000000',
+    textFont: 'Arial, sans-serif',
+    textAlignment: 'center',
+};
+const initialBack = {
+    tags: [],
+    description: '',
+    department: '',
+    socials: {
+        instagram: '',
+        linkedin: '',
+        github: '',
+    }
+};
+
 export const useDesignStore = create((set, get) => ({
-    front: {
-        name: { firstName: '', lastName: '' },
-        imageUrl: null,
-        texturePreset: 'default',
-        textColor: '#000000',
-        textFont: 'Arial, sans-serif',
-        textAlignment: 'center',
-    },
-    back: {
-        tags: [],
-        description: '',
-        department: '',
-        socials: {
-            instagram: '',
-            linkedin: '',
-            github: '',
-        }
-    },
+    name: initialName,
+    front: initialFront,
+    back: initialBack,
     setName: (firstName, lastName) => set({ name: { firstName, lastName } }),
-    setFront: (frontData) => set({ front: { ...frontData } }),
-    setBack: (backData) => set({ back: { ...backData } }),
+    setFront: (frontData) => set((state) => ({ front: { ...state.front, ...frontData } })),
+    setBack: (backData) => set((state) => ({ back: { ...state.back, ...backData } })),
 
 
 
@@ -39,9 +43,16 @@ export const useDesignStore = create((set, get) => ({
 
             const { name: nameData, front: frontData, back: backData } = data.design_data;
             set({
-                name: nameData || { firstName: '', lastName: '' },
-                front: frontData || {},
-                back: backData || {},
+                name: { ...initialName, ...(nameData || {}) },
+                front: { ...initialFront, ...(frontData || {}) },
+                back: {
+                    ...initialBack,
+                    ...(backData || {}),
+                    socials: {
+                        ...initialBack.socials,
+                        ...(backData?.socials || {}),
+                    },
+                },
             });
 
             return { success: true };
@@ -106,19 +117,8 @@ export const useDesignStore = create((set, get) => ({
 
 
     resetDesign: () => set({
-        name: { firstName: '', lastName: '' },
-        front: { 
-            imageUrl: null, 
-            texturePreset: 'default', 
-            textColor: '#000000', 
-            textFont: 'Arial, sans-serif', 
-            textAlignment: 'center' 
-        },
-        back: { 
-            tags: [], 
-            description: '', 
-            department: '', 
-            socials: { instagram: '', linkedin: '', github: '' } 
-        },
+        name: initialName,
+        front: initialFront,
+        back: initialBack,
     }),
 }));

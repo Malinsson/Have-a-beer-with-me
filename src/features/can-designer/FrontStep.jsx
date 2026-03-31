@@ -2,18 +2,17 @@ import { CiImageOn } from "react-icons/ci";
 import { IoTextOutline } from "react-icons/io5";
 import { PiAlignCenterVertical } from "react-icons/pi";
 import { ImageUploader } from "./components/ImageUploader";
-import { BackButton } from "../../components/BackButton";
 
 import { TEXTURES, COLORS } from "./constants";
 
 
 export const FrontStep = ({
     mode,
+    onModeChange,
     selectedTexture,
     selectedColor,
-    onModeChange,
     onTextureSelect,
-    onColorSelect
+    onColorSelect,
 }) => {
 
     const activeClass = "bg-neutral-300 rounded-lg py-1 px-3";
@@ -49,7 +48,7 @@ export const FrontStep = ({
                             key={texture.id}
                             type="button"
                             onClick={() => onTextureSelect(texture.id)}
-                            aria-pressed={selectedTexture === texture.id}
+                            //aria-pressed={selectedTexture === texture.id}
                             className={`rounded-lg overflow-hidden border-2 transition-colors ${
                                 selectedTexture === texture.id ? "border-black" : "border-transparent"
                             }`}
@@ -74,12 +73,12 @@ export const FrontStep = ({
                             <button
                                 key={color.id}
                                 type="button"
-                                onClick={() => onColorSelect(color.id)}
+                                onClick={() => onColorSelect(color.hex)}
                                 aria-label={color.label}
-                                aria-pressed={selectedColor === color.id}
+                                aria-pressed={selectedColor === color.hex}
                                 className={`w-10 h-10 rounded-full transition-all border ${
                                     color.hex === "#ffffff" ? "border-neutral-300" : "border-transparent"
-                                } ${selectedColor === color.id ? "shadow-[0_0_0_3px_black]" : ""}`}
+                                } ${selectedColor === color.hex ? "shadow-[0_0_0_3px_black]" : ""}`}
                                 style={{ backgroundColor: color.hex }}
                             />
                         ))}

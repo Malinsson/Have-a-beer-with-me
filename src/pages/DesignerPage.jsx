@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { GuestSignup } from "../features/auth/components/GuestSignup";
 import { useDesignStore } from "../store/designStore";
@@ -10,7 +10,7 @@ import { BackStep } from "../features/can-designer/BackStep";
 import { InfoStep } from "../features/can-designer/InfoStep";
 import { SocialStep } from "../features/can-designer/SocialStep";
 import { Modal } from "../components/Modal";
-import slide1 from "../assets/carousel/img/slide1.jpg";
+import baseCan from "../assets/images/baseCan.png";
 import { Button } from "../components/Button";
 import { BackButton } from "../components/BackButton";
 
@@ -36,44 +36,64 @@ export const DesignerPage = () => {
     
     const [step, setStep] = useState("front");
     const [mode, setMode] = useState("image");
-<<<<<<< HEAD
-=======
-    const [selectedTexture, setSelectedTexture] = useState(null);
-    const [selectedColor, setSelectedColor] = useState(null);
-    const [backText, setBackText] = useState("");
-    const [selected, setSelected] = useState(new Set());
-    const [socials, setSocials] = useState({ instagram: "", linkedin: "", github: "" });
->>>>>>> ef56a0a4fe2babacefd07ce35d33c18a560a0d5a
     const [modalOpen, setModalOpen] = useState(false);
 
-    const [selected, setSelected] = useState(new Set());
     const navigate = useNavigate();
+
+    const timerRef = useRef(null);
+    const hasHydratedRef = useRef(false);
+    
+    useEffect(() => {
+        const unsubscribe = useDesignStore.subscribe((state, prevState) => {
+            if (!hasHydratedRef.current) {
+                hasHydratedRef.current = true;
+                return;
+            }
+
+            const changed = 
+            state.front !== prevState.front ||
+            state.back !== prevState.back;
+            
+            if (!changed) return;
+            
+            clearTimeout(timerRef.current);
+            timerRef.current = setTimeout(async () => {
+                const result = await useDesignStore.getState().saveDesign("Draft");
+                if (!result.success) {
+                    console.log("Auto-save failed:", result.error);
+                }
+            }, 700);
+        });
+
+        return () => {
+            clearTimeout(timerRef.current);
+            unsubscribe();
+        };
+    }, []);
 
     const front = useDesignStore((state) => state.front);
     const back = useDesignStore((state) => state.back);
+    const setFront = useDesignStore((state) => state.setFront);
+    const setBack = useDesignStore((state) => state.setBack);
 
-    const loadDesign = async (designId) => {
-        const result = await useDesignStore.getState().loadDesign(designId);
-        if (result.success) {
-            console.log("Design loaded successfully");
-        } else {
-            console.error("Failed to load design:", result.error);
-        }};
+    const handleTextureSelect = (textureId) => {
+        setFront({ texturePreset: textureId });
+    };
 
-    const saveDesign = async (designName, shareId) => {
-        const result = await useDesignStore.getState().saveDesign(designName, shareId);
-        if (result.success) {
-            console.log("Design saved successfully with ID:", result.designId);
-        } else {
-            console.error("Failed to save design:", result.error);
-        }};
-  
+    const handleColorSelect = (colorHex) => {
+        setFront({ textColor: colorHex });
+    };
+
+    const handleBackDescriptionChange = (description) => {
+        setBack({ description });
+    };
+
     const toggleOption = (id) => {
-        setSelected((prev) => {
-            const next = new Set(prev);
-            next.has(id) ? next.delete(id) : next.add(id);
-            return next;
-        });
+        const nextTags = back.tags.includes(id)
+            ? back.tags.filter((tagId) => tagId !== id)
+            : [...back.tags, id];
+
+        setBack({ tags: nextTags });
     };
 
     const handleBack = () => {
@@ -83,7 +103,22 @@ export const DesignerPage = () => {
     };
 
     const handleSocialChange = (field, value) => {
-        setSocials((prev) => ({ ...prev, [field]: value }));
+        setBack({
+            socials: {
+                ...back.socials,
+                [field]: value,
+            },
+        });
+    };
+
+    const handleCreateCan = async () => {
+        const result = await useDesignStore.getState().saveDesign("Final design");
+        if (result.success) {
+            setModalOpen(true);
+            return;
+        }
+
+        console.error("Failed to save design:", result.error);
     };
 
     return (
@@ -91,7 +126,8 @@ export const DesignerPage = () => {
             <GuestSignup />
    
             {step !== "name" && (
-                <img src={slide1} alt="design preview" />
+                <img className="max-h-[50vh] mx-auto mb-6"
+                 src={baseCan} alt="design preview" />
             )}
 
             <div className="flex items-center justify-between mb-6">
@@ -112,24 +148,24 @@ export const DesignerPage = () => {
             {step === "front" && (
                 <FrontStep
                     mode={mode}
-                    selectedTexture={selectedTexture}
-                    selectedColor={selectedColor}
                     onModeChange={setMode}
-                    onTextureSelect={setSelectedTexture}
-                    onColorSelect={setSelectedColor}
+                    selectedTexture={front.texturePreset}
+                    selectedColor={front.textColor}
+                    onTextureSelect={handleTextureSelect}
+                    onColorSelect={handleColorSelect}
                 />
             )}
 
             {step === "back" && (
                 <BackStep
-                    value={backText}
-                    onChange={setBackText}
+                    value={back.description}
+                    onChange={handleBackDescriptionChange}
                 />
             )}
 
             {step === "info" && (
                 <InfoStep
-                    selected={selected}
+                    selected={new Set(back.tags)}
                     onToggle={toggleOption}
                 />
              )}
@@ -158,14 +194,14 @@ export const DesignerPage = () => {
             {step === "social" && (
                 <>
                     <SocialStep
-                        instagram={socials.instagram}
-                        linkedin={socials.linkedin}
-                        github={socials.github}
+                        instagram={back.socials.instagram}
+                        linkedin={back.socials.linkedin}
+                        github={back.socials.github}
                         onChange={handleSocialChange}
                     />
                     <div className="flex justify-center gap-4 mt-8">
                         <Button text="Skippa" onClick={() => setModalOpen(true)} variant="outlined" />
-                        <Button text="Skapa ölburk" onClick={() => setModalOpen(true)} variant="primary" />
+                        <Button text="Skapa ölburk" onClick={handleCreateCan} variant="primary" />
                     </div>
                 </>
             )}
