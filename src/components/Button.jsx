@@ -10,7 +10,7 @@ export const Button = ({ text, onClick, variant = "primary" }) => {
     <button
       type="button"
       onClick={onClick}
-      className={`${styles[variant]} rounded-full p-4 flex items-center gap-2 uppercase`}
+      className={`${styles[variant]} px-7 py-2 flex items-center gap-2 uppercase`}
     >
       {text}
       <FaArrowRight />
