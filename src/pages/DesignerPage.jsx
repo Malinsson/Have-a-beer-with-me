@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { GuestSignup } from "../features/auth/components/GuestSignup";
+import { useNavigate, useParams } from "react-router-dom";
  
 // import type { DesignerMode, Step } from "../features/can-designer/types.ts";
 import { NameStep } from "../features/can-designer/NameStep";
@@ -12,6 +12,7 @@ import { Modal } from "../components/Modal";
 import slide1 from "../assets/carousel/img/slide1.jpg";
 import { Button } from "../components/Button";
 import { BackButton } from "../components/BackButton";
+
 
 const STEP_TITLE = {
     name: "Vem är du?",
@@ -29,7 +30,7 @@ const STEP_SUBTITLE = {
     social: "Vill du lägga till sociala medier?",
 };
 
-const STEPS = ["front", "back", "info", "social"];
+const STEPS = ["name" ,"front", "back", "info", "social"];
 
 export const DesignerPage = () => {
     
@@ -43,6 +44,7 @@ export const DesignerPage = () => {
     const [modalOpen, setModalOpen] = useState(false);
 
     const navigate = useNavigate();
+    const { slug } = useParams();
   
     const toggleOption = (id) => {
         setSelected((prev) => {
@@ -66,14 +68,14 @@ export const DesignerPage = () => {
         <div className="container mx-auto p-4">
             <GuestSignup />
    
-            {step !== "name" && (
-                <img src={slide1} alt="design preview" />
-            )}
-
             <div className="flex items-center justify-between mb-6">
                 <BackButton onClick={handleBack} />
                 <h2 className="absolute left-1/2 transform -translate-x-1/2 text-2xl">{STEP_TITLE[step]}</h2>
             </div>
+        
+            {step !== "name" && (
+                <img src={slide1} alt="design preview" />
+            )}
         
             <h3 className="text-center mt-4">{STEP_SUBTITLE[step]}</h3>
         
@@ -82,9 +84,9 @@ export const DesignerPage = () => {
                 <NameStep 
                     onNext={() => setStep("front")}
                     
-                />
-                
+                />     
             )}
+
             {step === "front" && (
                 <FrontStep
                     mode={mode}
@@ -148,7 +150,7 @@ export const DesignerPage = () => {
                   
             {/* Modal */}
             {modalOpen && (
-                <Modal onConfirm={() => navigate("/profile/1")} />
+                <Modal onConfirm={() => navigate(`/profile/${slug}`)} />
             )}
 
         </div>
