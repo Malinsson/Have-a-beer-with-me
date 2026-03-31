@@ -4,6 +4,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GuestSignup } from "../features/auth/components/GuestSignup";
+import { useDesignStore } from "../store/designStore";
  
 // import type { DesignerMode, Step } from "../features/can-designer/types.ts";
 import { NameStep } from "../features/can-designer/NameStep";
@@ -34,13 +35,29 @@ export const DesignerPage = () => {
     
     const [step, setStep] = useState("front");
     const [mode, setMode] = useState("image");
-    const [selectedTexture, setSelectedTexture] = useState(null);
-    const [selectedColor, setSelectedColor] = useState(null);
-    const [backText, setBackText] = useState("");
-    const [selected, setSelected] = useState(new Set());
     const [modalOpen, setModalOpen] = useState(false);
 
+    const [selected, setSelected] = useState(new Set());
     const navigate = useNavigate();
+
+    const front = useDesignStore((state) => state.front);
+    const back = useDesignStore((state) => state.back);
+
+    const loadDesign = async (designId) => {
+        const result = await useDesignStore.getState().loadDesign(designId);
+        if (result.success) {
+            console.log("Design loaded successfully");
+        } else {
+            console.error("Failed to load design:", result.error);
+        }};
+
+    const saveDesign = async (designName, shareId) => {
+        const result = await useDesignStore.getState().saveDesign(designName, shareId);
+        if (result.success) {
+            console.log("Design saved successfully with ID:", result.designId);
+        } else {
+            console.error("Failed to save design:", result.error);
+        }};
   
     const toggleOption = (id) => {
         setSelected((prev) => {
