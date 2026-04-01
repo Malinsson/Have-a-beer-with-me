@@ -22,13 +22,16 @@
     }
 
     h2 {
-        font-size: var(--text-xl);
+        font-size: var(--text-4xl);
         font-weight: 600;
+        line-height: 1;
+        text-transform: uppercase;
     }
     
     h3 {
         font-size: var(--text-xl);
         font-weight: 600;
+        
     }
 
     h4 {
@@ -48,12 +51,16 @@
     
     p {
         font-weight: 400;
+        text-transform: uppercase;
+        line-height: 1.2;
     }
     
     a {
         font-size: var(--text-xl);
         font-weight: 600;
     }
+
+    
     
   }
 
