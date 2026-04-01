@@ -171,7 +171,7 @@ export const DesignerPage = () => {
 
             {step === "konto" && (
                 
-                    <KontoStep />
+                    <KontoStep onSignupSuccess={handleCreateCan} />
 
             )}
 
@@ -212,8 +212,13 @@ export const DesignerPage = () => {
             {step === "konto" && (
                 <>
                     <div className="flex justify-center gap-4 mt-8">
-                        <Button text="Skippa" onClick={() => setModalOpen(true)} variant="outlined" />
-                        <Button text="Skapa ölburk" onClick={handleCreateCan} variant="primary" />
+                        <Button text="Gästkonto" onClick={() => setModalOpen(true)} variant="outlined" 
+                        />
+                        <Button
+                            text="Skapa konto"
+                            onClick={() => document.getElementById("konto-signup-form")?.requestSubmit()}
+                            variant="primary"
+                        />
                     </div>
                 </>
             )}
