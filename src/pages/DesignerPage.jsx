@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import { GuestSignup } from "../features/auth/components/GuestSignup";
 import { useDesignStore } from "../store/designStore";
+import { useNavigate, useParams } from "react-router-dom";
  
 // import type { DesignerMode, Step } from "../features/can-designer/types.ts";
 import { KontoStep } from "../features/can-designer/KontoStep";
@@ -13,6 +13,7 @@ import { Modal } from "../components/Modal";
 import baseCan from "../assets/images/baseCan.png";
 import { Button } from "../components/Button";
 import { BackButton } from "../components/BackButton";
+
 
 const STEP_TITLE = {
     front: "Burkens framsida",
@@ -39,10 +40,16 @@ export const DesignerPage = () => {
     const [modalOpen, setModalOpen] = useState(false);
 
     const navigate = useNavigate();
+    const { slug } = useParams();
 
     const timerRef = useRef(null);
     const hasHydratedRef = useRef(false);
-    
+
+    const front = useDesignStore((state) => state.front);
+    const back = useDesignStore((state) => state.back);
+    const setFront = useDesignStore((state) => state.setFront);
+    const setBack = useDesignStore((state) => state.setBack);
+
     useEffect(() => {
         const unsubscribe = useDesignStore.subscribe((state, prevState) => {
             if (!hasHydratedRef.current) {
@@ -70,11 +77,6 @@ export const DesignerPage = () => {
             unsubscribe();
         };
     }, []);
-
-    const front = useDesignStore((state) => state.front);
-    const back = useDesignStore((state) => state.back);
-    const setFront = useDesignStore((state) => state.setFront);
-    const setBack = useDesignStore((state) => state.setBack);
 
     const handleTextureSelect = (textureId) => {
         setFront({ texturePreset: textureId });
@@ -170,9 +172,7 @@ export const DesignerPage = () => {
              )}
 
             {step === "konto" && (
-                
-                    <KontoStep onSignupSuccess={handleCreateCan} />
-
+                <KontoStep onSignupSuccess={handleCreateCan} />
             )}
 
             {/* Bottom buttons */}
@@ -225,7 +225,7 @@ export const DesignerPage = () => {
                   
             {/* Modal */}
             {modalOpen && (
-                <Modal onConfirm={() => navigate("/profile/1")} />
+                <Modal onConfirm={() => navigate(`/profile/${slug}`)} />
             )}
 
         </div>

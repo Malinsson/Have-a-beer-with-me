@@ -1,10 +1,12 @@
 // The beercan shelf page, where you can see all the cans you have collected.
 import { useSavedDesigns } from "../features/can-designer/hooks/displayCanDesign/useSavedDesigns.js";
+import scanCanImage from "../assets/images/scan_can.svg";
+
 import { useState, useEffect, use } from "react";
 import { BackButton } from "../components/BackButton";
-import { HiOutlineQrcode } from "react-icons/hi";
 import { supabase } from "../lib/supabase.js";
 import { useNavigate } from "react-router-dom";
+import { QRScanner } from "../components/QRScanner.jsx";
 
 export const BeerShelfPage = () => {
     const [userId, setUserId] = useState(null);
@@ -38,7 +40,7 @@ export const BeerShelfPage = () => {
             </div>
             <div className="flex justify-center items-center h-40">
                 <img
-                    src="https://www.shutterstock.com/image-vector/soda-can-icon-vector-design-260nw-2379117639.jpg"
+                    src={scanCanImage}
                     alt="can"
                 />
                 <p className="text-center px-8">
@@ -73,18 +75,17 @@ export const BeerShelfPage = () => {
                 ) : savedDesigns.length === 0 ? (
                     <div className="flex flex-col items-center gap-4 mt-10"> 
                         <img 
-                            src="https://www.shutterstock.com/image-vector/soda-can-icon-vector-design-260nw-2379117639.jpg" 
+                            src={scanCanImage}
                             alt="can" 
                         />
                         <p className="text-center px-8">
-                            Din Ölhylla är tom. Skanna någons Öl för att lägga till den i hyllan
+                            Din barhylla är tom. Scanna andras burkar för att fylla din barhylla.
                         </p>
-                        <a href="#">
-                            <div className="flex flex-row items-center gap-3 bg-dark-blue rounded-full p-3 w-fit">
-                                <p className="text-white text-2xl">Scanna</p>
-                                <HiOutlineQrcode className="text-3xl text-white" />
-                            </div>
-                        </a>
+                        <QRScanner 
+                            text="Scanna din första öl" 
+                            variant="primary" 
+                            onScan={(data) => navigate(`/profile/${data}`)} 
+                            />
                     </div>
                 ) : (
                     <div className="grid grid-cols-2 gap-6 p-2">

@@ -18,7 +18,7 @@ export const useProfileInfo = (profileId) => {
             const { data, error } = await supabase
                 .from("profiles")
                 .select("*")
-                .eq("id", profileId)
+                .eq("slug_value", profileId)
                 .single();
 
             if (cancelled) return;

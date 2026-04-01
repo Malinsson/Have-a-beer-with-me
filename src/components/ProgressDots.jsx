@@ -5,7 +5,7 @@ export const ProgressDots = ({ total, current }) => {
             {Array.from({ length: total }, (_, index) => (
                 <div
                     key={index}
-                    className={`w-3 h-3 rounded-full ${index < current ? 'bg-yrgo-red' : 'bg-gray-300'}`}
+                    className={`w-2 h-2 rounded-full ${index < current ? 'bg-yrgo-red' : 'bg-gray-300'}`}
                 />
             ))}
         </div>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { LoginForm } from '../features/Auth/components/LoginForm'
 import { SignupForm } from '../features/Auth/components/SignupForm'
 import { useIsGuest } from '../shared/hooks/useIsGuest'
@@ -8,6 +8,7 @@ export const LoginPage = () => {
 
     const [signUp, setSignUp] = useState(false);
     const navigate = useNavigate();
+    const { slug } = useParams();
     const isGuest = useIsGuest();
 
     useEffect(() => {
@@ -30,12 +31,12 @@ export const LoginPage = () => {
                     {signUp ? (
                         <SignupForm 
                         onSwitchToLogin={() => setSignUp(false)}
-                        onSuccess={() => navigate("/profile/1")}
+                        onSuccess={() => navigate(`/profile/${slug}`)}
                          />
                     ) : (
                         <LoginForm 
                         onSwitchToSignup={() => setSignUp(true)}
-                        onSuccess={() => navigate("/profile/1")} 
+                        onSuccess={() => navigate(`/profile/${slug}`)} 
                         />
                     )}
                 </div>
