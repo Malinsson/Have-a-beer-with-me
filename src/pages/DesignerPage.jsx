@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { GuestSignup } from "../features/auth/components/GuestSignup";
+import { GuestSignup } from "../features/Auth/components/GuestSignup";
 import { useDesignStore } from "../store/designStore";
 import { useNavigate, useParams } from "react-router-dom";
  
