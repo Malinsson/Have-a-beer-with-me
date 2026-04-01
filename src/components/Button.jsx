@@ -21,7 +21,7 @@ export const Button = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`${styles[variant]} px-7 py-2 flex items-center gap-2 uppercase disabled:opacity-60 disabled:cursor-not-allowed`}
+      className={`${styles[variant]} px-7 py-2 flex items-center gap-2 text-base uppercase disabled:opacity-60 disabled:cursor-not-allowed`}
     >
       {text}
       {showIcon && <Icon className={iconSize} />}
