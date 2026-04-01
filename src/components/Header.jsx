@@ -3,30 +3,32 @@ import { IoSearchOutline, IoCloseOutline } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { CgProfile } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
-import Logo from "../assets/images/yrgo.png";
 import { useIsSignedIn } from "../shared/hooks/useIsSignedIn";
 import { useLogout } from "../features/Auth/hooks/useLogout";
 import { useIsGuest } from "../shared/hooks/useIsGuest";
 import { LoginForm } from "../features/Auth/components/LoginForm";
-
-
-const NAV_LINKS = [
-    { label: "Hem", href: "/" },
-    { label: "Min profil", href: "/profile/1" },
-    { label: "Min ölhylla", href: "/profile/1/hylla" },
-    { label: "Gör om min burk", href: "/design" },
-    { label: "Logga ut", href: "#", action: "logout" },
-    { label: "Skapa konto", href: "/login" },
-];
+import { useUserSlug } from "../features/profile/hooks/useUserSlug";
+import Logo from "../assets/images/yrgo.png";
 
 export const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    
     const navigate = useNavigate();
+    const slug = useUserSlug();
 
     const isGuest = useIsGuest();
     const isSignedIn = useIsSignedIn();
     const { logout } = useLogout();
+
+    const NAV_LINKS = [
+        { label: "Hem", href: "/" },
+        { label: "Min profil", href: `/profile/${slug}` },
+        { label: "Min ölhylla", href: `/profile/${slug}/hylla` },
+        { label: "Gör om min burk", href: "/design" },
+        { label: "Logga ut", href: "#", action: "logout" },
+        { label: "Skapa konto", href: "/login" },
+    ];
 
     const toggleMenu = () => setMenuOpen((prev) => !prev);
     const closeMenu = () => setMenuOpen(false);
@@ -39,7 +41,7 @@ export const Header = () => {
     };
 
     const handleProfileClick = () => {
-        navigate("/profile/1");
+        navigate(`/profile/${slug}`);
         closeMenu();
     };
 
@@ -129,7 +131,7 @@ export const Header = () => {
                             </li>
                         ))}
 
-                        <form onSubmit={handleSearch} className="mt-12 w-full">
+                        <form onSubmit={handleSearch} className="w-full">
                             <label className="text-2xl font-regular tracking-tighter">Sök burk-ID</label>
                             <div className="flex justify-between gap-2 mt-4">
                                 <input
