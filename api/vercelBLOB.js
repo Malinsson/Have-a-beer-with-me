@@ -11,7 +11,7 @@ const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024
 
 
 export const config = {
-  runtime: 'edge',
+  runtime: 'nodejs',
 }
 
 export default async function handler(request) {
