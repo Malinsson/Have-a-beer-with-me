@@ -69,9 +69,12 @@ export const ProfilePage = () => {
                 </div>
             )}
 
-            <div className="fixed bottom-6 right-6 bg-blue-950 rounded-full p-3 z-40">
-                <button onClick={() => setCameraOpen(true)}>
-                    <HiOutlineQrcode className="text-white text-xl p-4 self-end" />
+            <div className="fixed bottom-6 right-6 bg-blue-950 rounded-full w-16 h-16 flex items-center justify-center z-40 shadow-lg">
+                <button 
+                    onClick={() => setCameraOpen(true)} 
+                    className="flex items-center justify-center"
+                >
+                    <HiOutlineQrcode className="text-white text-4xl" />
                 </button>
             </div>
         </div>
