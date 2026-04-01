@@ -1,6 +1,6 @@
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
-import { useImageUploader } from '../hooks/useImageUploader'
+import { useImageUploader } from "../hooks/uploaedUserImages/useImageUploader.js";
 import { GoUpload } from "react-icons/go";
 
 

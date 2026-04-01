@@ -25,7 +25,6 @@ export const Header = () => {
         { label: "Hem", href: "/" },
         { label: "Min profil", href: `/profile/${slug}` },
         { label: "Min ölhylla", href: `/profile/${slug}/hylla` },
-        { label: "Gör om min burk", href: "/design" },
         { label: "Logga ut", href: "#", action: "logout" },
         { label: "Skapa konto", href: "/login" },
     ];

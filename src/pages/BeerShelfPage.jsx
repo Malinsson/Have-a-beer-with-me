@@ -79,7 +79,7 @@ export const BeerShelfPage = () => {
                             alt="can" 
                         />
                         <p className="text-center px-8">
-                            Din Ölhylla är tom. Skanna någons Öl för att lägga till den i hyllan
+                        Din barhylla är tom. Scanna andras burkar för att fylla din barhylla.
                         </p>
                         <a href="#">
                             <div className="flex flex-row items-center gap-3 bg-dark-blue rounded-full p-3 w-fit">
