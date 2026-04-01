@@ -89,6 +89,13 @@ export const DesignerPage = () => {
     };
 
     const toggleOption = (id) => {
+        const MAX_TAGS = 3;
+        const isAlreadySelected = back.tags.includes(id);
+
+        if (!isAlreadySelected && back.tags.length >= MAX_TAGS) {
+            return;
+        }
+
         const nextTags = back.tags.includes(id)
             ? back.tags.filter((tagId) => tagId !== id)
             : [...back.tags, id];
