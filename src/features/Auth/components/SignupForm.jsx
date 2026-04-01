@@ -22,11 +22,11 @@ export const SignupForm = ({ formId = "signup-form", hideSubmitButton = false, o
         <form
         id={formId}
         onSubmit={handleSubmit} noValidate autoComplete="off"
-        className="p-4 border border-var(--border-color) bg-white w-full mx-auto"
+        className=" bg-white w-full mx-auto"
         >
             <label htmlFor="signupEmail" className="block text-sm font-medium py-1">Mejladress</label>
             <input
-            className="px-4 py-2 border border-var(--border-color) rounded-xl bg-white w-full mx-auto"
+            className="px-4 py-2 border border-var(--border-color) bg-white w-full mx-auto"
                 type="email"
                 placeholder="Mejladress"
                 value={email}
@@ -37,7 +37,7 @@ export const SignupForm = ({ formId = "signup-form", hideSubmitButton = false, o
 
             <label htmlFor="signupPassword" className="block text-sm font-medium mt-4 py-1">Lösenord</label>
             <input 
-            className="px-4 py-2 border border-var(--border-color) rounded-xl bg-white w-full mx-auto"
+            className="px-4 py-2 border border-var(--border-color) bg-white w-full mx-auto"
                 type="password" 
                 placeholder="Lösenord"
                 value={password}

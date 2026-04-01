@@ -1,6 +1,6 @@
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
-import { useImageUploader } from "../hooks/uploaedUserImages/useImageUploader.js";
+import { useImageUploader } from '../hooks/uploadUserImages/useImageUploader'
 import { GoUpload } from "react-icons/go";
 
 
@@ -11,12 +11,12 @@ export function ImageUploader({ onUploadComplete }) {
 
 
   return (
-    <div className="w-full min-h-16 flex items-center justify-center mx-4 relative">
-      <label htmlFor='imageUploader' className="w-full flex items-center justify-between cursor-pointer">
-        <div className="bg-gray-300 p-3 px-4">
+    <div className="w-full min-h-10 flex items-center justify-center mx-4 relative">
+      <label htmlFor='imageUploader' className="w-full flex items-center justify-center gap-2 cursor-pointer">
+        <div className="p-3 px-4">
           <GoUpload className="text-lg" />
         </div>
-        <span className="uppercase text-lg">Ladda Upp</span>    
+        <span className="uppercase text-md">Ladda Upp</span>    
       </label>
 
       <input 
