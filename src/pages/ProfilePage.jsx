@@ -6,6 +6,8 @@ import { CanView } from "../components/CanView.jsx";
 import { CameraView } from "../components/CameraView.jsx";
 import { useProfileInfo } from "../features/profile/hooks/useProfileInfo.js";
 import { supabase } from "../lib/supabase.js";
+import { useIsGuest } from "../shared/hooks/useIsGuest.js";
+import { Button } from "../components/Button.jsx";
 
 // HTTPS is required — getUserMedia only works on secure connections. 
 // It will work on localhost for development, but once live it must be 
@@ -15,22 +17,19 @@ export const ProfilePage = () => {
     const [userId, setUserId] = useState(null);
     const [cameraOpen, setCameraOpen] = useState(false);
 
+    const { slug } = useParams();
+    const navigate = useNavigate();
+    const isGuest = useIsGuest();
+
+    const { profile, loading, error } = useProfileInfo(slug);
+
     useEffect(() => {
         const getUser = async () => {
             const { data: { user } } = await supabase.auth.getUser();
             if (user) setUserId(user.id);
         }
         getUser();
-    }, []);
-import { useIsGuest } from "../shared/hooks/useIsGuest.js";
-import { Button } from "../components/Button.jsx";
-
-export const ProfilePage = () => {
-    const { slug } = useParams();
-    const navigate = useNavigate();
-    const isGuest = useIsGuest();
-
-    const { profile, loading, error } = useProfileInfo(slug);
+    }, []);    
 
     if (isGuest) return (
         <div className="container mx-auto p-4 flex flex-col items-center gap-4 mt-12">
