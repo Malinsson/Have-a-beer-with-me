@@ -4,9 +4,9 @@ import scanCanImage from "../assets/images/scan_can.svg";
 
 import { useState, useEffect, use } from "react";
 import { BackButton } from "../components/BackButton";
-import { HiOutlineQrcode } from "react-icons/hi";
 import { supabase } from "../lib/supabase.js";
 import { useNavigate } from "react-router-dom";
+import { QRScanner } from "../components/QRScanner.jsx";
 
 export const BeerShelfPage = () => {
     const [userId, setUserId] = useState(null);
@@ -79,14 +79,13 @@ export const BeerShelfPage = () => {
                             alt="can" 
                         />
                         <p className="text-center px-8">
-                        Din barhylla är tom. Scanna andras burkar för att fylla din barhylla.
+                            Din barhylla är tom. Scanna andras burkar för att fylla din barhylla.
                         </p>
-                        <a href="#">
-                            <div className="flex flex-row items-center gap-3 bg-dark-blue rounded-full p-3 w-fit">
-                                <p className="text-white text-2xl">Scanna</p>
-                                <HiOutlineQrcode className="text-3xl text-white" />
-                            </div>
-                        </a>
+                        <QRScanner 
+                            text="Scanna din första öl" 
+                            variant="primary" 
+                            onScan={(data) => navigate(`/profile/${data}`)} 
+                            />
                     </div>
                 ) : (
                     <div className="grid grid-cols-2 gap-6 p-2">

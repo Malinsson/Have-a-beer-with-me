@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { HiOutlineQrcode } from "react-icons/hi";
 import { CanView } from "../components/CanView.jsx";
-import { CameraView } from "../components/CameraView.jsx";
 import { useProfileInfo } from "../features/profile/hooks/useProfileInfo.js";
 import { supabase } from "../lib/supabase.js";
 import { useIsGuest } from "../shared/hooks/useIsGuest.js";
 import { Button } from "../components/Button.jsx";
+import { QRScanner } from "../components/QRScanner.jsx";
 
 // HTTPS is required — getUserMedia only works on secure connections. 
 // It will work on localhost for development, but once live it must be 
@@ -37,7 +36,7 @@ export const ProfilePage = () => {
                 Du behöver ett konto för att se din profil.
             </p>
 
-            <Button text="Skapa konto" onClick={() => navigate("/login")} variant="primary" />
+            <Button text="Skapa konto" onClick={() => navigate("/login")} />
         </div>
     );
 
@@ -58,25 +57,11 @@ export const ProfilePage = () => {
                     <img src={profile?.qr_code} alt="user QR code" />
             </section>
 
-            {cameraOpen && (
-                <div className="fixed inset-0 bg-black z-50 flex flex-col">
-                    <button
-                        onClick={() => setCameraOpen(false)}
-                        className="text-white text-xl p-4 self-end"
-                        > Stäng kamera
-                    </button>
-                    <CameraView />
-                </div>
-            )}
-
-            <div className="fixed bottom-6 right-6 bg-blue-950 rounded-full w-16 h-16 flex items-center justify-center z-40 shadow-lg">
-                <button 
-                    onClick={() => setCameraOpen(true)} 
-                    className="flex items-center justify-center"
-                >
-                    <HiOutlineQrcode className="text-white text-4xl" />
-                </button>
-            </div>
+            <QRScanner 
+                text="Skanna" 
+                variant="outlined" 
+                onScan={(data) => navigate(`/profile/${data}`)} 
+            />
         </div>
     );
 }
