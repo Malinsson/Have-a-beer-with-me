@@ -1,5 +1,7 @@
 // The beercan shelf page, where you can see all the cans you have collected.
 import { useSavedDesigns } from "../features/can-designer/hooks/displayCanDesign/useSavedDesigns.js";
+import scanCanImage from "../assets/images/scan_can.svg";
+
 import { useState, useEffect, use } from "react";
 import { BackButton } from "../components/BackButton";
 import { HiOutlineQrcode } from "react-icons/hi";
@@ -38,7 +40,7 @@ export const BeerShelfPage = () => {
             </div>
             <div className="flex justify-center items-center h-40">
                 <img
-                    src="https://www.shutterstock.com/image-vector/soda-can-icon-vector-design-260nw-2379117639.jpg"
+                    src={scanCanImage}
                     alt="can"
                 />
                 <p className="text-center px-8">
@@ -73,7 +75,7 @@ export const BeerShelfPage = () => {
                 ) : savedDesigns.length === 0 ? (
                     <div className="flex flex-col items-center gap-4 mt-10"> 
                         <img 
-                            src="https://www.shutterstock.com/image-vector/soda-can-icon-vector-design-260nw-2379117639.jpg" 
+                            src={scanCanImage}
                             alt="can" 
                         />
                         <p className="text-center px-8">
