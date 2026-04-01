@@ -3,6 +3,7 @@
   { id: "texture-1", label: "Texture 1", src: "../src/assets/textures/texture1.jpg" },
   { id: "texture-2", label: "Texture 2", src: "../src/assets/textures/texture2.jpg" },
   { id: "texture-3", label: "Texture 3", src: "../src/assets/textures/texture3.jpg" },
+  { id: "texture-4", label: "Texture 4", src: "../src/assets/textures/texture4.jpg" },
 ];
  
 export const COLORS = [
