@@ -7,7 +7,53 @@
     --color-border-grey: #797979;
 }
 
-* {
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
-}
+@layer base {
+    * {
+        box-sizing: border-box;
+        font-family: 'Inter', sans-serif;
+    }
+   
+    h1 {
+        font-size: var(--text-6xl);
+        font-weight: 600;
+        color: var(--color-yrgo-red);
+        line-height: 1;
+        text-transform: uppercase;
+    }
+
+    h2 {
+        font-size: var(--text-xl);
+        font-weight: 600;
+    }
+    
+    h3 {
+        font-size: var(--text-xl);
+        font-weight: 600;
+    }
+
+    h4 {
+        font-family: 'Instrument Serif', serif;
+        font-size: var(--text-3xl);
+        font-weight: 400;
+        line-height: 1;
+        color: var(--color-yrgo-red);
+    }
+
+    large {
+        font-size: var(--text-lg);
+        font-weight: 600;
+        text-transform: uppercase;
+        color: var(--color-yrgo-red);
+    }
+    
+    p {
+        font-weight: 400;
+    }
+    
+    a {
+        font-size: var(--text-xl);
+        font-weight: 600;
+    }
+    
+  }
+
