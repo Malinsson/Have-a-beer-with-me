@@ -34,10 +34,12 @@ export const HomePage = () => {
                     <Carousel data={slides} />
                 </div>
                 <div className="flex flex-col items-end">
-                    <large className="pb-6">
-                        *SKAPA DIN EGNA DIGITALA burk för YRGOS LIA-event på Visual Arena, 
-                        Lindholmen. Här möter Digitala Designers och Webbutvecklare branschen
-                    </large>
+                    <p>
+                        <large className="pb-6">
+                            *SKAPA DIN EGNA DIGITALA burk för YRGOS LIA-event på Visual Arena, 
+                            Lindholmen. Här möter Digitala Designers och Webbutvecklare branschen
+                        </large>
+                    </p>
                     <Button text="Bygg din öl nu" onClick={() => navigate("/intro")} variant="primary" />
                 </div>
             </section>
