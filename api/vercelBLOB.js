@@ -22,11 +22,14 @@ export default async function handler(request) {
   const formData = await request.formData()
   const file = formData.get('file')
 
-  if (!file || !(file instanceof File)) {
+  // FormData from canvas uploads can be Blob, not always File.
+  if (!file || typeof file !== 'object' || typeof file.arrayBuffer !== 'function') {
     return Response.json({ error: 'Ingen fil tillagd' }, { status: 400 })
   }
 
-  if (!ALLOWED_IMAGE_TYPES.has(file.type)) {
+  const mimeType = file.type || 'application/octet-stream'
+
+  if (!ALLOWED_IMAGE_TYPES.has(mimeType)) {
     return Response.json({ error: 'Endast bilduppladdningar är tillåtna.' }, { status: 415 })
   }
 
@@ -34,7 +37,7 @@ export default async function handler(request) {
     return Response.json({ error: 'Filen är för stor. Max 10 MB.' }, { status: 413 })
   }
 
-  const extension = MIME_TO_EXTENSION[file.type] || 'bin'
+  const extension = MIME_TO_EXTENSION[mimeType] || 'bin'
   const safeName = `labels/${Date.now()}-${crypto.randomUUID()}.${extension}`
 
   const blob = await put(safeName, file, {

@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { HiOutlineQrcode } from "react-icons/hi";
 import { CanView } from "../components/CanView.jsx";
 import { CameraView } from "../components/CameraView.jsx";
@@ -20,8 +22,28 @@ export const ProfilePage = () => {
         }
         getUser();
     }, []);
+import { useIsGuest } from "../shared/hooks/useIsGuest.js";
+import { Button } from "../components/Button.jsx";
 
-    const { profile, loading, error } = useProfileInfo(userId);
+export const ProfilePage = () => {
+    const { slug } = useParams();
+    const navigate = useNavigate();
+    const isGuest = useIsGuest();
+
+    const { profile, loading, error } = useProfileInfo(slug);
+
+    if (isGuest) return (
+        <div className="container mx-auto p-4 flex flex-col items-center gap-4 mt-12">
+            <p className="text-xl text-center">
+                Du behöver ett konto för att se din profil.
+            </p>
+
+            <Button text="Skapa konto" onClick={() => navigate("/login")} variant="primary" />
+        </div>
+    );
+
+    if (loading) return <p>Laddar...</p>;
+    if (error) return <p>Något gick fel.</p>;
 
     if (loading) return <p>Laddar...</p>
     if (error) return <p>Något gick fel.</p>

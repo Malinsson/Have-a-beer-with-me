@@ -44,7 +44,8 @@ insert into public.profiles (
 	qr_code,
 	github_url,
 	instagram_url,
-	linkedin_url
+	linkedin_url,
+	slug_value
 )
 values
 	(
@@ -54,7 +55,8 @@ values
 		'https://example.com/qr/erlich',
 		'https://github.com/erlich',
 		'https://instagram.com/erlich',
-		'https://linkedin.com/in/erlich'
+		'https://linkedin.com/in/erlich',
+		'erlich-bachman-1111'
 	),
 	(
 		'22222222-2222-2222-2222-222222222222',
@@ -63,7 +65,8 @@ values
 		'https://example.com/qr/richard',
 		'https://github.com/richard',
 		'https://instagram.com/richard',
-		'https://linkedin.com/in/richard'
+		'https://linkedin.com/in/richard',
+		'richard-hendricks-2222'
 	)
 on conflict (id) do update
 set
