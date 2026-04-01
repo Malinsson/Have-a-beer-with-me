@@ -11,6 +11,13 @@ export const COLORS = [
   { id: "color-3", label: "Black", hex: "#121212" },
   { id: "color-4", label: "White", hex: "#ffffff" },
 ];
+
+export const FONTS = [
+  { id: "font-1", label: "Inter", src: "../src/assets/fonts/arial.ttf" },
+  { id: "font-2", label: "Bitcount single", src: "../src/assets/fonts/times.ttf" },
+  { id: "font-3", label: "Kewave", src: "../src/assets/fonts/courier.ttf" },
+  { id: "font-4", label: "Instrument serif", src: "../src/assets/fonts/courier.ttf" },
+];
  
 export const TAGS = [
   {

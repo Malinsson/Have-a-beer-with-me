@@ -1,3 +1,5 @@
+import { ProgressDots } from "../../components/ProgressDots";
+import { useState } from "react";
 
 export const SocialStep = ({ instagram, linkedin, github, onChange }) => {
     return (
@@ -29,6 +31,9 @@ export const SocialStep = ({ instagram, linkedin, github, onChange }) => {
                     placeholder="AndersAndersson"
                     className="border border-neutral-300 rounded-lg px-4 py-2 w-full"
                 />
+            </div>
+            <div>
+                <ProgressDots total={4} current={3} />
             </div>
         </div>
      );

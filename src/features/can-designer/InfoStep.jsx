@@ -1,22 +1,27 @@
+import { useState } from "react";
 import { ProgressDots } from "../../components/ProgressDots";
+import { Button } from "../../components/Button";
 import { TAGS } from "./constants";
 
 export const InfoStep = ({ selected, onToggle }) => {
-
+    const [showAllCategories, setShowAllCategories] = useState(false);
     const MAX_TAGS = 3;
     const count = selected.size;
+    const visibleTagGroups = showAllCategories ? TAGS : TAGS.slice(0, 1);
 
     return (
         <div className="flex flex-col gap-4 mt-6">
             <div className="flex flex-wrap gap-3 justify-center">
 
-                        <h3 className="font-bold text-center my-2">JAG GILLAR ({count}/3)</h3>
+                <h3 className="text-center my-2">JAG GILLAR ({count}/3)</h3>
                 
-                {TAGS.map((tagGroup) =>
-                    <div>
-                        <h3 className="font-bold text-center my-2">{tagGroup.category.toLocaleUpperCase()}</h3>
+                {visibleTagGroups.map((tagGroup) =>
+                    <div key={tagGroup.category || "general"}>
+                        {tagGroup.category && (
+                            <h3 className="text-center my-2">{tagGroup.category.toLocaleUpperCase()}</h3>
+                        )}
 
-                        <div key={tagGroup.category} className="flex flex-wrap justify-center-safe gap-2">
+                        <div className="flex flex-wrap justify-center-safe gap-2">
                             {tagGroup.items.map((tag) => (
                                 (() => {
                                     const isSelected = selected.has(tag.id);
@@ -42,11 +47,22 @@ export const InfoStep = ({ selected, onToggle }) => {
                     </div>
                     )}
                 </div>
+
+            {TAGS.length > 1 && (
+                <Button
+                    className="inline-block max-w-fit"
+                    text={showAllCategories ? "Visa mindre" : "Visa mer"}
+                    onClick={() => setShowAllCategories((prev) => !prev)}
+                    variant="primary"
+                    type="button"
+                />
+            )}
+
             {count >= MAX_TAGS && (
                 <p className="text-center text-sm text-neutral-600">Du kan välja max 3 tags.</p>
             )}
             <div>
-                <ProgressDots total={2} current={2} />
+                <ProgressDots total={4} current={2} />
             </div>
         </div>
      );

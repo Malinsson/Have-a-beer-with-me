@@ -6,11 +6,12 @@ export const BackStep = ({ value, onChange }) => {
             <textarea
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
-                placeholder="Vad inspirerar dig mest?"
-                className="border border-neutral-300 rounded-lg px-4 py-2 w-full h-32 resize-none"
+                placeholder="Text om..."
+                maxLength={140}
+                className="border border-neutral-300 px-4 py-2 w-full h-32 resize-none"
             />
             <div>
-                <ProgressDots total={2} current={1} />
+                <ProgressDots total={4} current={1} />
             </div>
         </div>
      );

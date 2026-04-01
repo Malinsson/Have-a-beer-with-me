@@ -4,7 +4,7 @@ import { GuestSignup } from "../features/auth/components/GuestSignup";
 import { useDesignStore } from "../store/designStore";
  
 // import type { DesignerMode, Step } from "../features/can-designer/types.ts";
-import { NameStep } from "../features/can-designer/NameStep";
+import { KontoStep } from "../features/can-designer/KontoStep";
 import { FrontStep } from "../features/can-designer/FrontStep";
 import { BackStep } from "../features/can-designer/BackStep";
 import { InfoStep } from "../features/can-designer/InfoStep";
@@ -15,22 +15,22 @@ import { Button } from "../components/Button";
 import { BackButton } from "../components/BackButton";
 
 const STEP_TITLE = {
-    name: "Vem är du?",
-    front: "Burk framsida",
-    back:  "Burk baksida",
-    info:  "Innehållsförteckning",
-    social: "Kontaktuppgifter",
+    front: "Burkens framsida",
+    back:  "Burkens baksida",
+    info:  "Burkens baksida",
+    social: "Burkens baksida",
+    konto: "Skapa konto",
 };
 
 const STEP_SUBTITLE = {
-    name: "Informationen kommer att stå på din öl",
-    front: "Anpassa Burkens Font",
-    back:  "Vad inspirerar dig mest?",
-    info:  "Jag är intresserad av",
-    social: "Vill du lägga till sociala medier?",
+    front: "",
+    back:  'Beskriv din största "AHA-Upplevelse" (max 140 tecken)',
+    info:  "",
+    social: "Lägg till kontakt uppgifter",
+    konto: "Skapa ett konto för att spara din burk"
 };
 
-const STEPS = ["front", "back", "info", "social"];
+const STEPS = ["front", "back", "info", "social", "konto"];
 
 export const DesignerPage = () => {
     
@@ -132,26 +132,18 @@ export const DesignerPage = () => {
         <div className="container mx-auto p-4">
             <GuestSignup />
    
-            {step !== "name" && (
-                <img className="max-h-[50vh] mx-auto mb-6"
-                 src={baseCan} alt="design preview" />
-            )}
-
             <div className="flex items-center justify-between mb-6">
                 <BackButton onClick={handleBack} />
                 <h2 className="absolute left-1/2 transform -translate-x-1/2 text-2xl">{STEP_TITLE[step]}</h2>
             </div>
+
+            <img className="max-h-[50vh] mx-auto mb-6"
+                 src={baseCan} alt="design preview" />
         
             <h3 className="text-center mt-4">{STEP_SUBTITLE[step]}</h3>
-        
+
             {/* Steps */}
-            {step === "name" && (
-                <NameStep 
-                    onNext={() => setStep("front")}
-                    
-                />
-                
-            )}
+
             {step === "front" && (
                 <FrontStep
                     mode={mode}
@@ -176,6 +168,12 @@ export const DesignerPage = () => {
                     onToggle={toggleOption}
                 />
              )}
+
+            {step === "konto" && (
+                
+                    <KontoStep />
+
+            )}
 
             {/* Bottom buttons */}
             <div className="flex justify-center gap-4 mt-8">
@@ -206,6 +204,13 @@ export const DesignerPage = () => {
                         github={back.socials.github}
                         onChange={handleSocialChange}
                     />
+                        <Button text="Skippa" onClick={() => setModalOpen(true)} variant="outlined" />
+                        <Button text="Gå vidare" onClick={() => setStep("konto")} variant="primary" />
+                </>
+            )}
+
+            {step === "konto" && (
+                <>
                     <div className="flex justify-center gap-4 mt-8">
                         <Button text="Skippa" onClick={() => setModalOpen(true)} variant="outlined" />
                         <Button text="Skapa ölburk" onClick={handleCreateCan} variant="primary" />
