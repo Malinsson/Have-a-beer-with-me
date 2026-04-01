@@ -19,6 +19,12 @@ export const FONTS = [
   { id: "font-3", label: "Kewave", src: "../src/assets/fonts/courier.ttf" },
   { id: "font-4", label: "Instrument serif", src: "../src/assets/fonts/courier.ttf" },
 ];
+
+export const TEXT_ALIGNMENT = {
+    left: "text-left",
+    center: "text-center",
+    right: "text-right",
+};
  
 export const TAGS = [
   {

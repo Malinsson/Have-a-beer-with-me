@@ -9,8 +9,8 @@ import { FrontStep } from "../features/can-designer/FrontStep";
 import { BackStep } from "../features/can-designer/BackStep";
 import { InfoStep } from "../features/can-designer/InfoStep";
 import { SocialStep } from "../features/can-designer/SocialStep";
+import { CanPreview2D } from "../features/can-designer/components/CanPrewiew2D";
 import { Modal } from "../components/Modal";
-import baseCan from "../assets/images/baseCan.png";
 import { Button } from "../components/Button";
 import { BackButton } from "../components/BackButton";
 
@@ -139,8 +139,9 @@ export const DesignerPage = () => {
                 <h2 className="absolute left-1/2 transform -translate-x-1/2 text-2xl">{STEP_TITLE[step]}</h2>
             </div>
 
-            <img className="max-h-[50vh] mx-auto mb-6"
-                 src={baseCan} alt="design preview" />
+            <div className="mb-6 max-h-40vh">
+                <CanPreview2D />
+            </div>
         
             <h3 className="text-center mt-4">{STEP_SUBTITLE[step]}</h3>
 
