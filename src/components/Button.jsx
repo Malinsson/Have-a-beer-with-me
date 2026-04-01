@@ -1,6 +1,16 @@
-import { FaArrowRight } from "react-icons/fa";
+import { MdOutlineArrowOutward } from "react-icons/md";
 
-export const Button = ({ text, onClick, variant = "primary", type = "button", disabled = false }) => {
+export const Button = ({ 
+  text, 
+  onClick, 
+  variant = "primary", 
+  type = "button", 
+  disabled = false,
+  icon: Icon = MdOutlineArrowOutward, // defaults to arrow but can be overridden
+  showIcon = true,           // set to false to hide the icon entirely
+  iconSize = "text-base",
+}) => {
+
   const styles = {
     primary: "bg-dark-blue text-white",
     outlined: "border border-black text-black",
@@ -14,7 +24,7 @@ export const Button = ({ text, onClick, variant = "primary", type = "button", di
       className={`${styles[variant]} px-7 py-2 flex items-center gap-2 uppercase disabled:opacity-60 disabled:cursor-not-allowed`}
     >
       {text}
-      <FaArrowRight />
+      {showIcon && <Icon className={iconSize} />}
     </button>
   );
 };
