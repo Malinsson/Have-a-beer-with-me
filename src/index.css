@@ -60,11 +60,14 @@
     }
     
     a {
-        font-size: var(--text-xs);
-        font-weight: 400;
         text-transform: uppercase;
-        text-decoration: underline;
         letter-spacing: 1.5px;
+    }
+
+    .a-underline {
+        font-weight: 400;
+        font-size: var(--text-xs);
+        text-decoration: underline;
     }
 
     
