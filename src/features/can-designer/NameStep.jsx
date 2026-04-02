@@ -23,7 +23,9 @@ export const NameStep = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        const didSave = await saveName(firstName, lastName);
+        const result = await saveName(firstName, lastName);
+        const didSave = result?.success;
+        const profileSlug = result?.slug || "";
 
         if (didSave) {
             const drinkTypeId = selectedDrink || "";
@@ -38,6 +40,7 @@ export const NameStep = () => {
                     department,
                     drinkTypeId,
                     drinkTypeLabel,
+                    slug: profileSlug,
                 },
             });
         }

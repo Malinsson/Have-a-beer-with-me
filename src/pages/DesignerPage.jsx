@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useDesignStore } from "../store/designStore";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useUserSlug } from "../features/profile/hooks/useUserSlug";
  
 // import type { DesignerMode, Step } from "../features/can-designer/types.ts";
 import { KontoStep } from "../features/can-designer/KontoStep";
@@ -39,7 +40,8 @@ export const DesignerPage = () => {
     const [modalOpen, setModalOpen] = useState(false);
 
     const navigate = useNavigate();
-    const { slug } = useParams();
+    const location = useLocation();
+    const userSlug = useUserSlug();
 
     const timerRef = useRef(null);
     const hasHydratedRef = useRef(false);
@@ -48,6 +50,7 @@ export const DesignerPage = () => {
     const back = useDesignStore((state) => state.back);
     const setFront = useDesignStore((state) => state.setFront);
     const setBack = useDesignStore((state) => state.setBack);
+    const redirectSlug = location.state?.slug || userSlug || "guest";
 
     useEffect(() => {
         const unsubscribe = useDesignStore.subscribe((state, prevState) => {
@@ -229,7 +232,7 @@ export const DesignerPage = () => {
                   
             {/* Modal */}
             {modalOpen && (
-                <Modal onConfirm={() => navigate(`/profile/${slug}`)} />
+                <Modal onConfirm={() => window.location.assign(`/profile/${redirectSlug}`)} />
             )}
 
         </div>

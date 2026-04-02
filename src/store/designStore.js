@@ -83,7 +83,7 @@ export const useDesignStore = create((set, get) => ({
                     user_id: session.user.id,
                     design_data: designData,
                     name: designName,
-                    share_id: shareId || `design-${Date.now()}`,
+                    share_id: shareId || crypto.randomUUID().slice(0, 8),
                 }, { onConflict: 'share_id' })
                 .select('id')
                 .maybeSingle();
