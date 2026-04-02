@@ -1,5 +1,6 @@
 import { useLogin } from "../hooks/useLogin";
 import { useAuthFields } from "../hooks/useAuthFields";
+import { Button } from "../../../components/Button";
 
 
 export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
@@ -18,15 +19,15 @@ export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
 
     return (
         <form onSubmit={handleSubmit} noValidate
-        className="mt-2 p-4 bg-white max-w-md mx-auto"
+        className="mt-2 bg-white w-full mx-auto"
         >
-            <div className="flex flex-col gap-1 border border-var(--border-color) p-4 justify-center">
+            <div className="flex flex-col gap-1 my-4 justify-center">
 
                 <div>
                     <label htmlFor="loginEmail" className="block text-sm font-medium text-gray-700">Mejladress</label>
 
                     <input 
-                    className="mt-2 px-4 py-2 border border-var(--border-color) rounded-xl bg-white max-w-md mx-auto"
+                    className="px-4 py-2 border border-var(--border-color) bg-white w-full mx-auto"
                         id="loginEmail"
                         type="text" 
                         placeholder="Mejladress"
@@ -45,7 +46,7 @@ export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
                     <label htmlFor="loginPassword" className="block text-sm font-medium text-gray-700">Lösenord</label>
 
                     <input 
-                    className="mt-2 px-4 py-2 border border-var(--border-color) rounded-xl bg-white max-w-md mx-auto"
+                    className="px-4 py-2 border border-var(--border-color) bg-white w-full mx-auto"
                         id="loginPassword"
                         type="password" 
                         placeholder="Lösenord"
@@ -69,12 +70,11 @@ export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
 
             {error && <p role="alert">{error}</p>}
 
-            <button type="submit" disabled={isLoading}
-            className="mt-4 py-2 px-4 bg-dark-blue text-white rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                {isLoading
-                    ? "Loggar in…"
-                    : "Logga in"}
-            </button>
+            <Button type="submit" 
+                    disabled={isLoading}
+                    text={isLoading ? "Loggar in…" : "Logga in"}
+                    >
+            </Button>
         </form>
     );
 };
