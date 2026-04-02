@@ -68,7 +68,7 @@ export const DesignerPage = () => {
                 if (!result.success) {
                     console.log("Auto-save failed:", result.error);
                 }
-            }, 700);
+            }, 1000);
         });
 
         return () => {

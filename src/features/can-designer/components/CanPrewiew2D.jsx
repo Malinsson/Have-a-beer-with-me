@@ -28,7 +28,7 @@ export const CanPreview2D = () => {
         <div className="relative max-w-45 mx-auto">
             <img src={baseCan} alt="Can template" className="w-full h-auto object-contain" />
 
-            <div className="absolute left-1/2 top-[15%] -translate-x-1/2 w-[58%] h-[62%] overflow-hidden border border-black/10">
+            <div className="absolute left-1/2 top-[20%] -translate-x-1/2 w-[98%] h-[72%] overflow-hidden border border-black/10">
                 <div className="absolute inset-0" style={{ background: textureBackground }} />
 
                 {front.imageUrl && (
@@ -56,7 +56,7 @@ export const CanPreview2D = () => {
                             className="text-xs leading-tight"
                             style={{ color: front.textColor, fontFamily: front.textFont }}
                         >
-                            {back.description.slice(0, 120)}
+                            {back.description}
                         </p>
                     </div>
                 )}
