@@ -10,7 +10,7 @@ export const BackStep = ({ value, onChange }) => {
                 maxLength={140}
                 className="border border-neutral-300 px-4 py-2 w-full h-32 resize-none"
             />
-            <div>
+            <div className="mt-6">
                 <ProgressDots total={4} current={1} />
             </div>
         </div>

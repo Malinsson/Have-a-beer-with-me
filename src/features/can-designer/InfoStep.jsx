@@ -11,7 +11,7 @@ export const InfoStep = ({ selected, onToggle }) => {
     const visibleTagGroups = showAllCategories ? TAGS : TAGS.slice(0, 1);
 
     return (
-        <div className="flex flex-col gap-4 mt-6">
+        <div className="flex flex-col mt-6">
             <div className="flex flex-wrap gap-2 justify-center">
 
                 <p className="bold w-full mb-2">JAG GILLAR ({count}/3)</p>
@@ -70,7 +70,7 @@ export const InfoStep = ({ selected, onToggle }) => {
             {count >= MAX_TAGS && (
                 <p className="text-center text-sm text-neutral-600">Du kan välja max 3 tags.</p>
             )}
-            <div>
+            <div className="mt-6">
                 <ProgressDots total={4} current={2} />
             </div>
         </div>
