@@ -1,5 +1,6 @@
 import { useLogin } from "../hooks/useLogin";
 import { useAuthFields } from "../hooks/useAuthFields";
+import { Button } from "../../../components/Button";
 
 
 export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
@@ -18,15 +19,15 @@ export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
 
     return (
         <form onSubmit={handleSubmit} noValidate
-        className="mt-2 p-4 bg-white max-w-md mx-auto"
+        className="mt-2 p-4"
         >
-            <div className="flex flex-col gap-1 border border-var(--border-color) p-4 justify-center">
+            <div className="flex flex-col gap-4 border p-4 mb-4 justify-center">
 
                 <div>
-                    <label htmlFor="loginEmail" className="block text-sm font-medium text-gray-700">Mejladress</label>
+                    <label htmlFor="loginEmail"><p>Mejladress</p></label>
 
                     <input 
-                    className="mt-2 px-4 py-2 border border-var(--border-color) rounded-xl bg-white max-w-md mx-auto"
+                        className="mt-2 px-4 py-2 border w-full"
                         id="loginEmail"
                         type="text" 
                         placeholder="Mejladress"
@@ -42,10 +43,10 @@ export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
 
                 <div>
 
-                    <label htmlFor="loginPassword" className="block text-sm font-medium text-gray-700">Lösenord</label>
+                    <label htmlFor="loginPassword" className="mt-2"><p>Lösenord</p></label>
 
                     <input 
-                    className="mt-2 px-4 py-2 border border-var(--border-color) rounded-xl bg-white max-w-md mx-auto"
+                        className="mt-2 px-4 py-2 border w-full"
                         id="loginPassword"
                         type="password" 
                         placeholder="Lösenord"
@@ -62,19 +63,25 @@ export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
                     e.preventDefault();
                     onSwitchToSignup?.();
                 }}
-                className="text-sm mt-2 inline-block underline"
-                >Har inget konto? Skapa nu</a>
+                >Har inget konto? Skapa nu!</a>
 
             </div>
 
             {error && <p role="alert">{error}</p>}
 
-            <button type="submit" disabled={isLoading}
+            {/* <button type="submit" disabled={isLoading}
             className="mt-4 py-2 px-4 bg-dark-blue text-white rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                 {isLoading
                     ? "Loggar in…"
                     : "Logga in"}
-            </button>
+            </button> */}
+            <div className="w-full">
+                <Button 
+                    type="submit" 
+                    disabled={isLoading}
+                    text={isLoading ? "Loggar in…" : "Logga in"}
+                />
+            </div>
         </form>
     );
 };
