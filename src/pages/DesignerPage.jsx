@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useDesignStore } from "../store/designStore";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useUserSlug } from "../features/profile/hooks/useUserSlug";
+import supabase from "../lib/supabase";
  
 // import type { DesignerMode, Step } from "../features/can-designer/types.ts";
 import { KontoStep } from "../features/can-designer/KontoStep";
@@ -38,6 +39,7 @@ export const DesignerPage = () => {
     const [step, setStep] = useState("front");
     const [mode, setMode] = useState("image");
     const [modalOpen, setModalOpen] = useState(false);
+    const [canSkipKonto, setCanSkipKonto] = useState(false);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -54,6 +56,17 @@ export const DesignerPage = () => {
     const previewSide = step === "front" ? "front" : "back";
 
     useEffect(() => {
+        const syncAuthState = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            setCanSkipKonto(!!session && !session.user?.is_anonymous);
+        };
+
+        syncAuthState();
+
+        const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+            setCanSkipKonto(!!session && !session?.user?.is_anonymous);
+        });
+
         const hydrateLatestDesign = async () => {
             const result = await useDesignStore.getState().loadLatestDesignForCurrentUser();
             if (!result.success && result.error !== "No design found" && result.error !== "User not authenticated") {
@@ -87,6 +100,7 @@ export const DesignerPage = () => {
         return () => {
             clearTimeout(timerRef.current);
             unsubscribe();
+            authListener.subscription.unsubscribe();
         };
     }, []);
 
@@ -159,6 +173,14 @@ export const DesignerPage = () => {
         await finalizeDesignAndOpenModal();
     };
 
+    const handleSocialContinue = async () => {
+        if (canSkipKonto) {
+            await finalizeDesignAndOpenModal();
+            return;
+        }
+        setStep("konto");
+    };
+
     return (
         <div className="container mx-auto p-4">
    
@@ -205,7 +227,7 @@ export const DesignerPage = () => {
                 />
              )}
 
-            {step === "konto" && (
+            {step === "konto" && !canSkipKonto && (
                 <KontoStep onSignupSuccess={handleCreateCan} />
             )}
 
@@ -239,11 +261,11 @@ export const DesignerPage = () => {
                         onChange={handleSocialChange}
                     />
                         <Button text="Skippa" onClick={finalizeDesignAndOpenModal} variant="outlined" />
-                        <Button text="Gå vidare" onClick={() => setStep("konto")} variant="primary" />
+                        <Button text="Gå vidare" onClick={handleSocialContinue} variant="primary" />
                 </>
             )}
 
-            {step === "konto" && (
+            {step === "konto" && !canSkipKonto && (
                 <>
                     <div className="flex justify-center gap-4 mt-8">
                         <Button text="Gästkonto" onClick={finalizeDesignAndOpenModal} variant="outlined" 
