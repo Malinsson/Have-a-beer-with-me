@@ -15,19 +15,19 @@ export const FrontStep = ({
     onColorSelect,
 }) => {
 
-    const activeClass = "border-2 py-1 px-3";
+    const activeClass = "border-1 py-1 px-3";
     const inactiveClass = "py-1 px-3";
 
     return (
         <>
             {/* Mode switcher */}
-            <div className="flex justify-center my-8 gap-8">
+            <div className="flex justify-center my-6 gap-8">
                 <button
                     onClick={() => onModeChange("image")}
                     className={mode === "image" ? activeClass : inactiveClass}
                     aria-pressed={mode === "image"}
                 >
-                    <CiImageOn className="text-3xl" />
+                    <CiImageOn className="text-2xl" />
                 </button>
 
                 <button
@@ -35,13 +35,16 @@ export const FrontStep = ({
                     className={mode === "text" ? activeClass : inactiveClass}
                     aria-pressed={mode === "text"}
                 >
-                    <IoTextOutline className="text-3xl" />
+                    <IoTextOutline className="text-2xl" />
                 </button>
             </div>
 
             {/* Image mode — textures */}
             {mode === "image" && (
                 <>
+                <div className="text-center w-full pb-6">
+                    <p className="bold">Etikettdesign</p>
+                </div>
                 <div className="flex justify-center gap-4">
                     {TEXTURES.map((texture) => (
                         <button
@@ -49,7 +52,7 @@ export const FrontStep = ({
                             type="button"
                             onClick={() => onTextureSelect(texture.id)}
                             //aria-pressed={selectedTexture === texture.id}
-                            className={` overflow-hidden border-2 transition-colors ${
+                            className={` overflow-hidden border-1 transition-colors ${
                                 selectedTexture === texture.id ? "border-black" : "border-transparent"
                             }`}
                         >
@@ -58,7 +61,7 @@ export const FrontStep = ({
                     ))}
                 </div>
 
-                <section className="flex border items-center relative w-full mt-4 mb-12 mx-auto">
+                <section className="flex border items-center relative w-full mt-4 mb-4 mx-auto">
                         <ImageUploader />
                 </section>
 
@@ -68,7 +71,9 @@ export const FrontStep = ({
             {/* Text mode — colors + font */}
             {mode === "text" && (
                 <div className="flex flex-col justify-center gap-4">
-
+                    <div className="text-center w-full pb-2">
+                        <p className="bold">Typsnittsdesign</p>
+                    </div>
                     <div className="flex justify-center flex-row items-center gap-4">
                         <select className="border border-black px-4 py-2"
                         aria-label="Välj typsnitt">
@@ -78,8 +83,8 @@ export const FrontStep = ({
                                 </option>
                             ))}
                         </select>
-                        <div className="bg-dark-blue rounded-full p-2">
-                            <PiAlignCenterVertical className="text-4xl text-white" />
+                        <div className="bg-dark-blue p-2">
+                            <PiAlignCenterVertical className="text-2xl text-white" />
                         </div>
                     </div>
 
@@ -94,7 +99,7 @@ export const FrontStep = ({
                                 aria-pressed={selectedColor === color.hex}
                                 className={`w-10 h-10 transition-all border ${
                                     color.hex === "#ffffff" ? "border-neutral-300" : "border-transparent"
-                                } ${selectedColor === color.hex ? "shadow-[0_0_0_3px_black]" : ""}`}
+                                } ${selectedColor === color.hex ? "shadow-[0_0_0_2px_black]" : ""}`}
                                 style={{ backgroundColor: color.hex }}
                             />
                         ))}
