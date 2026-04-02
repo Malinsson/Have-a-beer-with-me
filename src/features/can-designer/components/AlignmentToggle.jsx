@@ -22,7 +22,7 @@ export const AlignmentToggle = ({ value = "center", onChange }) => {
         <button
             type="button"
             onClick={handleClick}
-            className="bg-dark-blue px-4 py-2 text-white text-sm"
+            className="bg-dark-blue p-2.5 text-white text-sm"
             aria-label="Byt textjustering "{...LABEL.find(item => item[ORDER[safeIndex]])?.label || "?"}
             title="Byt textjustering"
         >

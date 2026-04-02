@@ -152,7 +152,7 @@ export const DesignerPage = () => {
                 <h2 className="absolute left-1/2 transform -translate-x-1/2 text-2xl">{STEP_TITLE[step]}</h2>
             </div>
 
-            <div className="mb-6 max-h-40vh">
+            <div className="mb-4 max-h-40vh">
                 <CanPreview2D />
             </div>
         

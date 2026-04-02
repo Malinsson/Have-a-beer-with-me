@@ -1,5 +1,5 @@
-import { CiImageOn } from "react-icons/ci";
-import { IoTextOutline } from "react-icons/io5";
+import { MdOutlineImage } from "react-icons/md";
+import { BiFontFamily } from "react-icons/bi";
 import { ImageUploader } from "./components/ImageUploader";
 import { AlignmentToggle } from "./components/AlignmentToggle";
 
@@ -22,17 +22,20 @@ export const FrontStep = ({
 
     const activeClass = "border-2 py-1 px-3";
     const inactiveClass = "py-1 px-3";
+    const selectedFontStyle = FONTS.some((font) => font.style === selectedFont)
+        ? selectedFont
+        : FONTS[0].style;
 
     return (
         <>
             {/* Mode switcher */}
-            <div className="flex justify-center my-8 gap-8">
+            <div className="flex justify-center gap-4">
                 <button
                     onClick={() => onModeChange("image")}
                     className={mode === "image" ? activeClass : inactiveClass}
                     aria-pressed={mode === "image"}
                 >
-                    <CiImageOn className="text-3xl" />
+                    <MdOutlineImage className="text-3xl" />
                 </button>
 
                 <button
@@ -40,13 +43,15 @@ export const FrontStep = ({
                     className={mode === "text" ? activeClass : inactiveClass}
                     aria-pressed={mode === "text"}
                 >
-                    <IoTextOutline className="text-3xl" />
+                    <BiFontFamily className="text-3xl" />
                 </button>
             </div>
 
             {/* Image mode — textures */}
             {mode === "image" && (
                 <>
+                <h5 className="text-center my-2"><strong>ETIKETT DESIGN</strong></h5>
+
                 <div className="flex justify-center gap-4">
                     {TEXTURES.map((texture) => (
                         <button
@@ -72,13 +77,15 @@ export const FrontStep = ({
 
             {/* Text mode — colors + font */}
             {mode === "text" && (
-                <div className="flex flex-col justify-center gap-4">
+                <div className="flex flex-col justify-center gap-4 w-full">
+                <h5 className="text-center my-2"><strong>TYPSNITT DESIGN</strong></h5>
 
-                    <div className="flex justify-center flex-row items-center gap-4">
+                    <div className="flex justify-center flex-row items-center gap-4 mx-6">
                         <select
-                            className="border border-black px-4 py-2"
+                            className="border border-black px-4 py-2 w-full h-10"
                             aria-label="Välj typsnitt"
-                            value={selectedFont}
+                            style={{ fontFamily: selectedFontStyle }}
+                            value={selectedFontStyle}
                             onChange={(e) => onFontSelect(e.target.value)}
                         >
                             {FONTS.map((font) => (
