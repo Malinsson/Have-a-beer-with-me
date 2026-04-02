@@ -30,9 +30,9 @@ FONTS.forEach(({ url }) => {
 });
 
 export const TEXT_ALIGNMENT = {
-    top: "text-start",
-    center: "text-center",
-    bottom: "text-end",
+    top: "justify-start items-start",
+    center: "justify-center items-center",
+    bottom: "justify-end items-end",
 };
  
 export const TAGS = [

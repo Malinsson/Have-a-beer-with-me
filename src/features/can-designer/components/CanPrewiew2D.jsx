@@ -21,7 +21,6 @@ export const CanPreview2D = ({ side = "front" }) => {
         return acc;
     }, {});
 
-    const headingText = [`${name.firstName}'s ${name.drinkType}`].filter(Boolean).join(" ") || "DIN DESIGN";
     const textureBackground = TEXTURE_STYLES[front.texturePreset] || TEXTURE_STYLES.default;
     const textAlignClass = TEXT_ALIGNMENT[front.textAlignment] || TEXT_ALIGNMENT.center;
     const isFrontSide = side === "front";
@@ -34,28 +33,32 @@ export const CanPreview2D = ({ side = "front" }) => {
             
                 {isFrontSide && (
                 <div>
-                    <div className="absolute inset-0" style={{ background: textureBackground }} />
-
-                    {front.imageUrl && (
-                        <img
-                            src={front.imageUrl}
-                            alt="Uploaded label"
-                            className="absolute inset-0 w-full h-full object-cover"
-                        />
-                    )}
-
                     <div className="absolute inset-0 bg-black/10" />
 
-                        <div className={`absolute left-0 right-0 top-6 px-3 ${textAlignClass}`}>
+                        <div className={`absolute w-full h-full p-3 z-50 flex ${textAlignClass}`}>
                             <p
-                                className="font-bold uppercase leading-tight"
+                                className="leading-tight"
                                 style={{ color: front.textColor, fontFamily: front.textFont }}
                             >
-                                {headingText}
+                                {name.firstName}'
+                                <small style={{ color: front.textColor, fontFamily: front.textFont }}>s</small>
+                                <br />
+                                {name.drinkType}
                             </p>
                         </div>
 
+                    
+                    <div className="absolute inset-0 z-20" style={{ background: textureBackground }} />
+
+                    {front.imageUrl && (
+                        <img
+                        src={front.imageUrl}
+                        alt="Uploaded label"
+                        className="absolute inset-0 w-full h-full object-cover z-5"
+                        />
+                    )}
                     </div>
+
                 )}
 
                 {!isFrontSide &&(
