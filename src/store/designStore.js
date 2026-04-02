@@ -6,7 +6,7 @@ const initialFront = {
     imageUrl: null,
     texturePreset: 'default',
     textColor: '#000000',
-    textFont: 'Arial, sans-serif',
+    textFont: 'Inter, sans-serif',
     textAlignment: 'center',
     drinkType: '',
 };

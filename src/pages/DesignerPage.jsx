@@ -88,6 +88,10 @@ export const DesignerPage = () => {
         setFront({ textColor: colorHex });
     };
 
+    const handleFontSelect = (fontFamily) => {
+        setFront({ textFont: fontFamily });
+    };
+
     const handleBackDescriptionChange = (description) => {
         setBack({ description });
     };
@@ -158,8 +162,10 @@ export const DesignerPage = () => {
                     onModeChange={setMode}
                     selectedTexture={front.texturePreset}
                     selectedColor={front.textColor}
+                    selectedFont={front.textFont}
                     onTextureSelect={handleTextureSelect}
                     onColorSelect={handleColorSelect}
+                    onFontSelect={handleFontSelect}
                     onImageUpload={handleImageUpload}
                 />
             )}

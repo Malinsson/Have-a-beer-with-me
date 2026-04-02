@@ -14,11 +14,20 @@ export const COLORS = [
 ];
 
 export const FONTS = [
-  { id: "font-1", label: "Inter", src: "../src/assets/fonts/arial.ttf" },
-  { id: "font-2", label: "Bitcount single", src: "../src/assets/fonts/times.ttf" },
-  { id: "font-3", label: "Kewave", src: "../src/assets/fonts/courier.ttf" },
-  { id: "font-4", label: "Instrument serif", src: "../src/assets/fonts/courier.ttf" },
+  { id: "font-1", label: "Inter", style: "Inter, sans-serif", url: "https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" },
+  { id: "font-2", label: "Bitcount single", style: "Bitcount Single, sans-serif", url: "https://fonts.googleapis.com/css2?family=Bitcount+Single&display=swap" },
+  { id: "font-3", label: "Knewave", style: "Knewave, sans-serif", url: "https://fonts.googleapis.com/css2?family=Knewave&display=swap" },
+  { id: "font-4", label: "Instrument serif", style: "Instrument Serif, serif", url: "https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" },
 ];
+
+FONTS.forEach(({ url }) => {
+  if (!document.querySelector(`link[href="${url}"]`)) {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = url;
+    document.head.appendChild(link);
+  }
+});
 
 export const TEXT_ALIGNMENT = {
     left: "text-left",

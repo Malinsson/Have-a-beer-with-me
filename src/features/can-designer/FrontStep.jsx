@@ -11,8 +11,10 @@ export const FrontStep = ({
     onModeChange,
     selectedTexture,
     selectedColor,
+    selectedFont,
     onTextureSelect,
     onColorSelect,
+    onFontSelect,
     onImageUpload
 }) => {
 
@@ -71,10 +73,14 @@ export const FrontStep = ({
                 <div className="flex flex-col justify-center gap-4">
 
                     <div className="flex justify-center flex-row items-center gap-4">
-                        <select className="border border-black px-4 py-2"
-                        aria-label="Välj typsnitt">
+                        <select
+                            className="border border-black px-4 py-2"
+                            aria-label="Välj typsnitt"
+                            value={selectedFont}
+                            onChange={(e) => onFontSelect(e.target.value)}
+                        >
                             {FONTS.map((font) => (
-                                <option key={font.id} value={font.id}>
+                                <option key={font.id} value={font.style} style={{ fontFamily: font.style }}>
                                     {font.label}
                                 </option>
                             ))}

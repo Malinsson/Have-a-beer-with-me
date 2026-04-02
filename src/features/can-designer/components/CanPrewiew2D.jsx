@@ -5,8 +5,8 @@ import { TAGS, TEXT_ALIGNMENT } from "../constants";
 const TEXTURE_STYLES = {
     default: "linear-gradient(135deg, #f0f0f0 0%, #e2e2e2 100%)",
     "texture-1": "repeating-linear-gradient(135deg, #f7f7f7 0px, #f7f7f7 8px, #ececec 8px, #ececec 16px)",
-    "texture-2": "radial-gradient(circle at 20% 20%, #ffffff 0%, #f0f0f0 40%, #d7d7d7 100%)",
-    "texture-3": "linear-gradient(180deg, #f9f9f9 0%, #ececec 55%, #dcdcdc 100%)",
+    "texture-2": "radial-gradient(circle at 20% 20%, #0c8e40 0%, #32adaf7f 40%, #1fa8ca 100%)",
+    "texture-3": "linear-gradient(180deg, #b126269d 0%, #250d0d90 55%, #95898989 100%)",
     "texture-4": "repeating-linear-gradient(90deg, #f2f2f2 0px, #f2f2f2 6px, #e4e4e4 6px, #e4e4e4 12px)",
 };
 
