@@ -50,7 +50,7 @@ export const FrontStep = ({
             {/* Image mode — textures */}
             {mode === "image" && (
                 <>
-                <h5 className="text-center my-2"><strong>ETIKETT DESIGN</strong></h5>
+                <h5 className="text-center my-4"><strong>ETIKETT DESIGN</strong></h5>
 
                 <div className="flex justify-center gap-4">
                     {TEXTURES.map((texture) => (
@@ -78,7 +78,7 @@ export const FrontStep = ({
             {/* Text mode — colors + font */}
             {mode === "text" && (
                 <div className="flex flex-col justify-center gap-4 w-full">
-                <h5 className="text-center my-2"><strong>TYPSNITT DESIGN</strong></h5>
+                <h5 className="text-center mt-4"><strong>TYPSNITT DESIGN</strong></h5>
 
                     <div className="flex justify-center flex-row items-center gap-4 mx-6">
                         <select

@@ -51,6 +51,7 @@ export const DesignerPage = () => {
     const setFront = useDesignStore((state) => state.setFront);
     const setBack = useDesignStore((state) => state.setBack);
     const redirectSlug = location.state?.slug || userSlug || "guest";
+    const previewSide = step === "front" ? "front" : "back";
 
     useEffect(() => {
         const unsubscribe = useDesignStore.subscribe((state, prevState) => {
@@ -153,7 +154,7 @@ export const DesignerPage = () => {
             </div>
 
             <div className="mb-4 max-h-40vh">
-                <CanPreview2D />
+                <CanPreview2D side={previewSide} />
             </div>
         
             <h3 className="text-center mt-4">{STEP_SUBTITLE[step]}</h3>
