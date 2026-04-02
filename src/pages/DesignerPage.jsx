@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { GuestSignup } from "../features/Auth/components/GuestSignup";
 import { useDesignStore } from "../store/designStore";
 import { useNavigate, useParams } from "react-router-dom";
  
@@ -136,7 +135,6 @@ export const DesignerPage = () => {
 
     return (
         <div className="container mx-auto p-4">
-            <GuestSignup />
    
             <div className="flex items-center justify-between mb-6">
                 <BackButton onClick={handleBack} />

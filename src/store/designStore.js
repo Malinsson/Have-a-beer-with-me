@@ -1,13 +1,14 @@
 import { create } from "zustand";
 import supabase from "../lib/supabase";
 
-const initialName = { firstName: '', lastName: '' };
+const initialName = { firstName: '', drinkType: '' };
 const initialFront = {
     imageUrl: null,
     texturePreset: 'default',
     textColor: '#000000',
     textFont: 'Arial, sans-serif',
     textAlignment: 'center',
+    drinkType: '',
 };
 const initialBack = {
     tags: [],
@@ -24,7 +25,7 @@ export const useDesignStore = create((set, get) => ({
     name: initialName,
     front: initialFront,
     back: initialBack,
-    setName: (firstName, lastName) => set({ name: { firstName, lastName } }),
+    setName: (firstName, drinkType) => set({ name: { firstName, drinkType } }),
     setFront: (frontData) => set((state) => ({ front: { ...state.front, ...frontData } })),
     setBack: (backData) => set((state) => ({ back: { ...state.back, ...backData } })),
 

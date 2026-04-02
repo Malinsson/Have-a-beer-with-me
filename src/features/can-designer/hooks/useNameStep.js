@@ -25,7 +25,9 @@ export const useNameStep = () => {
             setSuccess(true);
             setError(null);
             return true;
+
         } catch (error) {
+            
             console.error("Error saving name:", error);
             setSuccess(false);
             setError(error.message);
