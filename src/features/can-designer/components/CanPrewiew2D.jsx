@@ -3,11 +3,11 @@ import baseCan from "../../../assets/images/baseCan.png";
 import { TAGS, TEXT_ALIGNMENT } from "../constants";
 
 const TEXTURE_STYLES = {
-    default: "linear-gradient(135deg, #f0f0f0 0%, #e2e2e2 100%)",
-    "texture-1": "repeating-linear-gradient(135deg, #f7f7f7 0px, #f7f7f7 8px, #ececec 8px, #ececec 16px)",
-    "texture-2": "radial-gradient(circle at 20% 20%, #0c8e40 0%, #32adaf7f 40%, #1fa8ca 100%)",
+    default: "linear-gradient(135deg, #f0f0f090 0%, #e2e2e290 100%)",
+    "texture-1": "repeating-linear-gradient(135deg, #f7f7f790 0px, #f7f7f790 8px, #ececec90 8px, #ececec90 16px)",
+    "texture-2": "radial-gradient(circle at 20% 20%, #0c8e4090 0%, #32adaf7f 40%, #1fa8ca90 100%)",
     "texture-3": "linear-gradient(180deg, #b126269d 0%, #250d0d90 55%, #95898989 100%)",
-    "texture-4": "repeating-linear-gradient(90deg, #f2f2f2 0px, #f2f2f2 6px, #e4e4e4 6px, #e4e4e4 12px)",
+    "texture-4": "repeating-linear-gradient(90deg, #f2f2f290 0px, #f2f2f290 6px, #e4e4e490 6px, #e4e4e490 12px)",
 };
 
 export const CanPreview2D = () => {

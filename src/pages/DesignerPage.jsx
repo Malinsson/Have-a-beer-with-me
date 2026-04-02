@@ -92,6 +92,10 @@ export const DesignerPage = () => {
         setFront({ textFont: fontFamily });
     };
 
+    const handleAlignmentChange = (alignment) => {
+        setFront({ textAlignment: alignment });
+    };
+
     const handleBackDescriptionChange = (description) => {
         setBack({ description });
     };
@@ -163,9 +167,11 @@ export const DesignerPage = () => {
                     selectedTexture={front.texturePreset}
                     selectedColor={front.textColor}
                     selectedFont={front.textFont}
+                    selectedAlignment={front.textAlignment}
                     onTextureSelect={handleTextureSelect}
                     onColorSelect={handleColorSelect}
                     onFontSelect={handleFontSelect}
+                    onAlignmentChange={handleAlignmentChange}
                     onImageUpload={handleImageUpload}
                 />
             )}

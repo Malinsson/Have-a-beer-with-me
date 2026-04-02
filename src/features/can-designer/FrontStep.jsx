@@ -1,7 +1,7 @@
 import { CiImageOn } from "react-icons/ci";
 import { IoTextOutline } from "react-icons/io5";
-import { PiAlignCenterVertical } from "react-icons/pi";
 import { ImageUploader } from "./components/ImageUploader";
+import { AlignmentToggle } from "./components/AlignmentToggle";
 
 import { TEXTURES, COLORS, FONTS } from "./constants";
 
@@ -12,9 +12,11 @@ export const FrontStep = ({
     selectedTexture,
     selectedColor,
     selectedFont,
+    selectedAlignment,
     onTextureSelect,
     onColorSelect,
     onFontSelect,
+    onAlignmentChange,
     onImageUpload
 }) => {
 
@@ -85,9 +87,7 @@ export const FrontStep = ({
                                 </option>
                             ))}
                         </select>
-                        <div className="bg-dark-blue rounded-full p-2">
-                            <PiAlignCenterVertical className="text-4xl text-white" />
-                        </div>
+                        <AlignmentToggle value={selectedAlignment} onChange={onAlignmentChange} />
                     </div>
 
 
