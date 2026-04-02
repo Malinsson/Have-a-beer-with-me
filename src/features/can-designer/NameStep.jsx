@@ -5,6 +5,7 @@ import { Button } from "../../components/Button";
 import { ProgressDots } from "../../components/ProgressDots";
 import { DrinkTypeStep } from "./DrinkTypeStep";
 import { useDesignStore } from "../../store/designStore";
+import { getDrinkTypeLabelById } from "./constants";
 
 
 export const NameStep = () => {
@@ -25,14 +26,18 @@ export const NameStep = () => {
         const didSave = await saveName(firstName, lastName);
 
         if (didSave) {
-            setName(firstName, selectedDrink || "");
-            setFront({ drinkType: selectedDrink || "" });
+            const drinkTypeId = selectedDrink || "";
+            const drinkTypeLabel = getDrinkTypeLabelById(drinkTypeId);
+
+            setName(firstName, drinkTypeLabel);
+            setFront({ drinkTypeId, drinkType: drinkTypeLabel });
             setBack({ department });
             navigate("/design", {
                 state: {
                     firstName,
                     department,
-                    drinkType: selectedDrink || "",
+                    drinkTypeId,
+                    drinkTypeLabel,
                 },
             });
         }

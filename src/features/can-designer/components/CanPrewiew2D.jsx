@@ -20,7 +20,7 @@ export const CanPreview2D = () => {
         return acc;
     }, {});
 
-    const headingText = [name.firstName, name.lastName].filter(Boolean).join(" ") || "DIN DESIGN";
+    const headingText = [`${name.firstName}'s ${name.drinkType}`].filter(Boolean).join(" ") || "DIN DESIGN";
     const textureBackground = TEXTURE_STYLES[front.texturePreset] || TEXTURE_STYLES.default;
     const textAlignClass = TEXT_ALIGNMENT[front.textAlignment] || TEXT_ALIGNMENT.center;
 

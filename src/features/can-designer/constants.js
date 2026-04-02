@@ -69,3 +69,12 @@ export const TYPES = [
   { id: "5", label: "Ipa" },
   { id: "6", label: "Ale" },
 ];
+
+const DRINK_TYPE_BY_ID = TYPES.reduce((acc, type) => {
+  acc[type.id] = type;
+  return acc;
+}, {});
+
+export const getDrinkTypeById = (id) => DRINK_TYPE_BY_ID[id] || null;
+
+export const getDrinkTypeLabelById = (id) => getDrinkTypeById(id)?.label || "";
