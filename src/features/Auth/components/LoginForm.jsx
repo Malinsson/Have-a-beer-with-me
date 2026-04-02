@@ -19,15 +19,15 @@ export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
 
     return (
         <form onSubmit={handleSubmit} noValidate
-        className="mt-2 bg-white w-full mx-auto"
+        className="mt-2"
         >
-            <div className="flex flex-col gap-1 my-4 justify-center">
+            <div className="flex flex-col gap-4 border p-4 my-4 justify-center">
 
                 <div>
-                    <label htmlFor="loginEmail" className="block text-sm font-medium text-gray-700">Mejladress</label>
+                    <label htmlFor="loginEmail"><p>Mejladress</p></label>
 
                     <input 
-                    className="px-4 py-2 border border-var(--border-color) bg-white w-full mx-auto"
+                        className="mt-2 px-4 py-2 border w-full"
                         id="loginEmail"
                         type="text" 
                         placeholder="Mejladress"
@@ -43,10 +43,10 @@ export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
 
                 <div>
 
-                    <label htmlFor="loginPassword" className="block text-sm font-medium text-gray-700">Lösenord</label>
+                    <label htmlFor="loginPassword" className="mt-2"><p>Lösenord</p></label>
 
                     <input 
-                    className="px-4 py-2 border border-var(--border-color) bg-white w-full mx-auto"
+                        className="mt-2 px-4 py-2 border w-full"
                         id="loginPassword"
                         type="password" 
                         placeholder="Lösenord"
@@ -63,18 +63,19 @@ export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
                     e.preventDefault();
                     onSwitchToSignup?.();
                 }}
-                className="text-sm mt-2 inline-block underline"
-                >Har inget konto? Skapa nu</a>
+                >Har inget konto? Skapa nu!</a>
 
             </div>
 
             {error && <p role="alert">{error}</p>}
 
-            <Button type="submit" 
-                    disabled={isLoading}
-                    text={isLoading ? "Loggar in…" : "Logga in"}
-                    >
-            </Button>
+            <Button 
+                type="submit" 
+                disabled={isLoading}
+                text={isLoading ? "Loggar in…" : "Logga in"}
+                className="w-full"
+            />
+
         </form>
     );
 };
