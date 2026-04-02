@@ -6,9 +6,10 @@ export const Button = ({
   variant = "primary", 
   type = "button", 
   disabled = false,
-  icon: Icon = MdOutlineArrowOutward, // defaults to arrow but can be overridden
-  showIcon = true,           // set to false to hide the icon entirely
+  icon: Icon = MdOutlineArrowOutward,
+  showIcon = true,
   iconSize = "text-base",
+  className = "" // Added this prop
 }) => {
 
   const styles = {
