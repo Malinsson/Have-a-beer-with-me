@@ -6,9 +6,10 @@ export const Button = ({
   variant = "primary", 
   type = "button", 
   disabled = false,
-  icon: Icon = MdOutlineArrowOutward, // defaults to arrow but can be overridden
-  showIcon = true,           // set to false to hide the icon entirely
+  icon: Icon = MdOutlineArrowOutward,
+  showIcon = true,
   iconSize = "text-base",
+  className = "" // Added this prop
 }) => {
 
   const styles = {
@@ -21,7 +22,8 @@ export const Button = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`${styles[variant]} px-7 py-2 flex items-center gap-2 text-base uppercase disabled:opacity-60 disabled:cursor-not-allowed`}
+      // Added ${className} and justify-center
+      className={`${styles[variant]} ${className} px-7 py-2 flex items-center justify-center gap-2 text-base uppercase transition-all disabled:opacity-60 disabled:cursor-not-allowed`}
     >
       {text}
       {showIcon && <Icon className={iconSize} />}
