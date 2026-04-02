@@ -19,9 +19,9 @@ export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
 
     return (
         <form onSubmit={handleSubmit} noValidate
-        className="mt-2 p-4"
+        className="mt-2"
         >
-            <div className="flex flex-col gap-4 border p-4 mb-4 justify-center">
+            <div className="flex flex-col gap-4 border p-4 my-4 justify-center">
 
                 <div>
                     <label htmlFor="loginEmail"><p>Mejladress</p></label>
@@ -69,19 +69,13 @@ export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
 
             {error && <p role="alert">{error}</p>}
 
-            {/* <button type="submit" disabled={isLoading}
-            className="mt-4 py-2 px-4 bg-dark-blue text-white rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                {isLoading
-                    ? "Loggar in…"
-                    : "Logga in"}
-            </button> */}
-            <div className="w-full">
-                <Button 
-                    type="submit" 
-                    disabled={isLoading}
-                    text={isLoading ? "Loggar in…" : "Logga in"}
-                />
-            </div>
+            <Button 
+                type="submit" 
+                disabled={isLoading}
+                text={isLoading ? "Loggar in…" : "Logga in"}
+                className="w-full"
+            />
+
         </form>
     );
 };
