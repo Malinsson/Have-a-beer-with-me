@@ -11,10 +11,31 @@ const TEXTURE_STYLES = {
     "texture-4": "repeating-linear-gradient(90deg, #f2f2f290 0px, #f2f2f290 6px, #e4e4e490 6px, #e4e4e490 12px)",
 };
 
-export const CanPreview2D = ({ side = "front" }) => {
-    const name = useDesignStore((state) => state.name);
-    const front = useDesignStore((state) => state.front);
-    const back = useDesignStore((state) => state.back);
+export const CanPreview2D = ({ side = "front", design = null }) => {
+    const nameFromStore = useDesignStore((state) => state.name);
+    const frontFromStore = useDesignStore((state) => state.front);
+    const backFromStore = useDesignStore((state) => state.back);
+
+    const useStoreData = !design;
+    const name = useStoreData ? nameFromStore : { firstName: "", drinkType: "", ...(design?.name || {}) };
+    const front = useStoreData
+        ? frontFromStore
+        : {
+              imageUrl: null,
+              texturePreset: "default",
+              textColor: "#000000",
+              textFont: "Inter, sans-serif",
+              textAlignment: "center",
+              ...(design?.front || {}),
+          };
+    const back = useStoreData
+        ? backFromStore
+        : {
+              tags: [],
+              description: "",
+              department: "",
+              ...(design?.back || {}),
+          };
 
     const tagLookup = TAGS.flatMap((group) => group.items).reduce((acc, tag) => {
         acc[tag.id] = tag.label;
@@ -37,7 +58,7 @@ export const CanPreview2D = ({ side = "front" }) => {
 
                         <div className={`absolute w-full h-full p-3 z-50 flex ${textAlignClass}`}>
                             <p
-                                className="leading-tight"
+                                className="leading-tight text-2xl"
                                 style={{ color: front.textColor, fontFamily: front.textFont }}
                             >
                                 {name.firstName}'

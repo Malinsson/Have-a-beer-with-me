@@ -54,6 +54,15 @@ export const DesignerPage = () => {
     const previewSide = step === "front" ? "front" : "back";
 
     useEffect(() => {
+        const hydrateLatestDesign = async () => {
+            const result = await useDesignStore.getState().loadLatestDesignForCurrentUser();
+            if (!result.success && result.error !== "No design found" && result.error !== "User not authenticated") {
+                console.log("Failed to hydrate latest design:", result.error);
+            }
+        };
+
+        hydrateLatestDesign();
+
         const unsubscribe = useDesignStore.subscribe((state, prevState) => {
             if (!hasHydratedRef.current) {
                 hasHydratedRef.current = true;
@@ -135,7 +144,8 @@ export const DesignerPage = () => {
         });
     };
 
-    const handleCreateCan = async () => {
+    const finalizeDesignAndOpenModal = async () => {
+        clearTimeout(timerRef.current);
         const result = await useDesignStore.getState().saveDesign("Final design");
         if (result.success) {
             setModalOpen(true);
@@ -143,6 +153,10 @@ export const DesignerPage = () => {
         }
 
         console.error("Failed to save design:", result.error);
+    };
+
+    const handleCreateCan = async () => {
+        await finalizeDesignAndOpenModal();
     };
 
     return (
@@ -203,14 +217,14 @@ export const DesignerPage = () => {
 
                 {step === "back" && (
                     <>
-                        <Button text="Skippa" onClick={() => setModalOpen(true)} variant="outlined" />
+                        <Button text="Skippa" onClick={finalizeDesignAndOpenModal} variant="outlined" />
                         <Button text="Gå vidare" onClick={() => setStep("info")} variant="primary" />
                     </>
                 )}
 
                 {step === "info" && (
                     <>
-                        <Button text="Skippa" onClick={() => setModalOpen(true)} variant="outlined" />
+                        <Button text="Skippa" onClick={finalizeDesignAndOpenModal} variant="outlined" />
                         <Button text="Gå vidare" onClick={() => setStep("social")} variant="primary" />
                     </>
                 )}
@@ -224,7 +238,7 @@ export const DesignerPage = () => {
                         github={back.socials.github}
                         onChange={handleSocialChange}
                     />
-                        <Button text="Skippa" onClick={() => setModalOpen(true)} variant="outlined" />
+                        <Button text="Skippa" onClick={finalizeDesignAndOpenModal} variant="outlined" />
                         <Button text="Gå vidare" onClick={() => setStep("konto")} variant="primary" />
                 </>
             )}
@@ -232,7 +246,7 @@ export const DesignerPage = () => {
             {step === "konto" && (
                 <>
                     <div className="flex justify-center gap-4 mt-8">
-                        <Button text="Gästkonto" onClick={() => setModalOpen(true)} variant="outlined" 
+                        <Button text="Gästkonto" onClick={finalizeDesignAndOpenModal} variant="outlined" 
                         />
                         <Button
                             text="Skapa konto"
