@@ -9,7 +9,7 @@ export const Modal = ({ onConfirm }) => {
             onClick={onConfirm}
         >
             <div
-                className="bg-white rounded-2xl p-4 py-20 mx-6 flex flex-col items-center gap-4 max-w-sm w-full"
+                className="bg-white border p-4 py-20 mx-6 flex flex-col items-center gap-4 max-w-sm w-full"
                 onClick={(e) => e.stopPropagation()}
             >
                 <h3 className="text-2xl text-center text-dark-blue">
