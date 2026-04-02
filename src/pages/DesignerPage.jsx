@@ -27,7 +27,7 @@ const STEP_SUBTITLE = {
     front: "",
     back:  'Beskriv din största "AHA-Upplevelse" (max 140 tecken)',
     info:  "",
-    social: "Lägg till kontakt uppgifter",
+    social: "Lägg till kontaktuppgifter",
     konto: "Skapa ett konto för att spara din burk"
 };
 
@@ -135,15 +135,24 @@ export const DesignerPage = () => {
             <GuestSignup />
    
             <div className="flex items-center justify-between mb-6">
-                <BackButton onClick={handleBack} />
-                <h2 className="absolute left-1/2 transform -translate-x-1/2 text-2xl">{STEP_TITLE[step]}</h2>
+                {(step === "front") && (
+                    <div className="text-center w-full">
+                        <h3>{STEP_TITLE[step]}</h3>
+                    </div>
+                )}
+                {(step !== "front" ) && (
+                    <>
+                        <BackButton onClick={handleBack} />
+                        <h3 className="absolute left-1/2 transform -translate-x-1/2">{STEP_TITLE[step]}</h3>
+                    </>
+                )}
             </div>
 
             <div className="mb-6 max-h-40vh">
                 <CanPreview2D />
             </div>
         
-            <h3 className="text-center mt-4">{STEP_SUBTITLE[step]}</h3>
+            <p className="bold">{STEP_SUBTITLE[step]}</p>
 
             {/* Steps */}
 
@@ -177,21 +186,21 @@ export const DesignerPage = () => {
             )}
 
             {/* Bottom buttons */}
-            <div className="flex justify-center gap-4 mt-8">
+            <div className="flex justify-center gap-4 mt-4">
                 {step === "front" && (
-                    <Button text="Baksida" onClick={() => setStep("back")} variant="primary" />
+                    <Button text="Designa Baksida" onClick={() => setStep("back")} variant="primary" />
                 )}
 
                 {step === "back" && (
                     <>
-                        <Button text="Skippa" onClick={() => setModalOpen(true)} variant="outlined" />
+                        <Button text="Skippa" onClick={() => setModalOpen(true)} variant="outlined" showIcon={false} />
                         <Button text="Gå vidare" onClick={() => setStep("info")} variant="primary" />
                     </>
                 )}
 
                 {step === "info" && (
                     <>
-                        <Button text="Skippa" onClick={() => setModalOpen(true)} variant="outlined" />
+                        <Button text="Skippa" onClick={() => setModalOpen(true)} variant="outlined" showIcon={false} />
                         <Button text="Gå vidare" onClick={() => setStep("social")} variant="primary" />
                     </>
                 )}
@@ -205,16 +214,17 @@ export const DesignerPage = () => {
                         github={back.socials.github}
                         onChange={handleSocialChange}
                     />
-                        <Button text="Skippa" onClick={() => setModalOpen(true)} variant="outlined" />
+                    <div className="flex justify-center gap-4">
+                        <Button text="Skippa" onClick={() => setModalOpen(true)} variant="outlined" showIcon={false} />
                         <Button text="Gå vidare" onClick={() => setStep("konto")} variant="primary" />
+                    </div>
                 </>
             )}
 
             {step === "konto" && (
                 <>
-                    <div className="flex justify-center gap-4 mt-8">
-                        <Button text="Gästkonto" onClick={() => setModalOpen(true)} variant="outlined" 
-                        />
+                    <div className="flex justify-center gap-4">
+                        <Button text="Gästkonto" onClick={() => setModalOpen(true)} variant="outlined" showIcon={false} />
                         <Button
                             text="Skapa konto"
                             onClick={() => document.getElementById("konto-signup-form")?.requestSubmit()}
