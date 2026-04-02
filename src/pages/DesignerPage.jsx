@@ -90,6 +90,10 @@ export const DesignerPage = () => {
         setBack({ description });
     };
 
+    const handleImageUpload = (imageUrl) => {
+        setFront({ imageUrl });
+    };
+
     const toggleOption = (id) => {
         const MAX_TAGS = 3;
         const isAlreadySelected = back.tags.includes(id);
@@ -155,6 +159,7 @@ export const DesignerPage = () => {
                     selectedColor={front.textColor}
                     onTextureSelect={handleTextureSelect}
                     onColorSelect={handleColorSelect}
+                    onImageUpload={handleImageUpload}
                 />
             )}
 

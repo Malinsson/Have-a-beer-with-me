@@ -13,6 +13,7 @@ export const FrontStep = ({
     selectedColor,
     onTextureSelect,
     onColorSelect,
+    onImageUpload
 }) => {
 
     const activeClass = "border-2 py-1 px-3";
@@ -59,7 +60,7 @@ export const FrontStep = ({
                 </div>
 
                 <section className="flex border items-center relative w-full mt-4 mb-12 mx-auto">
-                        <ImageUploader />
+                        <ImageUploader onUploadComplete={onImageUpload} />
                 </section>
 
                 </>
