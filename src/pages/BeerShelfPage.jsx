@@ -95,13 +95,13 @@ export const BeerShelfPage = () => {
                             <button
                                 key={saved.id}
                                 type="button"
-                                className="text-left flex flex-col gap-4 rounded-2xl border border-black/10 bg-white/80 p-4"
+                                className="text-left flex flex-col gap-4 p-4"
                                 onClick={() => navigate(`/can/${saved.designs.id}`)}
                             >
                                 <CanPreview2D side="front" design={saved.designs?.design_data} />
                                 <div>
                                     <h3 className="text-xl font-semibold uppercase">
-                                        {saved.designs?.name}
+                                        {saved.designs?.design_data?.front?.name?.firstName}
                                     </h3>
                                     <p className="text-sm text-dark-gray">
                                         {saved.designs?.design_data?.back?.department || ""}

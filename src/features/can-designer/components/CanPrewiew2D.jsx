@@ -45,6 +45,11 @@ export const CanPreview2D = ({ side = "front", design = null }) => {
     const textureBackground = TEXTURE_STYLES[front.texturePreset] || TEXTURE_STYLES.default;
     const textAlignClass = TEXT_ALIGNMENT[front.textAlignment] || TEXT_ALIGNMENT.center;
     const isFrontSide = side === "front";
+    
+    const firstName = (name.firstName || "").trim();
+    const firstNamePossessive = firstName
+        ? `${firstName}${/s$/i.test(firstName) ? "'" : "'s"}`
+        : "";
 
     return (
         <div className="relative max-w-45 mx-auto">
@@ -61,8 +66,7 @@ export const CanPreview2D = ({ side = "front", design = null }) => {
                                 className="leading-tight text-2xl"
                                 style={{ color: front.textColor, fontFamily: front.textFont }}
                             >
-                                {name.firstName}'
-                                <small style={{ color: front.textColor, fontFamily: front.textFont }}>s</small>
+                                {firstNamePossessive}
                                 <br />
                                 {name.drinkType}
                             </p>
