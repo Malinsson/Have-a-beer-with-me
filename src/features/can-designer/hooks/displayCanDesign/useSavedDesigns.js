@@ -34,7 +34,7 @@ export const useSavedDesigns = (userId) => {
       if (cancelled) return;
 
       if (error) setError(error);
-      else setSavedDesigns(data);
+      else setSavedDesigns(data || []);
       setLoading(false);
     };
 
