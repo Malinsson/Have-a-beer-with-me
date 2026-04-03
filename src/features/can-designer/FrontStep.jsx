@@ -20,7 +20,7 @@ export const FrontStep = ({
     onImageUpload
 }) => {
 
-    const activeClass = "border-2 py-1 px-3";
+    const activeClass = "border-1 py-1 px-3";
     const inactiveClass = "py-1 px-3";
     const selectedFontStyle = FONTS.some((font) => font.style === selectedFont)
         ? selectedFont
@@ -50,8 +50,9 @@ export const FrontStep = ({
             {/* Image mode — textures */}
             {mode === "image" && (
                 <>
-                <h5 className="text-center my-4"><strong>ETIKETT DESIGN</strong></h5>
-
+                <div className="text-center w-full pb-6">
+                    <p className="bold">Etikettdesign</p>
+                </div>
                 <div className="flex justify-center gap-4">
                     {TEXTURES.map((texture) => (
                         <button
@@ -59,7 +60,7 @@ export const FrontStep = ({
                             type="button"
                             onClick={() => onTextureSelect(texture.id)}
                             //aria-pressed={selectedTexture === texture.id}
-                            className={` overflow-hidden border-2 transition-colors ${
+                            className={` overflow-hidden border-1 transition-colors ${
                                 selectedTexture === texture.id ? "border-black" : "border-transparent"
                             }`}
                         >
@@ -108,7 +109,7 @@ export const FrontStep = ({
                                 aria-pressed={selectedColor === color.hex}
                                 className={`w-10 h-10 transition-all border ${
                                     color.hex === "#ffffff" ? "border-neutral-300" : "border-transparent"
-                                } ${selectedColor === color.hex ? "shadow-[0_0_0_3px_black]" : ""}`}
+                                } ${selectedColor === color.hex ? "shadow-[0_0_0_2px_black]" : ""}`}
                                 style={{ backgroundColor: color.hex }}
                             />
                         ))}

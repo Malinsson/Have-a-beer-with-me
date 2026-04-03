@@ -25,7 +25,9 @@ export const HomePage = () => {
                     
 
                     {/* Using mt-6 instead of mt-50 for standard spacing */}
-                    <Button text="Bygg din öl nu" onClick={() => navigate("/intro")} variant="primary" />
+                    <div className="w-50">
+                        <Button text="Bygg din öl nu" onClick={() => navigate("/intro")} />
+                    </div>
                 </div>
             </section>
 
@@ -34,13 +36,15 @@ export const HomePage = () => {
                     <Carousel data={slides} />
                 </div>
                 <div className="flex flex-col items-end">
-                    <p>
-                        <large className="pb-6">
+                    <p className="pb-6">
+                        <large>
                             *SKAPA DIN EGNA DIGITALA burk för YRGOS LIA-event på Visual Arena, 
                             Lindholmen. Här möter Digitala Designers och Webbutvecklare branschen
                         </large>
                     </p>
-                    <Button text="Bygg din öl nu" onClick={() => navigate("/intro")} variant="primary" />
+                    <div className="w-50">
+                        <Button text="Bygg din öl nu" onClick={() => navigate("/intro")} />
+                    </div>
                 </div>
             </section>
         </div>

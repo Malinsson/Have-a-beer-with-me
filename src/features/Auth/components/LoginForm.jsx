@@ -58,7 +58,9 @@ export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
                     />
                 </div>
 
-                <a href="#"
+                <a 
+                className="a-underline"
+                href="#"
                 onClick={(e) => {
                     e.preventDefault();
                     onSwitchToSignup?.();

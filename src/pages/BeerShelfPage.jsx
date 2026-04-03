@@ -1,16 +1,18 @@
 // The beercan shelf page, where you can see all the cans you have collected.
 import { useSavedDesigns } from "../features/can-designer/hooks/displayCanDesign/useSavedDesigns.js";
-import scanCanImage from "../assets/images/scan_can.svg";
+import scanCanImage from "../assets/images/barhylla_empty.svg";
 
 import { useState, useEffect, use } from "react";
 import { BackButton } from "../components/BackButton";
 import { supabase } from "../lib/supabase.js";
 import { useNavigate } from "react-router-dom";
 import { QRScanner } from "../components/QRScanner.jsx";
+import { IoSearchOutline } from "react-icons/io5";
 
 export const BeerShelfPage = () => {
     const [userId, setUserId] = useState(null);
     const [authLoading, setAuthLoading] = useState(true);
+    const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -22,6 +24,13 @@ export const BeerShelfPage = () => {
         getUser();
     }, []);
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        // Add your search logic here
+        console.log("Search query:", searchQuery);
+        closeMenu();
+    };
+
     const { savedDesigns, loading, error } = useSavedDesigns(userId);
 
     if (authLoading) return (
@@ -30,34 +39,8 @@ export const BeerShelfPage = () => {
         </div>
     );
 
-    if (!userId) return (
-        <section className="container mx-auto p-4">
-            <div className="flex items-center justify-between mb-6">
-                <BackButton />
-                <h2 className="absolute left-1/2 transform -translate-x-1/2 text-2xl">
-                    Min Barhylla
-                </h2>
-            </div>
-            <div className="flex justify-center items-center h-40">
-                <img
-                    src={scanCanImage}
-                    alt="can"
-                />
-                <p className="text-center px-8">
-                    Du måste vara inloggad för att se din hylla.
-                </p>
-                <button
-                    onClick={() => navigate("/auth")}
-                    className="flex flex-row items-center gap-3 bg-dark-blue rounded-full p-3 w-fit"
-                >
-                    <p className="text-white text-2xl">Logga in</p>
-                </button>
-            </div>
-        </section>
-    );
-
     return (
-        <section className="container mx-auto p-4">
+        <section className="container mx-auto p-4 flex flex-col">
             <div className="flex items-center justify-between mb-6">
                 <BackButton />
                 <h2 className="absolute left-1/2 transform -translate-x-1/2 text-2xl">
@@ -73,19 +56,37 @@ export const BeerShelfPage = () => {
                 ) : error ? (
                     <p className="text-center text-red-500">Något gick fel.</p>
                 ) : savedDesigns.length === 0 ? (
-                    <div className="flex flex-col items-center gap-4 mt-10"> 
+                    <div className="flex flex-col items-center gap-4 flex-1 pb-2"> 
                         <img 
                             src={scanCanImage}
                             alt="can" 
+                            className="w-40 h-auto object-contain my-10"
                         />
-                        <p className="text-center px-8">
+                        <p className="text-center mt-10">
                             Din barhylla är tom. Scanna andras burkar för att fylla din barhylla.
                         </p>
                         <QRScanner 
                             text="Scanna din första öl" 
                             variant="primary" 
                             onScan={(data) => navigate(`/profile/${data}`)} 
-                            />
+                        />
+                        <div className="w-full mt-auto">
+                            <form onSubmit={handleSearch} className="flex flex-col mt-15 gap-2">
+                                <label><p>Sök efter burk-id</p></label>
+                                <div className="flex items-center gap-3">
+                                    <input
+                                        type="text"
+                                        placeholder="andersandersson..."
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        className="w-full px-4 py-2 border border-b-grey"
+                                    />
+                                    <button type="submit" className="flex-shrink-0">
+                                        <IoSearchOutline className="text-2xl" />
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 ) : (
                     <div className="grid grid-cols-2 gap-6 p-2">

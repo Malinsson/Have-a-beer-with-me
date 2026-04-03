@@ -49,12 +49,12 @@ export const IntroPage = () => {
 
             {step === "first" && (
                 <div className="flex flex-col p-4 justify-center items-center gap-6">
-                    <section className="w-full">
+                    <section>
                         <ProgressDots total={3} current={1} />
                     </section>
-                    <div className="flex flex-row gap-4">
+                    <div className="flex flex-row gap-4 w-full">
                         <Button text="Skippa" onClick={() => setStep("last")} variant="outlined" />
-                        <Button text="Nästa" onClick={() => setStep("secound")} variant="primary" />
+                        <Button text="Nästa" onClick={() => setStep("secound")} />
                     </div>
                 </div>
             )}
@@ -64,7 +64,7 @@ export const IntroPage = () => {
                     <section>
                         <ProgressDots total={3} current={2} />
                     </section>
-                    <div className="flex flex-row gap-4">
+                    <div className="flex flex-row gap-4 w-full">
                         <Button text="Skippa" onClick={() => setStep("last")} variant="outlined" />
                         <Button text="Nästa" onClick={() => setStep("last")} variant="primary" />
                     </div>

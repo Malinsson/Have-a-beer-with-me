@@ -23,25 +23,24 @@ export const SignupForm = ({ formId = "signup-form", hideSubmitButton = false, o
         <form
         id={formId}
         onSubmit={handleSubmit} noValidate autoComplete="off"
-        className=" bg-white w-full mx-auto"
+        className="border w-full mx-auto mt-4 flex flex-col p-4"
         >
-            
-            <label htmlFor="signupEmail" className="block text-sm font-medium py-1">Mejladress</label>
+            <label htmlFor="signupEmail" className="mt-4 py-1"><p>Mejladress</p></label>
             <input
-            className="px-4 py-2 border border-var(--border-color) bg-white w-full mx-auto"
+            className="border border-b-grey px-4 py-2 w-full mx-auto"
                 type="email"
-                placeholder="Mejladress"
+                placeholder="epostadress@mail.se"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 autoComplete="email"
             />
 
-            <label htmlFor="signupPassword" className="block text-sm font-medium mt-4 py-1">Lösenord</label>
+            <label htmlFor="signupPassword" className="mt-4 py-1"><p>Lösenord</p></label>
             <input 
-            className="px-4 py-2 border border-var(--border-color) bg-white w-full mx-auto"
+                className="border border-b-grey px-4 py-2 w-full mx-auto"
                 type="password" 
-                placeholder="Lösenord"
+                placeholder="********"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required    
@@ -49,16 +48,20 @@ export const SignupForm = ({ formId = "signup-form", hideSubmitButton = false, o
                 autoComplete="new-password"
             />
 
-            {error && <p role="alert">{error}</p>}
-            {success && <p role="status">{success}</p>}
+            <div className="mt-2 text-yrgo-red">
+                {error && <p role="alert">{error}</p>}
+            </div>
+            <div className="mt-2 text-green-600">
+                {success && <p role="status">{success}</p>}
+            </div>
 
             <a
+                className="a-underline mt-2"
                 href="#"
                 onClick={(e) => {
                     e.preventDefault();
                     onSwitchToLogin?.();
                 }}
-                className="text-sm mt-2 inline-block underline"
             >
                 Har du redan ett konto? Logga in
             </a>

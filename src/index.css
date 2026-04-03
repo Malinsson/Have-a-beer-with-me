@@ -4,7 +4,7 @@
     --color-yrgo-red: #E51236;
     --color-dark-blue: #001A52;
     --color-dark-gray: #5B5B5B;
-    --color-border-grey: #797979;
+    --color-b-grey: #797979;
 }
 
 @layer base {
@@ -31,7 +31,7 @@
     h3 {
         font-size: var(--text-xl);
         font-weight: 600;
-        
+        text-transform: uppercase;
     }
 
     h4 {
@@ -54,13 +54,21 @@
         text-transform: uppercase;
         line-height: 1.2;
     }
+
+    .bold {
+        font-weight: 600;
+    }
     
     a {
-        font-size: var(--text-xs);
-        font-weight: 400;
         text-transform: uppercase;
+        font-size: var(--text-base);
+        font-weight: 600;
+    }
+
+    .a-underline {
+        font-weight: 400;
+        font-size: var(--text-xs);
         text-decoration: underline;
-        letter-spacing: 1.5px;
     }
 
     

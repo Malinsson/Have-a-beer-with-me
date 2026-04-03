@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { IoSearchOutline, IoCloseOutline } from "react-icons/io5";
-import { RxHamburgerMenu } from "react-icons/rx";
+import { IoSearchOutline, IoCloseSharp } from "react-icons/io5";
+import { GiHamburgerMenu } from "react-icons/gi";
 import { CgProfile } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
 import { useIsSignedIn } from "../shared/hooks/useIsSignedIn";
 import { useLogout } from "../features/Auth/hooks/useLogout";
 import { useIsGuest } from "../shared/hooks/useIsGuest";
-import { LoginForm } from "../features/Auth/components/LoginForm";
+// import { LoginForm } from "../features/Auth/components/LoginForm";
 import { useUserSlug } from "../features/profile/hooks/useUserSlug";
 import Logo from "../assets/images/yrgo.png";
 
@@ -24,9 +24,12 @@ export const Header = () => {
     const NAV_LINKS = [
         { label: "Hem", href: "/" },
         { label: "Min profil", href: `/profile/${slug}` },
-        { label: "Min ölhylla", href: `/profile/${slug}/hylla` },
-        { label: "Logga ut", href: "#", action: "logout" },
-        { label: "Skapa konto", href: "/login" },
+        { label: "Min barhylla", href: `/profile/${slug}/hylla` },
+        { 
+            label: isSignedIn && !isGuest ? "Logga ut" : "Logga in / Skapa konto",
+            href: isSignedIn && !isGuest ? "#" : "/login",
+            action: isSignedIn && !isGuest ? "logout" : undefined
+          },
     ];
 
     const toggleMenu = () => setMenuOpen((prev) => !prev);
@@ -96,63 +99,63 @@ export const Header = () => {
                     aria-expanded={menuOpen}
                     aria-controls="nav-menu"
                 >
-                    {menuOpen ? <IoCloseOutline /> : <RxHamburgerMenu className="text-3xl"/>}
+                    {menuOpen ? <IoCloseSharp /> : <GiHamburgerMenu />}
                 </button>
             </div>
 
             <nav 
                 id="nav-menu" 
                 className={`
-                    fixed top-16 left-0 right-0 w-full h-screen bg-white flex flex-col p-6 transition-all duration-300 ease-in-out
-                    ${menuOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"}
+                    fixed top-16 left-0 right-0 w-full bg-white flex flex-col p-6
+                    transition-all duration-300 ease-in-out
+                    ${menuOpen 
+                        ? "opacity-100 translate-y-0 pointer-events-auto" 
+                        : "opacity-0 -translate-y-2 pointer-events-none"
+                    }
+
                 `}
                 style={{ zIndex: 55 }}
             >
-                {(isSignedIn || isGuest) && (
-                    <ul className="flex flex-col gap-8">
-                        {NAV_LINKS.filter(link => {
-                            if(link.action === "logout"){
-                                return isSignedIn && !isGuest
-                            }
-                            if(link.href === "/login"){
-                                return isGuest
-                            }
-                            return true
-                        }).map((link) => (
+                
+                    <ul className={`
+                        flex flex-col gap-8
+                        transition-opacity duration-200
+                        ${menuOpen ? "opacity-100 delay-150" : "opacity-0"}
+                      `}>
+                        {NAV_LINKS.map((link) => (
                             <li key={link.href}>
                                 <a 
                                     href={link.href} 
                                     onClick={(event) => handleNavLinkClick(event, link)}
-                                    className="text-2xl font-regular tracking-tighter"
                                 >
                                     {link.label}
                                 </a>
                             </li>
                         ))}
 
-                        <form onSubmit={handleSearch} className="w-full">
-                            <label className="text-2xl font-regular tracking-tighter">Sök burk-ID</label>
-                            <div className="flex justify-between gap-2 mt-4">
+                        <form onSubmit={handleSearch} className="w-full mb-2">
+                            <label className="text-base font-semibold uppercase">Sök burk-ID</label>
+                            <div className="flex justify-between gap-2 mt-2">
                                 <input
                                     type="text"
                                     placeholder="Sök öl burk..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="w-full px-4 py-2 border border-black rounded-lg"
+                                    className="w-full px-4 py-2 border border-b-grey"
                                 />
-                                <button type="submit" className="bg-blue-950 rounded-full p-2">
-                                    <IoSearchOutline className="text-2xl text-white" />
+                                <button type="submit">
+                                    <IoSearchOutline className="text-3xl" />
                                 </button>
                             </div>
                         </form>
                     </ul>
-                )}
+                
                     
-                {!isSignedIn && !isGuest && (
+                {/* {!isSignedIn && !isGuest && (
                     <div className="w-full max-w-sm mx-auto mt-12">
                         <LoginForm onSuccess={closeMenu} />
                     </div>
-                )}
+                )} */}
             </nav>
         </header>
     );

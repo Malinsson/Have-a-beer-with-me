@@ -12,10 +12,10 @@ export function ImageUploader({ onUploadComplete }) {
 
 
   return (
-    <div className="w-full min-h-10 flex items-center justify-center mx-4 relative">
-      <label htmlFor='imageUploader' className="w-full flex items-center justify-center gap-2 cursor-pointer">
-        <div className="p-3 px-4">
-          <GoUpload className="text-lg" />
+    <div className="w-full min-h-15 flex items-center justify-center mx-4 relative">
+      <label htmlFor='imageUploader' className="w-full flex items-center justify-center">
+        <div className="p-3">
+          <GoUpload className="text-base" />
         </div>
         <span className="uppercase text-md">Ladda Upp</span>    
       </label>
@@ -25,7 +25,7 @@ export function ImageUploader({ onUploadComplete }) {
         type="file" 
         accept="image/*" 
         onChange={onFileChange}
-        className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+        className="absolute inset-0 opacity-0 w-full h-full"
       />
 
       {imageSrc && (

@@ -65,9 +65,6 @@ export const ProfilePage = () => {
     if (loading) return <p>Laddar...</p>;
     if (error) return <p>Något gick fel.</p>;
 
-    if (loading) return <p>Laddar...</p>
-    if (error) return <p>Något gick fel.</p>
-
     return (
         <div id="top" className="container mx-auto p-4">
             <h2 className="text-center text-3xl font-normal">

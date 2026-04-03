@@ -1,5 +1,6 @@
 import { FaArrowRight } from "react-icons/fa6";
-import bomarkeLogoImg from '../assets/images/logo/bomarke.png';
+import { Button } from "./Button";
+import image from '../assets/images/beer.png';
 
 export const Modal = ({ onConfirm }) => {
     return (
@@ -8,22 +9,23 @@ export const Modal = ({ onConfirm }) => {
             onClick={onConfirm}
         >
             <div
-                className="bg-white rounded-2xl p-4 py-20 mx-6 flex flex-col items-center gap-4 max-w-sm w-full"
+                className="bg-white border p-4 py-20 mx-6 flex flex-col items-center gap-4 max-w-sm w-full"
                 onClick={(e) => e.stopPropagation()}
             >
-                <img src={bomarkeLogoImg} alt="bomarke logo" />
-                <h3 className="text-2xl text-center">
-                    Din öl är färdig! <br /> Börja Mingla
+                <h3 className="text-2xl text-center text-dark-blue">
+                    Din burk är färdig!
                 </h3>
+
+                <div className="w-40 h-40">
+                    <img src={image} alt="bomarke logo" />
+                </div>
                 
-                <button
+                <Button 
+                    text="Till min öl"
                     type="button"
                     onClick={onConfirm}
-                    className="bg-dark-blue rounded-full p-4 flex items-center gap-2 text-white uppercase text-sm"
-                >
-                    Till min öl
-                    <FaArrowRight className="text-white" />
-                </button>
+                    showIcon={true}
+                />
             </div>
         </div>
     );
