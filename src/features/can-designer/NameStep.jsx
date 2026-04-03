@@ -1,24 +1,50 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useNameStep } from "./hooks/useNameStep";
 import { Button } from "../../components/Button";
 import { ProgressDots } from "../../components/ProgressDots";
 import { DrinkTypeStep } from "./DrinkTypeStep";
+import { useDesignStore } from "../../store/designStore";
+import { getDrinkTypeLabelById } from "./constants";
 
 
-export const NameStep = ({ onNext }) => {
+export const NameStep = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [department, setDepartment] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [selectedDrink, setSelectedDrink] = useState(null);
 
+    const navigate = useNavigate();
+    const setName = useDesignStore((state) => state.setName);
+    const setFront = useDesignStore((state) => state.setFront);
+    const setBack = useDesignStore((state) => state.setBack);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        const didSave = await saveName(firstName, lastName);
+        const result = await saveName(firstName, lastName);
+        const didSave = result?.success;
+        const profileSlug = result?.slug || "";
+
         if (didSave) {
-            onNext({ firstName, lastName, department });
+            const drinkTypeId = selectedDrink || "";
+            const drinkTypeLabel = getDrinkTypeLabelById(drinkTypeId);
+
+            setName(firstName, drinkTypeLabel);
+            setFront({ drinkTypeId, drinkType: drinkTypeLabel });
+            setBack({ department });
+            navigate("/design", {
+                state: {
+                    firstName,
+                    department,
+                    drinkTypeId,
+                    drinkTypeLabel,
+                    slug: profileSlug,
+                },
+            });
         }
+
         setIsLoading(false);
     };
 

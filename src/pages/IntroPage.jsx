@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProgressDots } from "../components/ProgressDots";
 import { NameStep } from "../features/can-designer/NameStep";
+import { GuestSignup } from "../features/Auth/components/GuestSignup";
+
 
 import can from "../assets/images/can.jpg";
 import cans from "../assets/images/cans.jpg";
@@ -33,6 +35,7 @@ export const IntroPage = () => {
 
     return (
         <>
+
             <div className="p-4">
                 <h2>{STEP_TITLE[step]}</h2>
                 <p className="pt-3 w-55">{STEP_SUBTITLE[step]}</p>
@@ -70,6 +73,7 @@ export const IntroPage = () => {
 
             {step === "last" && (
                 <div className="flex flex-col p-4 justify-center items-center gap-6">
+                    <GuestSignup />
                     <NameStep />
                 </div>
             )}

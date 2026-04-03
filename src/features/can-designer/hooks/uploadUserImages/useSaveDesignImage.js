@@ -1,12 +1,6 @@
-import supabase from '../../../../lib/supabase'
+/*import supabase from '../../../../lib/supabase'
 import { defaultDesign } from '../../types/CanDesign'
 
-const generateShareId = () => {
-  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
-    return crypto.randomUUID()
-  }
-  return `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
-}
 
 export const useSaveDesignImage = () => {
   const saveDesignImage = async (imageUrl) => {
@@ -75,3 +69,4 @@ export const useSaveDesignImage = () => {
 
   return { saveDesignImage }
 }
+*/

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../../../lib/supabase";
+import { buildProfileSlug } from "../utils/slug";
 
 export const useUserSlug = () => {
     const [slug, setSlug] = useState(null);
@@ -17,12 +18,12 @@ export const useUserSlug = () => {
 
             const { data } = await supabase
                 .from("profiles")
-                .select("first_name, last_name")
+                .select("first_name, last_name, slug_value")
                 .eq("id", user.id)
                 .single();
             
             if (data) {
-                setSlug(`${data.first_name}-${data.last_name}`.toLowerCase());
+                setSlug(data.slug_value || buildProfileSlug(data.first_name, data.last_name));
             }
         };
 

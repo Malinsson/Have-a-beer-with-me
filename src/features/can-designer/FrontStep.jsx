@@ -1,7 +1,7 @@
-import { CiImageOn } from "react-icons/ci";
-import { IoTextOutline } from "react-icons/io5";
-import { PiAlignCenterVertical } from "react-icons/pi";
+import { MdOutlineImage } from "react-icons/md";
+import { BiFontFamily } from "react-icons/bi";
 import { ImageUploader } from "./components/ImageUploader";
+import { AlignmentToggle } from "./components/AlignmentToggle";
 
 import { TEXTURES, COLORS, FONTS } from "./constants";
 
@@ -11,23 +11,31 @@ export const FrontStep = ({
     onModeChange,
     selectedTexture,
     selectedColor,
+    selectedFont,
+    selectedAlignment,
     onTextureSelect,
     onColorSelect,
+    onFontSelect,
+    onAlignmentChange,
+    onImageUpload
 }) => {
 
     const activeClass = "border-1 py-1 px-3";
     const inactiveClass = "py-1 px-3";
+    const selectedFontStyle = FONTS.some((font) => font.style === selectedFont)
+        ? selectedFont
+        : FONTS[0].style;
 
     return (
         <>
             {/* Mode switcher */}
-            <div className="flex justify-center my-6 gap-8">
+            <div className="flex justify-center gap-4">
                 <button
                     onClick={() => onModeChange("image")}
                     className={mode === "image" ? activeClass : inactiveClass}
                     aria-pressed={mode === "image"}
                 >
-                    <CiImageOn className="text-2xl" />
+                    <MdOutlineImage className="text-3xl" />
                 </button>
 
                 <button
@@ -35,7 +43,7 @@ export const FrontStep = ({
                     className={mode === "text" ? activeClass : inactiveClass}
                     aria-pressed={mode === "text"}
                 >
-                    <IoTextOutline className="text-2xl" />
+                    <BiFontFamily className="text-3xl" />
                 </button>
             </div>
 
@@ -61,8 +69,8 @@ export const FrontStep = ({
                     ))}
                 </div>
 
-                <section className="flex border items-center relative w-full mt-4 mb-4 mx-auto">
-                        <ImageUploader />
+                <section className="flex border items-center relative w-full mt-4 mb-12 mx-auto">
+                        <ImageUploader onUploadComplete={onImageUpload} />
                 </section>
 
                 </>
@@ -70,22 +78,24 @@ export const FrontStep = ({
 
             {/* Text mode — colors + font */}
             {mode === "text" && (
-                <div className="flex flex-col justify-center gap-4">
-                    <div className="text-center w-full pb-2">
-                        <p className="bold">Typsnittsdesign</p>
-                    </div>
-                    <div className="flex justify-center flex-row items-center gap-4">
-                        <select className="border border-black px-4 py-2"
-                        aria-label="Välj typsnitt">
+                <div className="flex flex-col justify-center gap-4 w-full">
+                <h5 className="text-center mt-4"><strong>TYPSNITT DESIGN</strong></h5>
+
+                    <div className="flex justify-center flex-row items-center gap-4 mx-6">
+                        <select
+                            className="border border-black px-4 py-2 w-full h-10"
+                            aria-label="Välj typsnitt"
+                            style={{ fontFamily: selectedFontStyle }}
+                            value={selectedFontStyle}
+                            onChange={(e) => onFontSelect(e.target.value)}
+                        >
                             {FONTS.map((font) => (
-                                <option key={font.id} value={font.id}>
+                                <option key={font.id} value={font.style} style={{ fontFamily: font.style }}>
                                     {font.label}
                                 </option>
                             ))}
                         </select>
-                        <div className="bg-dark-blue p-2">
-                            <PiAlignCenterVertical className="text-2xl text-white" />
-                        </div>
+                        <AlignmentToggle value={selectedAlignment} onChange={onAlignmentChange} />
                     </div>
 
 
