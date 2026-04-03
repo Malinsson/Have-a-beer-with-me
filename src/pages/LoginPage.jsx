@@ -32,12 +32,12 @@ export const LoginPage = () => {
                     {signUp ? (
                         <SignupForm 
                         onSwitchToLogin={() => setSignUp(false)}
-                        onSuccess={() => navigate(`/profile/${slug || "guest"}`)}
+                        onSuccess={() => window.location.assign(`/profile/${slug || "guest"}`)}
                          />
                     ) : (
                         <LoginForm 
                         onSwitchToSignup={() => setSignUp(true)}
-                        onSuccess={() => navigate(`/profile/${slug || "guest"}`)} 
+                        onSuccess={() => window.location.assign(`/profile/${slug || "guest"}`)} 
                         />
                     )}
                 </div>

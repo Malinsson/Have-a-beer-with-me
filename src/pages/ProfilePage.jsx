@@ -17,13 +17,15 @@ export const ProfilePage = () => {
     const [designLoading, setDesignLoading] = useState(true);
     const [previewSide, setPreviewSide] = useState("front");
 
-    const { slug } = useParams();
     const navigate = useNavigate();
     const isGuest = useIsGuest();
 
+    const { slug } = useParams();
     const { profile, loading, error } = useProfileInfo(slug);
 
     useEffect(() => {
+        
+
         if (!profile?.id) return;
 
         let cancelled = false;
