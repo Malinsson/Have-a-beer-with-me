@@ -71,7 +71,20 @@
         text-decoration: underline;
     }
 
-    
+    .profile {
+        color: var(--color-dark-blue);
+    }
+
+    .profile-italic {
+        font-style: italic;
+    }
+
+    span {
+        font-weight: 500;
+        line-height: 1.2;
+        font-size: var(--text-sm);
+        text-transform: none;
+    }
     
   }
 
