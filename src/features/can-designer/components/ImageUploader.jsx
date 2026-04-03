@@ -2,6 +2,7 @@ import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import { useImageUploader } from '../hooks/uploadUserImages/useImageUploader'
 import { GoUpload } from "react-icons/go";
+import { Button } from '../../../components/Button';
 
 
 export function ImageUploader({ onUploadComplete }) {
@@ -28,8 +29,8 @@ export function ImageUploader({ onUploadComplete }) {
       />
 
       {imageSrc && (
-        <section className="fixed inset-0 z-100 bg-black/50 p-4 md:p-8 flex items-center justify-center">
-          <div className="w-full max-w-5xl h-[85vh] bg-white rounded-xl p-4 md:p-6 flex flex-col">
+        <section className="fixed inset-0 z-100 bg-black/70 p-4 md:p-8 flex items-center justify-center">
+          <div className="w-full max-w-5xl h-[85vh] bg-white p-4 md:p-6 flex flex-col">
             
             <h2 className="text-2xl text-center mt-10">Klicka för att beskära bilden</h2>
 
@@ -41,23 +42,23 @@ export function ImageUploader({ onUploadComplete }) {
             </div>
 
             <div className="mt-4 flex items-center justify-between gap-3">
-              <button
+              <Button
                 type="button"
                 onClick={clearImage}
-                className="py-2 px-4 border border-black rounded-full"
+                variant="outlined"
+                text="Avbryt"
               >
-                Avbryt
-              </button>
+              </Button>
 
 
-              <button
-                type="button"
+              <Button
+                type="submit"
                 onClick={handleUpload}
                 disabled={uploading}
-                className="py-2 px-4 bg-dark-blue text-white rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                text={uploading ? 'Laddar upp...' : 'Ladda upp'}
+                variant="primary"
               >
-                {uploading ? 'Laddar upp...' : 'Ladda upp'}
-              </button>
+              </Button>
             </div>
 
           </div>

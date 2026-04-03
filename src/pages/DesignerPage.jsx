@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { GuestSignup } from "../features/Auth/components/GuestSignup";
 import { useDesignStore } from "../store/designStore";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useUserSlug } from "../features/profile/hooks/useUserSlug";
+import supabase from "../lib/supabase";
  
 // import type { DesignerMode, Step } from "../features/can-designer/types.ts";
 import { KontoStep } from "../features/can-designer/KontoStep";
@@ -38,9 +39,11 @@ export const DesignerPage = () => {
     const [step, setStep] = useState("front");
     const [mode, setMode] = useState("image");
     const [modalOpen, setModalOpen] = useState(false);
+    const [canSkipKonto, setCanSkipKonto] = useState(false);
 
     const navigate = useNavigate();
-    const { slug } = useParams();
+    const location = useLocation();
+    const userSlug = useUserSlug();
 
     const timerRef = useRef(null);
     const hasHydratedRef = useRef(false);
@@ -49,8 +52,30 @@ export const DesignerPage = () => {
     const back = useDesignStore((state) => state.back);
     const setFront = useDesignStore((state) => state.setFront);
     const setBack = useDesignStore((state) => state.setBack);
+    const redirectSlug = location.state?.slug || userSlug || "guest";
+    const previewSide = step === "front" ? "front" : "back";
 
     useEffect(() => {
+        const syncAuthState = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            setCanSkipKonto(!!session && !session.user?.is_anonymous);
+        };
+
+        syncAuthState();
+
+        const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+            setCanSkipKonto(!!session && !session?.user?.is_anonymous);
+        });
+
+        const hydrateLatestDesign = async () => {
+            const result = await useDesignStore.getState().loadLatestDesignForCurrentUser();
+            if (!result.success && result.error !== "No design found" && result.error !== "User not authenticated") {
+                console.log("Failed to hydrate latest design:", result.error);
+            }
+        };
+
+        hydrateLatestDesign();
+
         const unsubscribe = useDesignStore.subscribe((state, prevState) => {
             if (!hasHydratedRef.current) {
                 hasHydratedRef.current = true;
@@ -69,12 +94,13 @@ export const DesignerPage = () => {
                 if (!result.success) {
                     console.log("Auto-save failed:", result.error);
                 }
-            }, 700);
+            }, 1000);
         });
 
         return () => {
             clearTimeout(timerRef.current);
             unsubscribe();
+            authListener.subscription.unsubscribe();
         };
     }, []);
 
@@ -86,8 +112,20 @@ export const DesignerPage = () => {
         setFront({ textColor: colorHex });
     };
 
+    const handleFontSelect = (fontFamily) => {
+        setFront({ textFont: fontFamily });
+    };
+
+    const handleAlignmentChange = (alignment) => {
+        setFront({ textAlignment: alignment });
+    };
+
     const handleBackDescriptionChange = (description) => {
         setBack({ description });
+    };
+
+    const handleImageUpload = (imageUrl) => {
+        setFront({ imageUrl });
     };
 
     const toggleOption = (id) => {
@@ -120,7 +158,8 @@ export const DesignerPage = () => {
         });
     };
 
-    const handleCreateCan = async () => {
+    const finalizeDesignAndOpenModal = async () => {
+        clearTimeout(timerRef.current);
         const result = await useDesignStore.getState().saveDesign("Final design");
         if (result.success) {
             setModalOpen(true);
@@ -130,17 +169,28 @@ export const DesignerPage = () => {
         console.error("Failed to save design:", result.error);
     };
 
+    const handleCreateCan = async () => {
+        await finalizeDesignAndOpenModal();
+    };
+
+    const handleSocialContinue = async () => {
+        if (canSkipKonto) {
+            await finalizeDesignAndOpenModal();
+            return;
+        }
+        setStep("konto");
+    };
+
     return (
         <div className="container mx-auto p-4">
-            <GuestSignup />
    
             <div className="flex items-center justify-between mb-6">
                 <BackButton onClick={handleBack} />
                 <h2 className="absolute left-1/2 transform -translate-x-1/2 text-2xl">{STEP_TITLE[step]}</h2>
             </div>
 
-            <div className="mb-6 max-h-40vh">
-                <CanPreview2D />
+            <div className="mb-4 max-h-40vh">
+                <CanPreview2D side={previewSide} />
             </div>
         
             <h3 className="text-center mt-4">{STEP_SUBTITLE[step]}</h3>
@@ -153,8 +203,13 @@ export const DesignerPage = () => {
                     onModeChange={setMode}
                     selectedTexture={front.texturePreset}
                     selectedColor={front.textColor}
+                    selectedFont={front.textFont}
+                    selectedAlignment={front.textAlignment}
                     onTextureSelect={handleTextureSelect}
                     onColorSelect={handleColorSelect}
+                    onFontSelect={handleFontSelect}
+                    onAlignmentChange={handleAlignmentChange}
+                    onImageUpload={handleImageUpload}
                 />
             )}
 
@@ -172,7 +227,7 @@ export const DesignerPage = () => {
                 />
              )}
 
-            {step === "konto" && (
+            {step === "konto" && !canSkipKonto && (
                 <KontoStep onSignupSuccess={handleCreateCan} />
             )}
 
@@ -184,14 +239,14 @@ export const DesignerPage = () => {
 
                 {step === "back" && (
                     <>
-                        <Button text="Skippa" onClick={() => setModalOpen(true)} variant="outlined" />
+                        <Button text="Skippa" onClick={finalizeDesignAndOpenModal} variant="outlined" />
                         <Button text="Gå vidare" onClick={() => setStep("info")} variant="primary" />
                     </>
                 )}
 
                 {step === "info" && (
                     <>
-                        <Button text="Skippa" onClick={() => setModalOpen(true)} variant="outlined" />
+                        <Button text="Skippa" onClick={finalizeDesignAndOpenModal} variant="outlined" />
                         <Button text="Gå vidare" onClick={() => setStep("social")} variant="primary" />
                     </>
                 )}
@@ -205,15 +260,15 @@ export const DesignerPage = () => {
                         github={back.socials.github}
                         onChange={handleSocialChange}
                     />
-                        <Button text="Skippa" onClick={() => setModalOpen(true)} variant="outlined" />
-                        <Button text="Gå vidare" onClick={() => setStep("konto")} variant="primary" />
+                        <Button text="Skippa" onClick={finalizeDesignAndOpenModal} variant="outlined" />
+                        <Button text="Gå vidare" onClick={handleSocialContinue} variant="primary" />
                 </>
             )}
 
-            {step === "konto" && (
+            {step === "konto" && !canSkipKonto && (
                 <>
                     <div className="flex justify-center gap-4 mt-8">
-                        <Button text="Gästkonto" onClick={() => setModalOpen(true)} variant="outlined" 
+                        <Button text="Gästkonto" onClick={finalizeDesignAndOpenModal} variant="outlined" 
                         />
                         <Button
                             text="Skapa konto"
@@ -226,7 +281,7 @@ export const DesignerPage = () => {
                   
             {/* Modal */}
             {modalOpen && (
-                <Modal onConfirm={() => navigate(`/profile/${slug}`)} />
+                <Modal onConfirm={() => window.location.assign(`/profile/${redirectSlug}`)} />
             )}
 
         </div>

@@ -1,13 +1,14 @@
 import { create } from "zustand";
 import supabase from "../lib/supabase";
 
-const initialName = { firstName: '', lastName: '' };
+const initialName = { firstName: '', drinkType: '' };
 const initialFront = {
     imageUrl: null,
     texturePreset: 'default',
     textColor: '#000000',
-    textFont: 'Arial, sans-serif',
+    textFont: 'Inter, sans-serif',
     textAlignment: 'center',
+    drinkType: '',
 };
 const initialBack = {
     tags: [],
@@ -24,18 +25,19 @@ export const useDesignStore = create((set, get) => ({
     name: initialName,
     front: initialFront,
     back: initialBack,
-    setName: (firstName, lastName) => set({ name: { firstName, lastName } }),
+    currentShareId: null,
+    setName: (firstName, drinkType) => set({ name: { firstName, drinkType } }),
     setFront: (frontData) => set((state) => ({ front: { ...state.front, ...frontData } })),
     setBack: (backData) => set((state) => ({ back: { ...state.back, ...backData } })),
 
 
 
-    loadDesign: async (designId) => {
+    loadDesign: async (userId) => {
         try {
             const { data, error } = await supabase
                 .from('designs')
-                .select('design_data')
-                .eq('id', designId)
+                .select('design_data, share_id')
+                .eq('user_id', userId)
                 .maybeSingle();
 
             if (error) throw error;
@@ -53,11 +55,62 @@ export const useDesignStore = create((set, get) => ({
                         ...(backData?.socials || {}),
                     },
                 },
+                currentShareId: data.share_id || null,
             });
 
             return { success: true };
         } catch (err) {
             console.error('Failed to load design:', err);
+            return { success: false, error: err.message };
+        }
+    },
+
+    getLatestDesignDataByUserId: async (userId) => {
+        try {
+            const { data, error } = await supabase
+                .from('designs')
+                .select('design_data, share_id')
+                .eq('user_id', userId)
+                .order('created_at', { ascending: false })
+                .limit(1)
+                .maybeSingle();
+
+            if (error) throw error;
+            return { success: true, designData: data?.design_data || null, shareId: data?.share_id || null };
+        } catch (err) {
+            console.error('Failed to fetch latest design:', err);
+            return { success: false, error: err.message, designData: null, shareId: null };
+        }
+    },
+
+    loadLatestDesignForCurrentUser: async () => {
+        try {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session?.user?.id) throw new Error('User not authenticated');
+
+            const latest = await get().getLatestDesignDataByUserId(session.user.id);
+            if (!latest.success) return { success: false, error: latest.error };
+            if (!latest.designData) return { success: false, error: 'No design found' };
+
+            const { name: nameData, front: frontData, back: backData } = latest.designData;
+
+            set({
+                name: { ...initialName, ...(nameData || {}) },
+                front: { ...initialFront, ...(frontData || {}) },
+                back: {
+                    ...initialBack,
+                    ...(backData || {}),
+                    socials: {
+                        ...initialBack.socials,
+                        ...(backData?.socials || {}),
+                    },
+                },
+                currentShareId: latest.shareId || null,
+            });
+
+            return { success: true };
+        } catch (err) {
+            console.error('Failed to load latest design:', err);
             return { success: false, error: err.message };
         }
     },
@@ -70,6 +123,7 @@ export const useDesignStore = create((set, get) => ({
 
 
             const state = get();
+            const effectiveShareId = shareId || state.currentShareId || crypto.randomUUID().slice(0, 8);
             const designData = {
                 name: state.name,
                 front: state.front,
@@ -82,12 +136,13 @@ export const useDesignStore = create((set, get) => ({
                     user_id: session.user.id,
                     design_data: designData,
                     name: designName,
-                    share_id: shareId || `design-${Date.now()}`,
+                    share_id: effectiveShareId,
                 }, { onConflict: 'share_id' })
-                .select('id')
+                .select('id, share_id')
                 .maybeSingle();
 
             if (error) throw error;
+            set({ currentShareId: data?.share_id || effectiveShareId });
             return { success: true, designId: data.id };
         } catch (err) {
             console.error('Failed to save design:', err);
@@ -120,5 +175,6 @@ export const useDesignStore = create((set, get) => ({
         name: initialName,
         front: initialFront,
         back: initialBack,
+        currentShareId: null,
     }),
 }));

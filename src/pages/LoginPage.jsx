@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { LoginForm } from '../features/Auth/components/LoginForm'
 import { SignupForm } from '../features/Auth/components/SignupForm'
 import { useIsGuest } from '../shared/hooks/useIsGuest'
+import { useUserSlug } from '../features/profile/hooks/useUserSlug'
 
 export const LoginPage = () => {
 
     const [signUp, setSignUp] = useState(false);
     const navigate = useNavigate();
-    const { slug } = useParams();
+    const slug = useUserSlug();
     const isGuest = useIsGuest();
 
     useEffect(() => {
@@ -31,12 +32,12 @@ export const LoginPage = () => {
                     {signUp ? (
                         <SignupForm 
                         onSwitchToLogin={() => setSignUp(false)}
-                        onSuccess={() => navigate(`/profile/${slug}`)}
+                        onSuccess={() => navigate(`/profile/${slug || "guest"}`)}
                          />
                     ) : (
                         <LoginForm 
                         onSwitchToSignup={() => setSignUp(true)}
-                        onSuccess={() => navigate(`/profile/${slug}`)} 
+                        onSuccess={() => navigate(`/profile/${slug || "guest"}`)} 
                         />
                     )}
                 </div>
