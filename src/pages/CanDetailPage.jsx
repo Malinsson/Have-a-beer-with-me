@@ -50,7 +50,12 @@ export const CanDetailPage = () => {
                 {canSave && (
                     <Button 
                         text={savingDesignId === design.id ? "Sparar..." : "Lägg till i ölhyllan"} 
-                        onClick={async () => saveCanToShelf(design.id)} 
+                        onClick={async () =>
+                            saveCanToShelf({
+                                designId: design.id,
+                                shareId: design.share_id,
+                            })
+                        }
                         variant="primary"
                         showIcon={false}
                         disabled={savingDesignId === design.id}

@@ -5,23 +5,23 @@ export const useSaveCanToShelf = () => {
     const [savingDesignId, setSavingDesignId] = useState(null);
     const [error, setError] = useState(null);
 
-    const saveCanToShelf = async (designId) => {
-        if (!designId) {
-            throw new Error("Missing design id");
+    const saveCanToShelf = async ({ designId, shareId }) => {
+        if (!shareId) {
+            throw new Error("Saknar shareId");
         }
 
         try {
-            setSavingDesignId(designId);
+            setSavingDesignId(designId || shareId);
             setError(null);
 
             const { data: { session } } = await supabase.auth.getSession();
-            if (!session?.user?.id) throw new Error("User not authenticated");
+            if (!session?.user?.id) throw new Error("Användare inte inloggad");
 
             const { data: existing, error: existingError } = await supabase
                 .from("saved_designs")
                 .select("id")
                 .eq("user_id", session.user.id)
-                .eq("design_id", designId)
+                .eq("share_id", shareId)
                 .maybeSingle();
 
             if (existingError) throw existingError;
@@ -32,7 +32,7 @@ export const useSaveCanToShelf = () => {
 
             const { error: insertError } = await supabase
                 .from("saved_designs")
-                .insert({ user_id: session.user.id, design_id: designId });
+                .insert({ user_id: session.user.id, share_id: shareId, design_id: designId });
 
             if (insertError) throw insertError;
 
