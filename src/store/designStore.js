@@ -69,14 +69,22 @@ export const useDesignStore = create((set, get) => ({
         try {
             const { data, error } = await supabase
                 .from('designs')
-                .select('design_data, share_id')
+                .select('id, design_data, share_id')
                 .eq('user_id', userId)
                 .order('created_at', { ascending: false })
                 .limit(1)
                 .maybeSingle();
 
             if (error) throw error;
-            return { success: true, designData: data?.design_data || null, shareId: data?.share_id || null };
+            return { 
+                success: true, 
+                designData: { 
+                    id: data.id, 
+                    share_id: data.share_id,
+                    ...data.design_data 
+                },
+                
+            };
         } catch (err) {
             console.error('Failed to fetch latest design:', err);
             return { success: false, error: err.message, designData: null, shareId: null };
@@ -112,6 +120,58 @@ export const useDesignStore = create((set, get) => ({
         } catch (err) {
             console.error('Failed to load latest design:', err);
             return { success: false, error: err.message };
+        }
+    },
+
+    getSavedDesignsByUserId: async (userId) => {
+        try {
+            const { data, error } = await supabase
+                .from('saved_designs')
+                .select(`
+                    id,
+                    share_id,
+                    created_at,
+                    designs:design_id (
+                        id,
+                        user_id,
+                        design_data
+                    )
+                `)
+                .eq('user_id', userId)
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+            
+            const formatted = await Promise.all(
+                (data || []).map(async (item) => {
+                  const design = item.designs;
+                  const designData = design?.design_data || {};
+                
+                  const { data: profile, error: profileFetchError } = await supabase
+                    .from('profiles')
+                    .select('first_name, last_name, slug_value')
+                    .eq('id', design?.user_id)
+                    .single();
+
+                return {
+                    savedId: item.id,
+                    designId: design?.id,
+                    ownerSlug: profile?.slug_value,
+                    ownerFirstName: profile?.first_name || '',
+                    ownerLastName: profile?.last_name || '',
+                    department: designData.back?.department || '',
+                    name: designData.name,
+                    front: designData.front,
+                    back: designData.back,
+                    design_data: designData
+                };
+            })
+        );
+
+        return { success: true, designs: formatted };
+        } catch (error) {
+            console.error("Error fetching shelf:", error);
+            return { success: false, error: error.message };
         }
     },
 
