@@ -1,18 +1,20 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useProfileInfo } from "../features/profile/hooks/useProfileInfo.js";
 import { useIsGuest } from "../shared/hooks/useIsGuest.js";
+import { useUserSlug } from "../features/profile/hooks/useUserSlug.js";
+import { supabase } from "../lib/supabase.js";
 import { Button } from "../components/Button.jsx";
 import { QRScanner } from "../components/QRScanner.jsx";
 import { CanPreview2D } from "../features/can-designer/components/CanPrewiew2D.jsx";
 import { useDesignStore } from "../store/designStore.js";
+import { ProfileQRCode } from "../components/ProfileQRCode.jsx";
 import { MdOutlineArrowForwardIos, MdOutlineArrowBackIosNew } from "react-icons/md";
 import { SiInstagram, SiGithub } from "react-icons/si";
 import { CiLinkedin } from "react-icons/ci";
 import { HiOutlineMail } from "react-icons/hi";
 import { MdOutlineArrowOutward } from "react-icons/md";
-import { ProfileQRCode } from "../components/ProfileQRCode.jsx";
+import { MdCheck, MdAdd } from "react-icons/md";
 
 import TagRed from "../assets/images/tags/tag-red.svg";
 import TagGreen from "../assets/images/tags/tag-green.svg";
@@ -23,14 +25,28 @@ import { getTagLabelById } from "../features/can-designer/constants.js";
 // It will work on localhost for development, but once live it must be 
 // served over HTTPS. Most hosting providers (Vercel, Netlify etc.) handle this automatically.
 
+const SOCIAL_CONFIG = [
+    { key: 'linkedin', label: 'LinkedIn', Icon: CiLinkedin, baseUrl: "https://www.linkedin.com/in/" },
+    { key: 'instagram', label: 'Instagram', Icon: SiInstagram, baseUrl: "https://www.instagram.com/" },
+    { key: 'github', label: 'Github', Icon: SiGithub, baseUrl: "https://github.com/" },
+];
+
+const TAG_ASSETS = [TagRed, TagGreen, TagBlue];
+
 export const ProfilePage = () => {
     const [profileDesign, setProfileDesign] = useState(null);
     const [designLoading, setDesignLoading] = useState(true);
     const [previewSide, setPreviewSide] = useState("front");
+    const [isSaved, setIsSaved] = useState(false);
+    const [saving, setSaving] = useState(false);
 
     const navigate = useNavigate();
     const isGuest = useIsGuest();
     const { slug } = useParams();
+    const mySlug = useUserSlug();
+
+    const isOwnProfile = slug === mySlug;
+
     const { profile, loading, error } = useProfileInfo(slug);
 
     useEffect(() => {
@@ -43,30 +59,71 @@ export const ProfilePage = () => {
 
             const result = await useDesignStore.getState().getLatestDesignDataByUserId(profile.id);
             if (cancelled) return;
-
-            if (!result.success) {
-                console.error("Failed to load profile design:", result.error);
-                setProfileDesign(null);
-            } else {
-                setProfileDesign(result.designData || null);
-            }
-
+            setProfileDesign(result.success ? result.designData || null : null);
             setDesignLoading(false);
+    
+            // if (!result.success) {
+            //     console.error("Failed to load profile design:", result.error);
+            //     setProfileDesign(null);
+            // } else {
+            //     setProfileDesign(result.designData || null);
+            // }
+
+            // setDesignLoading(false);
         };
 
         fetchLatestDesign();
-
-        return () => {
-            cancelled = true;
-        };
+        return () => { cancelled = true; };
     }, [profile?.id]);
+
+    useEffect(() => {
+        if (isOwnProfile || !profile?.id) return;
+
+        const checkIfSaved = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return;
+      
+            const { data } = await supabase
+              .from("saved_designs")
+              .select("id")
+              .eq("user_id", user.id)
+              .eq("design_id", profileDesign?.id)
+              .single();
+      
+            setIsSaved(!!data);
+        };
+
+        if (!designLoading) checkIfSaved(); // wait until design is loaded
+    }, [profile?.id, isOwnProfile, designLoading]);
+
+    const handleSave = async () => {
+        if (!profileDesign?.id || !profileDesign?.share_id) {
+            console.error("Cannot save: Design is missing its share_id.");
+            return;
+        }
+        setSaving(true);
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+    
+        const { error } = await supabase
+          .from("saved_designs")
+          .insert({
+            user_id: user.id,
+            design_id: profileDesign.id,
+            share_id: profileDesign.share_id,
+          });
+    
+        if (error) {
+            console.error("Failed to save:", error.message);
+        } else {
+            setIsSaved(true);
+        }
+        setSaving(false);
+    };
 
     if (isGuest) return (
         <div className="container mx-auto p-4 flex flex-col items-center gap-4 mt-12">
-            <p className="text-xl text-center">
-                Du behöver ett konto för att se din profil.
-            </p>
-
+            <p className="text-center">Du behöver ett konto för att se din profil.</p>
             <Button text="Skapa konto" onClick={() => navigate("/login")} />
         </div>
     );
@@ -76,14 +133,6 @@ export const ProfilePage = () => {
 
     const backData = profileDesign?.back || {};
     const socialsData = backData.socials || {};
-
-    const TAG_ASSETS = [TagRed, TagGreen, TagBlue];
-
-    const SOCIAL_CONFIG = [
-        { key: 'linkedin', label: 'LinkedIn', Icon: CiLinkedin, baseUrl: "https://www.linkedin.com/in/" },
-        { key: 'instagram', label: 'Instagram', Icon: SiInstagram, baseUrl: "https://www.instagram.com/" },
-        { key: 'github', label: 'Github', Icon: SiGithub, baseUrl: "https://github.com/" },
-    ];
 
     return (
         <div id="top" className="container mx-auto p-4">
@@ -109,16 +158,28 @@ export const ProfilePage = () => {
                     <div className="flex flex-col gap-2">
                         <h2 className="profile">{profile?.first_name} <br/></h2>
                         <h2 className="profile profile-italic">{profile?.last_name}</h2>
-                        <h4 className="">{backData.department}</h4>
-                        <QRScanner 
-                            text="Skanna" 
-                            variant="outlined" 
-                            onScan={(data) => {
-                                const url = new URL(data);
-                                navigate(url.pathname);
-                            }}
-                        />
+                        <h4 className="text-dark-blue text-2xl">{backData.department}</h4>
+
+                        {isOwnProfile ? (
+                            <QRScanner 
+                                text="Skanna" 
+                                variant="outlined" 
+                                onScan={(data) => {
+                                    const url = new URL(data);
+                                    navigate(url.pathname);
+                                }}
+                            />
+                        ) : (
+                            <Button
+                                text={isSaved ? "Sparad" : "Spara burk"}
+                                icon={isSaved ? MdCheck : MdAdd}
+                                variant="outlined"
+                                onClick={handleSave}
+                                disabled={isSaved || saving}
+                            />
+                        )}
                     </div>
+
                     <div className="flex flex-col gap-2 items-center">
                         <ProfileQRCode slug={slug} size={100} />
                         <p className="text-xs">ID: {profile?.id?.slice(-4)}</p>
@@ -189,18 +250,40 @@ export const ProfilePage = () => {
                         </a>
                     )}
                 </div>
+
                 <div className="flex gap-4 mt-6">
-                    <Button 
-                        text="Editera burk" 
-                        onClick={() => navigate("/design")} 
-                        variant="outlined"
-                        showIcon={false}
-                    />
-                    <Button 
-                        text="Barhyllan" 
-                        onClick={() => navigate(`/profile/${slug}/hylla`)} 
-                        showIcon={false}
-                    />
+                    {isOwnProfile ? (
+                        <>
+                            <Button 
+                                text="Editera burk" 
+                                onClick={() => navigate("/design")} 
+                                variant="outlined"
+                                showIcon={false}
+                            />
+                            <Button 
+                                text="Barhyllan" 
+                                onClick={() => navigate(`/profile/${slug}/hylla`)} 
+                                showIcon={false}
+                            />
+                        </>
+                    ) : (
+                        <>
+                            <Button
+                                text="Min burk"
+                                onClick={() => navigate(`/profile/${mySlug}`)}
+                                variant="outlined"
+                                showIcon={false}
+                            />
+                            <Button
+                                text={isSaved ? "Barhyllan" : "Spara burk"}
+                                onClick={() => isSaved
+                                ? navigate(`/profile/${mySlug}/hylla`)
+                                : handleSave()
+                                }
+                                showIcon={false}
+                            />
+                        </>
+                    )}
                 </div>
             </section>
         </div>
