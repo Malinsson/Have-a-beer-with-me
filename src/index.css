@@ -42,7 +42,7 @@
         color: var(--color-yrgo-red);
     }
 
-    large {
+    .large {
         font-size: var(--text-lg);
         font-weight: 600;
         text-transform: uppercase;

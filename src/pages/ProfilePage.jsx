@@ -59,17 +59,9 @@ export const ProfilePage = () => {
 
             const result = await useDesignStore.getState().getLatestDesignDataByUserId(profile.id);
             if (cancelled) return;
+
             setProfileDesign(result.success ? result.designData || null : null);
             setDesignLoading(false);
-    
-            // if (!result.success) {
-            //     console.error("Failed to load profile design:", result.error);
-            //     setProfileDesign(null);
-            // } else {
-            //     setProfileDesign(result.designData || null);
-            // }
-
-            // setDesignLoading(false);
         };
 
         fetchLatestDesign();

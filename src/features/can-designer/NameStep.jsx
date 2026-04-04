@@ -15,10 +15,10 @@ export const NameStep = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [selectedDrink, setSelectedDrink] = useState(null);
 
-    const navigate = useNavigate();
     const setName = useDesignStore((state) => state.setName);
     const setFront = useDesignStore((state) => state.setFront);
     const setBack = useDesignStore((state) => state.setBack);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();

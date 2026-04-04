@@ -69,6 +69,14 @@ export const DesignerPage = () => {
 
         const hydrateLatestDesign = async () => {
             const result = await useDesignStore.getState().loadLatestDesignForCurrentUser();
+            const { firstName, drinkTypeLabel, department } = location.state || {};
+
+            if (firstName) {
+                useDesignStore.getState().setName(firstName, drinkTypeLabel || "");
+            }
+            if (department) {
+                useDesignStore.getState().setBack({ department });
+            }
             if (!result.success && result.error !== "No design found" && result.error !== "User not authenticated") {
                 console.log("Failed to hydrate latest design:", result.error);
             }
