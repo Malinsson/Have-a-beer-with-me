@@ -27,6 +27,7 @@ export const useImageUploader = ({ onUploadComplete }) => {
     onImageLoad,
     onFileChange,
     clearImage: clearAfterUpload,
+    getCroppedBlob,
     handleUpload,
     uploading,
     error: selectionError || uploadError,

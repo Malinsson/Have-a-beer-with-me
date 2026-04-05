@@ -5,6 +5,7 @@ import { useDrag, usePinch, useWheel } from "@use-gesture/react";
 import { useImageUploader } from '../hooks/uploadUserImages/useImageUploader'
 import { GoUpload } from "react-icons/go";
 import { Button } from '../../../components/Button';
+import baseCan from '../../../assets/images/baseCan.png';
 
 // --- Constants ---
 const DEFAULT_IMAGE_TRANSFORM = { x: 0, y: 0, scale: 1 };
@@ -79,21 +80,25 @@ function ImagePositioner({ imageUrl, value, onChange }) {
 
   return (
     <section className="w-full mt-2 mb-4">
-      <div
-        ref={areaRef}
-        className="relative mx-auto w-55 h-75 overflow-hidden border border-dashed border-neutral-400 bg-neutral-50 touch-none"
-        style={{ cursor: "grab" }}
-      >
-        <img
-          src={imageUrl}
-          alt="Position preview"
-          className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
-          draggable={false}
-          style={{
-            transform: `translate(${transform.x}%, ${transform.y}%) scale(${transform.scale})`,
-            transformOrigin: "center center",
-          }}
-        />
+      <div className="relative max-w-45 mx-auto w-full">
+        <img src={baseCan} alt="Can template" className="w-full h-auto object-contain pointer-events-none" />
+
+        <div
+          ref={areaRef}
+          className="absolute left-1/2 top-[20%] -translate-x-1/2 w-[98%] h-[72%] overflow-hidden touch-none border border-dashed border-neutral-400"
+          style={{ cursor: "grab" }}
+        >
+          <img
+            src={imageUrl}
+            alt="Position preview"
+            className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+            draggable={false}
+            style={{
+              transform: `translate(${transform.x}%, ${transform.y}%) scale(${transform.scale})`,
+              transformOrigin: "center center",
+            }}
+          />
+        </div>
       </div>
     </section>
   );
@@ -103,8 +108,10 @@ function ImagePositioner({ imageUrl, value, onChange }) {
 export function ImageUploader({ onUploadComplete }) {
   const [step, setStep] = useState(STEPS.CROP)
   const [imageTransform, setImageTransform] = useState(DEFAULT_IMAGE_TRANSFORM)
+  const [croppedPreviewUrl, setCroppedPreviewUrl] = useState('')
+  const [preparingPreview, setPreparingPreview] = useState(false)
 
-  const { imageSrc, onImageLoad, onFileChange, crop, setCrop, handleUpload, uploading, error, clearImage } =
+  const { imageSrc, onImageLoad, onFileChange, crop, setCrop, getCroppedBlob, handleUpload, uploading, error, clearImage } =
     useImageUploader({ onUploadComplete })
 
   // Reset everything when image is cleared
@@ -115,9 +122,38 @@ export function ImageUploader({ onUploadComplete }) {
     }
   }, [imageSrc])
 
+  useEffect(() => {
+    return () => {
+      if (croppedPreviewUrl) {
+        URL.revokeObjectURL(croppedPreviewUrl)
+      }
+    }
+  }, [croppedPreviewUrl])
+
   const handleBack = () => setStep(STEPS.CROP)
 
   const handleResetTransform = () => setImageTransform(DEFAULT_IMAGE_TRANSFORM)
+
+  const handleNext = async () => {
+    if (!crop || preparingPreview) return
+
+    setPreparingPreview(true)
+    try {
+      const croppedBlob = await getCroppedBlob()
+      const previewUrl = URL.createObjectURL(croppedBlob)
+      setCroppedPreviewUrl((previousUrl) => {
+        if (previousUrl) {
+          URL.revokeObjectURL(previousUrl)
+        }
+        return previewUrl
+      })
+      setStep(STEPS.POSITION)
+    } catch (caughtError) {
+      console.error('Kunde inte skapa beskuren förhandsvisning:', caughtError)
+    } finally {
+      setPreparingPreview(false)
+    }
+  }
 
   return (
     <div className="w-full min-h-15 flex items-center justify-center mx-4 relative">
@@ -144,7 +180,7 @@ export function ImageUploader({ onUploadComplete }) {
           <div className="w-full max-w-5xl h-[85vh] bg-white p-4 md:p-6 flex flex-col">
 
             {/* Header */}
-            <h2 className="text-2xl text-center mt-10">
+            <h2 className="text-2xl text-center mt-4">
               {step === STEPS.CROP ? 'Beskär din bild' : 'Positionera din bild'}
             </h2>
 
@@ -181,7 +217,7 @@ export function ImageUploader({ onUploadComplete }) {
                     Dra för att flytta · Skrolla eller nyp för att zooma
                   </p>
                   <ImagePositioner
-                    imageUrl={imageSrc}
+                    imageUrl={croppedPreviewUrl || imageSrc}
                     value={imageTransform}
                     onChange={setImageTransform}
                   />
@@ -220,10 +256,10 @@ export function ImageUploader({ onUploadComplete }) {
               {step === STEPS.CROP ? (
                 <Button
                   type="button"
-                  onClick={() => setStep(STEPS.POSITION)}
+                  onClick={handleNext}
                   variant="primary"
-                  text="Nästa"
-                  disabled={!crop}
+                  text={preparingPreview ? 'Förbereder...' : 'Nästa'}
+                  disabled={!crop || preparingPreview}
                 />
               ) : (
                 <Button
