@@ -80,13 +80,13 @@ export const CanPreview2D = ({ side = "front", design = null }) => {
                         </div>
 
                     
-                    <div className="absolute inset-0 z-20" style={{ background: textureBackground }} />
+                    <div className="absolute inset-0 z-5" style={{ background: textureBackground }} />
 
                     {front.imageUrl && (
                         <img
                         src={front.imageUrl}
                         alt="Uploaded label"
-                        className="absolute inset-0 w-full h-full object-cover z-5"
+                        className="absolute inset-0 w-full h-full object-cover z-10 select-none pointer-events-none"
                         style={{
                             transform: `translate(${imageTransform.x}%, ${imageTransform.y}%) scale(${imageTransform.scale})`,
                             transformOrigin: "center center",
