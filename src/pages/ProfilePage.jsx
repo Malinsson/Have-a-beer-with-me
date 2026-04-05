@@ -71,10 +71,7 @@ export const ProfilePage = () => {
                                     showIcon={false}
                                     disabled={savingDesignId === design.id}
                                     onClick={async () => {
-                                        await saveCanToShelf({
-                                            designId: design.id,
-                                            shareId: design.share_id,
-                                        });
+                                        await saveCanToShelf(design.id);
                                     }}
                                 />
                             )}

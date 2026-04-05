@@ -1,8 +1,7 @@
-import React from "react";
 import QRCode from "react-qr-code";
 
-const ProfileQRCode = ({ userId, size = 128 }) => {
-    const profileUrl = `https://example.com/user/${userId}`;
+const ProfileQRCode = ({ slug, size = 128 }) => {
+    const profileUrl = `/profile/${slug}`;
     
     return (
         <div className="qr-wrapper" 
