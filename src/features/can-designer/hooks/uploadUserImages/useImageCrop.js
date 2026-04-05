@@ -1,48 +1,89 @@
-import { useState, useRef, useEffect } from 'react'
+import { useRef, useState } from 'react'
 
 export const useImageCrop = () => {
   const [crop, setCrop] = useState()
-  const imgRef = useRef(null)
+  const sourceImageRef = useRef(null)
+  const displaySizeRef = useRef({ width: 0, height: 0 })
 
-  // Set default crop box when image loads
-  useEffect(() => {
-    const image = imgRef.current
-    if (!image) return
+  const hasValidCrop = (value) => (
+    value &&
+    Number.isFinite(value.x) &&
+    Number.isFinite(value.y) &&
+    Number.isFinite(value.width) &&
+    Number.isFinite(value.height) &&
+    value.width > 0 &&
+    value.height > 0
+  )
 
-    const handleImageLoad = () => {
-      const size = Math.min(image.width, image.height) * 0.8
-      const x = (image.width - size) / 2
-      const y = (image.height - size) / 2
+  const initializeCrop = (width, height) => {
+    if (!width || !height) return
 
-      setCrop({
-        unit: 'px',
-        x,
-        y,
-        width: size * 0.75, // 3:4 aspect ratio
-        height: size,
-      })
+    const size = Math.min(width, height) * 0.8
+    const x = (width - size) / 2
+    const y = (height - size) / 2
+
+    setCrop({
+      unit: 'px',
+      x,
+      y,
+      width: size * 0.75, // 3:4 aspect ratio
+      height: size,
+    })
+  }
+
+  const onImageLoad = (event) => {
+    const loadedImage = event.currentTarget
+    const displayWidth = loadedImage.width || loadedImage.clientWidth || 0
+    const displayHeight = loadedImage.height || loadedImage.clientHeight || 0
+
+    displaySizeRef.current = {
+      width: displayWidth,
+      height: displayHeight,
     }
 
-    if (image.complete) {
-      handleImageLoad()
-    } else {
-      image.addEventListener('load', handleImageLoad)
-      return () => image.removeEventListener('load', handleImageLoad)
+    initializeCrop(displayWidth, displayHeight)
+
+    const persistentImage = new Image()
+    persistentImage.src = loadedImage.currentSrc || loadedImage.src
+
+    persistentImage.onload = () => {
+      sourceImageRef.current = persistentImage
     }
-  }, [imgRef.current?.src])
+
+    if (persistentImage.complete) {
+      sourceImageRef.current = persistentImage
+    }
+  }
 
   const getCroppedBlob = () => {
-    const image = imgRef.current
-    if (!image || !crop) {
-      return Promise.reject(new Error('Bild eller beskärning saknas.'))
+    const image = sourceImageRef.current
+    if (!image) {
+      return Promise.reject(new Error('Bild saknas.'))
     }
 
-    const canvas = document.createElement('canvas')
-    const scaleX = image.naturalWidth / image.width
-    const scaleY = image.naturalHeight / image.height
+    const displayWidth = displaySizeRef.current.width || image.naturalWidth || image.width
+    const displayHeight = displaySizeRef.current.height || image.naturalHeight || image.height
 
-    canvas.width = crop.width
-    canvas.height = crop.height
+    if (!displayWidth || !displayHeight) {
+      return Promise.reject(new Error('Bilden laddas fortfarande. Forsok igen.'))
+    }
+
+    const safeCrop = hasValidCrop(crop)
+      ? crop
+      : {
+          unit: 'px',
+          x: 0,
+          y: 0,
+          width: displayWidth,
+          height: displayHeight,
+        }
+
+    const canvas = document.createElement('canvas')
+    const scaleX = image.naturalWidth / displayWidth
+    const scaleY = image.naturalHeight / displayHeight
+
+    canvas.width = safeCrop.width
+    canvas.height = safeCrop.height
     const ctx = canvas.getContext('2d')
     if (!ctx) {
       return Promise.reject(new Error('Canvas-kontekst kunde inte skapas.'))
@@ -50,13 +91,13 @@ export const useImageCrop = () => {
 
     ctx.drawImage(
       image,
-      crop.x * scaleX,
-      crop.y * scaleY,
-      crop.width * scaleX,
-      crop.height * scaleY,
+      safeCrop.x * scaleX,
+      safeCrop.y * scaleY,
+      safeCrop.width * scaleX,
+      safeCrop.height * scaleY,
       0, 0,
-      crop.width,
-      crop.height
+      safeCrop.width,
+      safeCrop.height
     )
 
     return new Promise((resolve, reject) => {
@@ -70,5 +111,5 @@ export const useImageCrop = () => {
     })
   }
 
-  return { crop, setCrop, imgRef, getCroppedBlob }
+  return { crop, setCrop, onImageLoad, getCroppedBlob }
 }

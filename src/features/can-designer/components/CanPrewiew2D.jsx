@@ -22,6 +22,7 @@ export const CanPreview2D = ({ side = "front", design = null }) => {
         ? frontFromStore
         : {
               imageUrl: null,
+              imageTransform: { x: 0, y: 0, scale: 1 },
               texturePreset: "default",
               textColor: "#000000",
               textFont: "Inter, sans-serif",
@@ -44,6 +45,11 @@ export const CanPreview2D = ({ side = "front", design = null }) => {
 
     const textureBackground = TEXTURE_STYLES[front.texturePreset] || TEXTURE_STYLES.default;
     const textAlignClass = TEXT_ALIGNMENT[front.textAlignment] || TEXT_ALIGNMENT.center;
+    const imageTransform = {
+        x: front.imageTransform?.x || 0,
+        y: front.imageTransform?.y || 0,
+        scale: front.imageTransform?.scale || 1,
+    };
 
     const firstName = (name.firstName || "").trim();
     const firstNamePossessive = firstName
@@ -81,6 +87,10 @@ export const CanPreview2D = ({ side = "front", design = null }) => {
                         src={front.imageUrl}
                         alt="Uploaded label"
                         className="absolute inset-0 w-full h-full object-cover z-5"
+                        style={{
+                            transform: `translate(${imageTransform.x}%, ${imageTransform.y}%) scale(${imageTransform.scale})`,
+                            transformOrigin: "center center",
+                        }}
                         />
                     )}
                     </div>

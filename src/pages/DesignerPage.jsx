@@ -144,8 +144,15 @@ export const DesignerPage = () => {
         setBack({ description });
     };
 
-    const handleImageUpload = (imageUrl) => {
-        setFront({ imageUrl });
+    const handleImageUpload = (imageUrl, options = {}) => {
+        setFront({
+            imageUrl,
+            imageTransform: options.imageTransform || {
+                x: 0,
+                y: 0,
+                scale: 1,
+            },
+        });
     };
 
     const toggleOption = (id) => {

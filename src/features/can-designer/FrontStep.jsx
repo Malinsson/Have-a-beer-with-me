@@ -17,7 +17,7 @@ export const FrontStep = ({
     onColorSelect,
     onFontSelect,
     onAlignmentChange,
-    onImageUpload
+    onImageUpload,
 }) => {
 
     const activeClass = "border-1 py-1 px-3";
@@ -60,7 +60,7 @@ export const FrontStep = ({
                             type="button"
                             onClick={() => onTextureSelect(texture.id)}
                             //aria-pressed={selectedTexture === texture.id}
-                            className={` overflow-hidden border-1 transition-colors ${
+                            className={` overflow-hidden border transition-colors ${
                                 selectedTexture === texture.id ? "border-black" : "border-transparent"
                             }`}
                         >

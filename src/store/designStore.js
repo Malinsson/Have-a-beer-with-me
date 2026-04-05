@@ -5,6 +5,11 @@ import { removeCachedValue } from "../lib/cache";
 const initialName = { firstName: '', lastName: '', drinkType: '' };
 const initialFront = {
     imageUrl: null,
+    imageTransform: {
+        x: 0,
+        y: 0,
+        scale: 1,
+    },
     texturePreset: 'default',
     textColor: '#000000',
     textFont: 'Inter, sans-serif',
