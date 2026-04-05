@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { supabase } from "../../../../lib/supabase.js";
+import { removeCachedValue } from "../../../../lib/cache.js";
 
 export const useSaveCanToShelf = () => {
     const [savingDesignId, setSavingDesignId] = useState(null);
@@ -35,6 +36,8 @@ export const useSaveCanToShelf = () => {
                 .insert({ user_id: session.user.id, share_id: shareId, design_id: designId });
 
             if (insertError) throw insertError;
+
+            removeCachedValue(`saved-designs:${session.user.id}`);
 
             return { success: true, alreadySaved: false };
         } catch (err) {
