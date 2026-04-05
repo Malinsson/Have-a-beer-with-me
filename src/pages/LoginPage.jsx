@@ -3,13 +3,11 @@ import { useNavigate } from 'react-router-dom'
 import { LoginForm } from '../features/Auth/components/LoginForm'
 import { SignupForm } from '../features/Auth/components/SignupForm'
 import { useIsGuest } from '../shared/hooks/useIsGuest'
-import { useUserSlug } from '../features/profile/hooks/useUserSlug'
 
 export const LoginPage = () => {
 
     const [signUp, setSignUp] = useState(false);
     const navigate = useNavigate();
-    const slug = useUserSlug();
     const isGuest = useIsGuest();
 
     useEffect(() => {
@@ -32,12 +30,12 @@ export const LoginPage = () => {
                     {signUp ? (
                         <SignupForm 
                         onSwitchToLogin={() => setSignUp(false)}
-                        onSuccess={() => window.location.assign(`/profile/${slug || "guest"}`)}
+                        onSuccess={(redirectTo) => navigate(redirectTo)}
                          />
                     ) : (
                         <LoginForm 
                         onSwitchToSignup={() => setSignUp(true)}
-                        onSuccess={() => window.location.assign(`/profile/${slug || "guest"}`)} 
+                        onSuccess={(redirectTo) => navigate(redirectTo)} 
                         />
                     )}
                 </div>
