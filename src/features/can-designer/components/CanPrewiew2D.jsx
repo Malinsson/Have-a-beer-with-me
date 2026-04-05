@@ -71,7 +71,7 @@ export const CanPreview2D = ({ side = "front", design = null }) => {
                         <div className={`absolute w-full h-full p-3 z-50 flex ${textAlignClass}`}>
                             <p
                                 className="leading-tight text-[clamp(0.2rem,5vw,3rem)]"
-                                style={{ color: front.textColor, fontFamily: front.textFont }}
+                                style={{ color: front.textColor, fontFamily: front.textFont, fontWeight: front.textFontWeight || "normal" }}
                             >
                                 {firstNamePossessive}
                                 <br />
