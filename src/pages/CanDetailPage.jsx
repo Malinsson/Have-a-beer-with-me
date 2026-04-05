@@ -10,9 +10,9 @@ import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase.js";
 
 export const CanDetailPage = () => {
-    const { designId } = useParams();
+    const { shareId } = useParams();
 
-    const { design, loading: designLoading, error: designError } = useDesign(designId);
+    const { design, loading: designLoading, error: designError } = useDesign(shareId);
     const { profile, loading: profileLoading, error: profileError } = useProfileByUserId(design?.user_id);
     const { saveCanToShelf, savingDesignId } = useSaveCanToShelf();
     const [currentUserId, setCurrentUserId] = useState(null);
@@ -69,7 +69,7 @@ export const CanDetailPage = () => {
                 <p className="py-2">{design_data?.back?.description}</p>
                 <div className="flex flex-row gap-2 pb-2">
                     {(design_data?.back?.tags || []).map((tag) => (
-                        <p key={tag}>#{tag}</p>
+                        <p key={tag}>#{tag?.label}</p>
                     ))}
             
                 </div>    

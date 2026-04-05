@@ -44,12 +44,13 @@ export const CanPreview2D = ({ side = "front", design = null }) => {
 
     const textureBackground = TEXTURE_STYLES[front.texturePreset] || TEXTURE_STYLES.default;
     const textAlignClass = TEXT_ALIGNMENT[front.textAlignment] || TEXT_ALIGNMENT.center;
-    const isFrontSide = side === "front";
-    
+
     const firstName = (name.firstName || "").trim();
     const firstNamePossessive = firstName
-        ? `${firstName}${/s$/i.test(firstName) ? "'" : "'s"}`
-        : "";
+    ? `${firstName}${/s$/i.test(firstName) ? "'" : "'s"}`
+    : "";
+
+    const isFrontSide = side === "front";
 
     return (
         <div className="relative max-w-45 mx-auto">
@@ -63,7 +64,7 @@ export const CanPreview2D = ({ side = "front", design = null }) => {
 
                         <div className={`absolute w-full h-full p-3 z-50 flex ${textAlignClass}`}>
                             <p
-                                className="leading-tight text-2xl"
+                                className="leading-tight text-[clamp(0.2rem,5vw,3rem)]"
                                 style={{ color: front.textColor, fontFamily: front.textFont }}
                             >
                                 {firstNamePossessive}

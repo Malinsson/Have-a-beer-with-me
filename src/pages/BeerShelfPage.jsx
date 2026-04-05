@@ -8,7 +8,7 @@ import { supabase } from "../lib/supabase.js";
 import { useNavigate } from "react-router-dom";
 import { QRScanner } from "../components/QRScanner.jsx";
 import { IoSearchOutline } from "react-icons/io5";
-import { CanPreview2D } from "../features/can-designer/components/CanPrewiew2D.jsx";
+import { ShelfItem } from "../features/profile/ShelfItem.jsx";
 
 export const BeerShelfPage = () => {
     const [userId, setUserId] = useState(null);
@@ -92,22 +92,7 @@ export const BeerShelfPage = () => {
                 ) : (
                     <div className="grid grid-cols-2 gap-6 p-2">
                         {savedDesigns.map((saved) => (
-                            <button
-                                key={saved.id}
-                                type="button"
-                                className="text-left flex flex-col gap-4 p-4"
-                                onClick={() => navigate(`/can/${saved.designs.id}`)}
-                            >
-                                <CanPreview2D side="front" design={saved.designs?.design_data} />
-                                <div>
-                                    <h3 className="text-xl font-semibold uppercase">
-                                        {saved.designs?.design_data?.front?.name?.firstName}
-                                    </h3>
-                                    <p className="text-sm text-dark-gray">
-                                        {saved.designs?.design_data?.back?.department || ""}
-                                    </p>
-                                </div>
-                            </button>
+                            <ShelfItem key={saved.id} saved={saved} />
                         ))}
                     </div>
                 )}

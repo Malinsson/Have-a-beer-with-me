@@ -1,13 +1,13 @@
 import { supabase } from "../../../../lib/supabase.js";
 import { useState, useEffect } from "react";
 
-export const useDesign = (designId) => {
+export const useDesign = (shareId) => {
   const [design, setDesign] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
   
     useEffect(() => {
-      if (!designId) return;
+      if (!shareId) return;
 
       let cancelled = false;
 
@@ -18,7 +18,7 @@ export const useDesign = (designId) => {
         const { data, error } = await supabase
           .from("designs")
           .select("*")
-          .eq("id", designId)
+          .eq("share_id", shareId)
           .maybeSingle();
 
         if (cancelled) return;
@@ -32,7 +32,7 @@ export const useDesign = (designId) => {
       return () => {
         cancelled = true;
       };
-    }, [designId]);
+    }, [shareId]);
   
     return { design, loading, error };
 };
