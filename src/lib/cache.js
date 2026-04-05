@@ -56,3 +56,26 @@ export const removeCachedValue = (key) => {
         // Ignore cache removal errors.
     }
 };
+
+export const removeCachedValuesByPrefix = (keyPrefix) => {
+    const storage = getStorage();
+    if (!storage) return;
+
+    try {
+        const fullPrefix = `${CACHE_PREFIX}${keyPrefix}`;
+        const keysToRemove = [];
+
+        for (let i = 0; i < storage.length; i += 1) {
+            const key = storage.key(i);
+            if (key && key.startsWith(fullPrefix)) {
+                keysToRemove.push(key);
+            }
+        }
+
+        keysToRemove.forEach((key) => {
+            storage.removeItem(key);
+        });
+    } catch {
+        // Ignore cache removal errors.
+    }
+};
