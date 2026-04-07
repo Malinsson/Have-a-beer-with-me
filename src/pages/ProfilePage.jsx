@@ -83,7 +83,7 @@ export const ProfilePage = () => {
     return (
         <div id="top" className="container mx-auto p-4">
 
-            <section className="flex flex-col gap-6">
+            <section className="flex flex-col">
 
                 {designLoading ? (
                     <p>Laddar burk...</p>
@@ -101,7 +101,7 @@ export const ProfilePage = () => {
                 ) : (
                     <p>Ingen burk hittades för den här profilen.</p>
                 )}
-                <div className="flex items-center gap-16 mx-auto">
+                <div className="flex items-center gap-16 mx-auto my-4">
                     <a onClick={() => setPreviewSide("front")} >
                         <MdOutlineArrowBackIosNew />
                     </a>

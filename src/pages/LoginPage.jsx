@@ -30,12 +30,12 @@ export const LoginPage = () => {
                     {signUp ? (
                         <SignupForm 
                         onSwitchToLogin={() => setSignUp(false)}
-                        onSuccess={(redirectTo) => navigate(redirectTo)}
+                        onSuccess={(redirectTo) => window.location.assign(redirectTo)}
                          />
                     ) : (
                         <LoginForm 
                         onSwitchToSignup={() => setSignUp(true)}
-                        onSuccess={(redirectTo) => navigate(redirectTo)} 
+                        onSuccess={(redirectTo) => window.location.assign(redirectTo)} 
                         />
                     )}
                 </div>
