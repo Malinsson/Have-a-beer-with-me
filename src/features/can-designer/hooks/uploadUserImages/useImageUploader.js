@@ -7,7 +7,7 @@ import { useBlobUpload } from './useBlobUpload'
 export const useImageUploader = ({ onUploadComplete }) => {
     
   const { imageSrc, selectionError, onFileChange, clearImage } = useImageSelection()
-  const { crop, setCrop, imgRef, getCroppedBlob } = useImageCrop()
+  const { crop, setCrop, onImageLoad, getCroppedBlob } = useImageCrop()
 
   const clearAfterUpload = () => {
     clearImage()
@@ -24,9 +24,10 @@ export const useImageUploader = ({ onUploadComplete }) => {
     imageSrc,
     crop,
     setCrop,
-    imgRef,
+    onImageLoad,
     onFileChange,
     clearImage: clearAfterUpload,
+    getCroppedBlob,
     handleUpload,
     uploading,
     error: selectionError || uploadError,

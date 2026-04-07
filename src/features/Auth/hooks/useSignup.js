@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import supabase from "../../../lib/supabase";
 import { getAuthErrorMessage } from './useAuthErrorMessage';
+import { resolveProfileRedirect } from './resolveProfileRedirect';
 
 export const useSignup = () => {
 
@@ -67,11 +68,12 @@ export const useSignup = () => {
             }
             
             setSuccess('Konto skapat! Skapa din öl nu.');
-            return true;
+            const redirectTo = await resolveProfileRedirect();
+            return { success: true, redirectTo };
 
         } catch (err) {
             setError(getAuthErrorMessage(err, 'signup'));
-            return false;
+            return { success: false, redirectTo: '/profile/guest' };
             
         } finally {
             setIsLoading(false);

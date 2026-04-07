@@ -15,6 +15,8 @@ import { CiLinkedin } from "react-icons/ci";
 import { HiOutlineMail } from "react-icons/hi";
 import { MdOutlineArrowOutward } from "react-icons/md";
 import { MdCheck, MdAdd } from "react-icons/md";
+import { useProfileDesigns } from "../features/profile/hooks/useProfileDesigns.js";
+import { useSaveCanToShelf } from "../features/can-designer/hooks/displayCanDesign/useSaveCanToShelf.js";
 
 import TagRed from "../assets/images/tags/tag-red.svg";
 import TagGreen from "../assets/images/tags/tag-green.svg";
@@ -39,6 +41,7 @@ export const ProfilePage = () => {
     const [previewSide, setPreviewSide] = useState("front");
     const [isSaved, setIsSaved] = useState(false);
     const [saving, setSaving] = useState(false);
+    const [currentUserId, setCurrentUserId] = useState(null);
 
     const navigate = useNavigate();
     const isGuest = useIsGuest();
@@ -48,77 +51,19 @@ export const ProfilePage = () => {
     const isOwnProfile = slug === mySlug;
 
     const { profile, loading, error } = useProfileInfo(slug);
+    const { design, loading: designLoading, error: designError } = useProfileDesigns(profile?.id);
+    const { saveCanToShelf, savingDesignId } = useSaveCanToShelf();
+
+    const isOwnProfile = currentUserId && profile?.id === currentUserId;
 
     useEffect(() => {
-        
-        if (!profile?.id) return;
-        let cancelled = false;
-
-        const fetchLatestDesign = async () => {
-            setDesignLoading(true);
-
-            const result = await useDesignStore.getState().getLatestDesignDataByUserId(profile.id);
-            if (cancelled) return;
-
-            setProfileDesign(result.success ? result.designData || null : null);
-            setDesignLoading(false);
-        };
-
-        fetchLatestDesign();
-        return () => { cancelled = true; };
-    }, [profile?.id]);
-
-    useEffect(() => {
-        if (isOwnProfile || !profile?.id) return;
-
-        const checkIfSaved = async () => {
+        const fetchCurrentUser = async () => {
             const { data: { user } } = await supabase.auth.getUser();
-            if (!user) return;
-      
-            const { data } = await supabase
-              .from("saved_designs")
-              .select("id")
-              .eq("user_id", user.id)
-              .eq("design_id", profileDesign?.id)
-              .single();
-      
-            setIsSaved(!!data);
+            setCurrentUserId(user?.id || null);
         };
 
-        if (!designLoading) checkIfSaved(); // wait until design is loaded
-    }, [profile?.id, isOwnProfile, designLoading]);
-
-    const handleSave = async () => {
-        if (!profileDesign?.id || !profileDesign?.share_id) {
-            console.error("Cannot save: Design is missing its share_id.");
-            return;
-        }
-        setSaving(true);
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
-    
-        const { error } = await supabase
-          .from("saved_designs")
-          .insert({
-            user_id: user.id,
-            design_id: profileDesign.id,
-            share_id: profileDesign.share_id,
-          });
-    
-        if (error) {
-            console.error("Failed to save:", error.message);
-        } else {
-            setIsSaved(true);
-        }
-        setSaving(false);
-    };
-
-    if (isGuest) return (
-        <div className="container mx-auto p-4 flex flex-col items-center gap-4 mt-12">
-            <p className="text-center">Du behöver ett konto för att se din profil.</p>
-            <Button text="Skapa konto" onClick={() => navigate("/login")} />
-        </div>
-    );
+        fetchCurrentUser();
+    }, []);
 
     if (loading) return <p className="text-center mt-10">Laddar...</p>;
     if (error) return <p className="text-center mt-10 text-red-500">Något gick fel.</p>;
@@ -128,12 +73,45 @@ export const ProfilePage = () => {
 
     return (
         <div id="top" className="container mx-auto p-4">
-            <section className="p-8 flex flex-col items-center text-center gap-6">
+
+            <section className="flex flex-col gap-6">
 
                 {designLoading ? (
-                    <p className="h-64 flex items-center">Laddar burk...</p>
+                    <p>Laddar burk...</p>
+                ) : designError ? (
+                    <p>Något gick fel när burken laddades.</p>
+                ) : design ? (
+                    <div className="max-w-xl mx-auto w-full">
+                        <article
+                            className="p-4 bg-white/80 flex flex-col gap-4"
+                        >
+                            
+                            <CanPreview2D side="front" design={design.design_data} />
+                            
+
+                            <div className="flex flex-col gap-2">
+                                                <h2 className="text-center text-3xl font-normal">
+                {profile?.first_name} {profile?.last_name}
+            </h2>
+                                <p className="text-sm text-dark-gray">
+                                    {design.design_data?.back?.department || ""}
+                                </p>
+                            </div>
+                        </article>
+                            {!isOwnProfile && (
+                                <Button
+                                    text={savingDesignId === design.id ? "Sparar..." : "Lägg till i min ölhylla"}
+                                    variant="outlined"
+                                    showIcon={false}
+                                    disabled={savingDesignId === design.id}
+                                    onClick={async () => {
+                                        await saveCanToShelf(design.id);
+                                    }}
+                                />
+                            )}
+                    </div>
                 ) : (
-                    <CanPreview2D side={previewSide} design={profileDesign} />
+                    <p>Ingen burk hittades för den här profilen.</p>
                 )}
                 <div className="flex items-center gap-16">
                     <a onClick={() => setPreviewSide("front")} >

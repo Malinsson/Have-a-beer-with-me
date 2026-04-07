@@ -22,6 +22,7 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
         ? frontFromStore
         : {
               imageUrl: null,
+              imageTransform: { x: 0, y: 0, scale: 1 },
               texturePreset: "default",
               textColor: "#000000",
               textFont: "Inter, sans-serif",
@@ -44,6 +45,17 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
 
     const textureBackground = TEXTURE_STYLES[front.texturePreset] || TEXTURE_STYLES.default;
     const textAlignClass = TEXT_ALIGNMENT[front.textAlignment] || TEXT_ALIGNMENT.center;
+    const imageTransform = {
+        x: front.imageTransform?.x || 0,
+        y: front.imageTransform?.y || 0,
+        scale: front.imageTransform?.scale || 1,
+    };
+
+    const firstName = (name.firstName || "").trim();
+    const firstNamePossessive = firstName
+    ? `${firstName}${/s$/i.test(firstName) ? "'" : "'s"}`
+    : "";
+
     const isFrontSide = side === "front";
 
     return (
@@ -61,21 +73,24 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
                                 className="leading-tight text-2xl"
                                 style={{ color: front.textColor, fontFamily: front.textFont, fontSize: `${1.5 * scale}rem`, }}
                             >
-                                {name.firstName}'
-                                <small style={{ color: front.textColor, fontFamily: front.textFont }}>s</small>
+                                {firstNamePossessive}
                                 <br />
                                 {name.drinkType}
                             </p>
                         </div>
 
                     
-                    <div className="absolute inset-0 z-20" style={{ background: textureBackground }} />
+                    <div className="absolute inset-0 z-5" style={{ background: textureBackground }} />
 
                     {front.imageUrl && (
                         <img
                         src={front.imageUrl}
                         alt="Uploaded label"
-                        className="absolute inset-0 w-full h-full object-cover z-5"
+                        className="absolute inset-0 w-full h-full object-cover z-10 select-none pointer-events-none"
+                        style={{
+                            transform: `translate(${imageTransform.x}%, ${imageTransform.y}%) scale(${imageTransform.scale})`,
+                            transformOrigin: "center center",
+                        }}
                         />
                     )}
                     </div>

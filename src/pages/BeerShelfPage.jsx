@@ -7,9 +7,11 @@ import { useProfileInfo } from "../features/profile/hooks/useProfileInfo.js";
 import { useParams, useNavigate } from "react-router-dom";
 import { CanPreview2D } from "../features/can-designer/components/CanPrewiew2D.jsx";
 
+import { useState, useEffect } from "react";
 import { BackButton } from "../components/BackButton";
 import { QRScanner } from "../components/QRScanner.jsx";
 import { IoSearchOutline } from "react-icons/io5";
+import { ShelfItem } from "../features/profile/ShelfItem.jsx";
 
 export const BeerShelfPage = () => {
     const { slug } = useParams();

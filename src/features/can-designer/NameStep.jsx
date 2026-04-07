@@ -31,12 +31,13 @@ export const NameStep = () => {
             const drinkTypeId = selectedDrink || "";
             const drinkTypeLabel = getDrinkTypeLabelById(drinkTypeId);
 
-            setName(firstName, drinkTypeLabel);
+            setName(firstName, lastName, drinkTypeLabel);
             setFront({ drinkTypeId, drinkType: drinkTypeLabel });
             setBack({ department });
             navigate("/design", {
                 state: {
                     firstName,
+                    lastName,
                     department,
                     drinkTypeId,
                     drinkTypeLabel,

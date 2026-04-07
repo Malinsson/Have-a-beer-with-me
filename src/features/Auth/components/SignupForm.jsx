@@ -11,10 +11,10 @@ export const SignupForm = ({ formId = "signup-form", hideSubmitButton = false, o
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const created = await signup(email, password);
-        if (created) {
+        const result = await signup(email, password);
+        if (result.success) {
             reset();
-            onSuccess?.();
+            onSuccess?.(result.redirectTo);
         }
 
     };

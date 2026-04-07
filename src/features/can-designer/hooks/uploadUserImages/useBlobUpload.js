@@ -10,7 +10,7 @@ export const useBlobUpload = ({
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState(null)
 
-  const handleUpload = async () => {
+  const handleUpload = async (extraData = {}) => {
     if (uploading) return
     setUploading(true)
     setError(null)
@@ -42,7 +42,7 @@ export const useBlobUpload = ({
         throw new Error('Uppladdningen lyckades men ingen bild-URL returnerades.')
       }
 
-      await Promise.resolve(onUploadComplete(url))
+      await Promise.resolve(onUploadComplete(url, extraData))
       onUploadSuccess?.()
       console.log('Uppladdning lyckades, bild-URL:', url)
       
