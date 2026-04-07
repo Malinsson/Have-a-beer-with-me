@@ -10,6 +10,8 @@ import { CanPreviewSection } from "../features/profile/components/CanPreviewSect
 import { CanTagSection } from "../features/profile/components/CanTagSection.jsx";
 import { CanSocialSection } from "../features/profile/components/CanSocialSection.jsx";
 import { CanIdentitySection } from "../features/profile/components/CanIdentitySection.jsx";
+import { CanInfoSection } from "../features/profile/components/CanInfoSection.jsx";
+import { CanActionSection } from "../features/profile/components/CanActionSection.jsx";
 
 
 export const ProfilePage = () => {
@@ -99,49 +101,23 @@ export const ProfilePage = () => {
                         </p>
                     )}
                 </div>
+                
+                {/* Description section */}
+                <CanInfoSection backData={backData} />
 
+                {/* Socials section */}
+                <CanSocialSection socialsData={socialsData} profile={profile} />
 
-                <div className="mt-8 mb-6">
-                    <h3>Innehållsförteckning</h3>
-                    <p>{backData.description || "Ingen beskrivning tillagd."}</p>
-                </div>
-
-                    <CanSocialSection socialsData={socialsData} profile={profile} />
-
-                <div className="flex gap-4 mt-6">
-                    {isOwnProfile ? (
-                        <>
-                            <Button 
-                                text="Editera burk" 
-                                onClick={() => navigate("/design")} 
-                                variant="outlined"
-                                showIcon={false}
-                            />
-                            <Button 
-                                text="Barhyllan" 
-                                onClick={() => navigate(`/profile/${slug}/hylla`)} 
-                                showIcon={false}
-                            />
-                        </>
-                    ) : (
-                        <>
-                            <Button
-                                text="Min burk"
-                                onClick={() => navigate(`/profile/${mySlug}`)}
-                                variant="outlined"
-                                showIcon={false}
-                            />
-                            <Button
-                                text={isSaved ? "Barhyllan" : "Spara burk"}
-                                onClick={() => isSaved
-                                ? navigate(`/profile/${mySlug}/hylla`)
-                                : handleSave()
-                                }
-                                showIcon={false}
-                            />
-                        </>
-                    )}
-                </div>
+                {/* Action buttons section */}
+                <CanActionSection
+                    isOwnProfile={isOwnProfile}
+                    isSaved={isSaved}
+                    onEditCan={() => navigate("/design")}
+                    onOpenShelf={() => navigate(`/profile/${slug}/hylla`)}
+                    onOpenMyCan={() => navigate(`/profile/${mySlug}`)}
+                    onSaveCan={handleSave}
+                    onOpenSavedShelf={() => navigate(`/profile/${mySlug}/hylla`)}
+                />
             </section>
         </div>
     );
