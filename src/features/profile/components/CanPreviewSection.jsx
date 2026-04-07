@@ -4,9 +4,13 @@ import { MdOutlineArrowForwardIos, MdOutlineArrowBackIosNew } from "react-icons/
 
 
 export const CanPreviewSection = ({ design }) => {
+
         const [previewSide, setPreviewSide] = useState("front");
+
+        function handleSideToggle() {
+            setPreviewSide((prev) => (prev === "front" ? "back" : "front"));
+        }
     
-            
             return (
             <section className="flex flex-col">
     
@@ -22,10 +26,10 @@ export const CanPreviewSection = ({ design }) => {
                     
 
                     <div className="flex items-center gap-16 mx-auto my-4">
-                        <a onClick={() => setPreviewSide("front")} >
+                        <a onClick={handleSideToggle} >
                             <MdOutlineArrowBackIosNew />
                         </a>
-                        <a onClick={() => setPreviewSide("back")}>
+                        <a onClick={handleSideToggle}>
                             <MdOutlineArrowForwardIos />
                         </a>
                     </div>
