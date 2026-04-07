@@ -37,7 +37,7 @@ const TAG_ASSETS = [TagRed, TagGreen, TagBlue];
 
 export const ProfilePage = () => {
     const [profileDesign, setProfileDesign] = useState(null);
-    const [designLoading, setDesignLoading] = useState(true);
+    // const [designLoading, setDesignLoading] = useState(true);
     const [previewSide, setPreviewSide] = useState("front");
     const [isSaved, setIsSaved] = useState(false);
     const [saving, setSaving] = useState(false);
@@ -48,7 +48,7 @@ export const ProfilePage = () => {
     const { slug } = useParams();
     const mySlug = useUserSlug();
 
-    const isOwnProfile = slug === mySlug;
+    // const isOwnProfile = slug === mySlug;
 
     const { profile, loading, error } = useProfileInfo(slug);
     const { design, loading: designLoading, error: designError } = useProfileDesigns(profile?.id);

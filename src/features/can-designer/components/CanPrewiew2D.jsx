@@ -1,7 +1,23 @@
+import { useParams } from "react-router-dom";
 import { useDesignStore } from "../../../store/designStore";
+import { useProfileInfo } from "../../profile/hooks/useProfileInfo";
+import { useUserSlug } from "../../profile/hooks/useUserSlug";
+
 import baseCan from "../../../assets/images/baseCan.png";
-import { TAGS, TEXT_ALIGNMENT } from "../constants";
-import  logo  from "../../../assets/images/yrgo.png";
+import logo from "../../../assets/images/yrgo.png";
+
+import TagRed from "../../../assets/images/tags/tag-red.svg";
+import TagGreen from "../../../assets/images/tags/tag-green.svg";
+import TagBlue from "../../../assets/images/tags/tag-blue.svg";
+
+import { TAGS, TEXT_ALIGNMENT, getTagLabelById } from "../constants";
+import { ProfileQRCode } from "../../../components/ProfileQRCode.jsx";
+import { QRScanner } from "../../../components/QRScanner.jsx";
+
+import { SiInstagram, SiGithub } from "react-icons/si";
+import { CiLinkedin } from "react-icons/ci";
+
+const TAG_ASSETS = [TagRed, TagGreen, TagBlue];
 
 const TEXTURE_STYLES = {
     default: "linear-gradient(135deg, #f0f0f090 0%, #e2e2e290 100%)",
@@ -11,10 +27,21 @@ const TEXTURE_STYLES = {
     "texture-4": "repeating-linear-gradient(90deg, #f2f2f290 0px, #f2f2f290 6px, #e4e4e490 6px, #e4e4e490 12px)",
 };
 
+const SOCIAL_CONFIG = [
+    { key: 'linkedin', label: 'LinkedIn', Icon: CiLinkedin },
+    { key: 'instagram', label: 'Instagram', Icon: SiInstagram },
+    { key: 'github', label: 'Github', Icon: SiGithub },
+];
+
 export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
+    const { slug } = useParams();
+    const mySlug = useUserSlug();
+    const socialsData = profile?.socials || {};
+
     const nameFromStore = useDesignStore((state) => state.name);
     const frontFromStore = useDesignStore((state) => state.front);
     const backFromStore = useDesignStore((state) => state.back);
+    const { profile, loading, error } = useProfileInfo(slug);
 
     const useStoreData = !design;
     const name = useStoreData ? nameFromStore : { firstName: "", drinkType: "", ...(design?.name || {}) };
@@ -99,38 +126,65 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
 
                 {!isFrontSide &&(
                     <div className=" absolute bg-white/80 border-4 border-yrgo-red my-[5%] mx-[10%] inset-0 p-2 flex flex-col items-center justify-between">
-                        <div className="flex justify-start items-start gap-2 w-full">
-                            <div className="flex w-full justify-between items-center">
-                                <h5><strong>{back.department}</strong></h5>
-                                <img src={logo} alt="Yrgo Logo" className="w-6 h-6 mt-1" />
+                        <div className="flex justify-between items-center w-full">
+                            <div className="flex flex-col leading-tight">
+                                <h2 className="profile">{profile?.first_name}</h2>
+                                <h2 className="profile profile-italic">{profile?.last_name}</h2>
+                                <h5 className="text-dark-blue text-2xl">{back.department}</h5>
                             </div>
-
+                            <img src={logo} alt="Yrgo Logo" className="w-6 h-6" />
                         </div>
-                    
 
-                    {!isFrontSide && !!back.description && (
+                        <div className="flex flex-col gap-2 items-center">
+                            <ProfileQRCode slug={slug} size={100} />
+                            <p className="text-xs">330 ML</p>
+                        </div>
                         
-                        <div className="min-h-[30%] max-h-[50%] w-full overflow-clip">
-                            <p
-                                className="text-[10px] leading-tight normal-case"
-                                >
-                                {back.description}
-                            </p>
+                        <div className="mt-8 mb-6">
+                            <h3>Innehållsförteckning</h3>
+                            <p>{back.description || "Ingen beskrivning tillagd."}</p>
                         </div>
-                    )}
 
-                        <div>
-                            <p className="text-[10px] my-1 normal-case">Innehållsförteckning:</p>
+                        <div className="flex gap-4 mb-8">
+                            {back.tags?.slice(0, 3).map((tagId, index) => {
+                                const label = getTagLabelById(tagId);
+                                
+                                return (
+                                    <div key={tagId} className="flex flex-col items-center gap-2">
+                                        <span className="text-sm uppercase tracking-tighter">
+                                            {label}
+                                        </span>
+                                        <div className="w-8 h-8">
+                                            <img 
+                                                src={TAG_ASSETS[index]} 
+                                                alt={`${label} tag`} 
+                                                className="w-full h-full object-contain"
+                                            />
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
 
-                            {!isFrontSide && back.tags.length > 0 && (
-                            <div className="flex flex-wrap gap-0.5 justify-center">
-                                {back.tags.slice(0, 3).map((tagId) => (
-                                    <span key={tagId} className="text-[10px]">
-                                        #{tagLookup[tagId] || tagId}
-                                    </span>
-                                ))}
-                            </div>
+                        {!back.tags?.length && (
+                            <p className="text-center text-gray-400 uppercase text-xs tracking-widest">
+                                Inga kompetenser valda
+                            </p>
                         )}
+
+                        <div className="flex flex-col gap-4 mb-12 px-2 max-w-sm">
+                            {SOCIAL_CONFIG.map((config) => {
+                                const username = socialsData[config.key];
+                                if (!username) return null;
+                                const { Icon } = config;
+                                
+                                return (
+                                    <div>
+                                        {Icon && <Icon className="w-3 h-3" />}
+                                        <span className="text-[9px] truncate">{username}</span>
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
                 )}
