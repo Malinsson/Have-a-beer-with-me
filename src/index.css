@@ -85,6 +85,12 @@
         font-size: var(--text-sm);
         text-transform: none;
     }
+
+    .profileCan {
+        color: var(--color-dark-blue);
+        font-size: var(--text-xl);
+        
+    }
     
   }
 

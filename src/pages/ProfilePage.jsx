@@ -111,7 +111,7 @@ export const ProfilePage = () => {
                 </div>
             </section>
 
-            <section>
+            <section className="w-full">
                 <div className="flex flex-row justify-between">
                     <div className="flex flex-col gap-2">
                         <h2 className="profile">{profile?.first_name} <br/></h2>
@@ -186,7 +186,7 @@ export const ProfilePage = () => {
                                 href={`${config.baseUrl}${username}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center gap-4 hover:opacity-70 transition-opacity"
+                                className="flex items-center gap-4 transition-opacity"
                             >
                                 <Icon className="text-3xl flex-shrink-0" />
                                 <div>
@@ -199,7 +199,7 @@ export const ProfilePage = () => {
                         );
                     })}
                     {profile?.email && (
-                        <a href={`mailto:${profile.email}`} className="flex items-center gap-4 hover:opacity-70">
+                        <a href={`mailto:${profile.email}`} className="flex items-center gap-4">
                             <HiOutlineMail className="text-3xl text-black flex-shrink-0" />
                             <div className="flex-grow">
                                 <span>{profile.email}</span>
