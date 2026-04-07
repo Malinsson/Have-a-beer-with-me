@@ -11,13 +11,11 @@ import { DesignerPage } from './pages/DesignerPage.jsx'
 import { BeerShelfPage } from './pages/BeerShelfPage.jsx'
 import { CanDetailPage } from './pages/CanDetailPage.jsx'
 import { LoginPage } from './pages/LoginPage.jsx'
-// import { GuestSignup } from './features/auth/components/GuestSignup.jsx'
 
 
 export function App() {
   return (
     <>
-      {/* <GuestSignup /> */}
       <Layout>
         <Routes>
           <Route path="/" element={<HomePage />}></Route>

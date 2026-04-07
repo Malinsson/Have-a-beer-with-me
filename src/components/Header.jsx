@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { IoSearchOutline, IoCloseSharp } from "react-icons/io5";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { CgProfile } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
 import { useIsSignedIn } from "../shared/hooks/useIsSignedIn";
 import { useLogout } from "../features/Auth/hooks/useLogout";
 import { useIsGuest } from "../shared/hooks/useIsGuest";
-// import { LoginForm } from "../features/Auth/components/LoginForm";
 import { useUserSlug } from "../features/profile/hooks/useUserSlug";
 import Logo from "../assets/images/yrgo.png";
+import beerHeaderIcon from "../assets/icons/beerHeaderIcon.svg";
 
 export const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -86,7 +85,7 @@ export const Header = () => {
                             onClick={handleProfileClick}
                             aria-label="Go to profile"
                         >
-                            <CgProfile className="text-3xl" />
+                            <img src={beerHeaderIcon} alt="Profile" className="text-3xl" />
                         </button>
                     </div>
                 )}
@@ -106,16 +105,12 @@ export const Header = () => {
             <nav 
                 id="nav-menu" 
                 className={`
-                    fixed top-16 left-0 right-0 w-full bg-white flex flex-col p-6
+                    fixed top-16 left-0 right-0 w-full z-100 bg-white flex flex-col p-6
                     transition-all duration-300 ease-in-out
                     ${menuOpen 
                         ? "opacity-100 translate-y-0 pointer-events-auto" 
                         : "opacity-0 -translate-y-2 pointer-events-none"
-                    }
-
-                `}
-                style={{ zIndex: 55 }}
-            >
+                    }`} >
                 
                     <ul className={`
                         flex flex-col gap-8

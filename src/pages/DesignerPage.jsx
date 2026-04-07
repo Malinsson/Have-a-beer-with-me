@@ -283,14 +283,14 @@ export const DesignerPage = () => {
 
                 {step === "back" && (
                     <>
-                        <Button text="Skippa" onClick={finalizeDesignAndOpenModal} variant="outlined" />
+                        <Button text="Skippa" onClick={() => setStep("konto")} variant="outlined" />
                         <Button text="Gå vidare" onClick={() => setStep("info")} variant="primary" />
                     </>
                 )}
 
                 {step === "info" && (
                     <>
-                        <Button text="Skippa" onClick={finalizeDesignAndOpenModal} variant="outlined" showIcon={false} />
+                        <Button text="Skippa" onClick={() => setStep("konto")} variant="outlined" showIcon={false} />
                         <Button text="Gå vidare" onClick={() => setStep("social")} variant="primary" />
                     </>
                 )}
@@ -305,7 +305,7 @@ export const DesignerPage = () => {
                         onChange={handleSocialChange}
                     />
                     <div className="flex justify-center gap-4">
-                        <Button text="Skippa" onClick={finalizeDesignAndOpenModal} variant="outlined" showIcon={false} />
+                        <Button text="Skippa" onClick={() => setStep("konto")} variant="outlined" showIcon={false} />
                         <Button text="Gå vidare" onClick={handleSocialContinue} variant="primary" />
                     </div>
                 </>
