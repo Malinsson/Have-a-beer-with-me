@@ -6,27 +6,17 @@ import { supabase } from "../lib/supabase.js";
 import { Button } from "../components/Button.jsx";
 import { QRScanner } from "../components/QRScanner.jsx";
 import { ProfileQRCode } from "../components/ProfileQRCode.jsx";
-import { SiInstagram, SiGithub } from "react-icons/si";
-import { CiLinkedin } from "react-icons/ci";
-import { HiOutlineMail } from "react-icons/hi";
-import { MdOutlineArrowOutward } from "react-icons/md";
 import { MdCheck, MdAdd } from "react-icons/md";
 import { useProfileDesigns } from "../features/profile/hooks/useProfileDesigns.js";
 import { useSaveCanToShelf } from "../features/can-designer/hooks/displayCanDesign/useSaveCanToShelf.js";
 import { CanPreviewSection } from "../features/profile/components/CanPreviewSection.jsx";
 import { CanTagSection } from "../features/profile/components/CanTagSection.jsx";
+import { CanSocialSection } from "../features/profile/components/CanSocialSection.jsx";
 
 
 // HTTPS is required — getUserMedia only works on secure connections. 
 // It will work on localhost for development, but once live it must be 
 // served over HTTPS. Most hosting providers (Vercel, Netlify etc.) handle this automatically.
-
-const SOCIAL_CONFIG = [
-    { key: 'linkedin', label: 'LinkedIn', Icon: CiLinkedin, baseUrl: "https://www.linkedin.com/in/" },
-    { key: 'instagram', label: 'Instagram', Icon: SiInstagram, baseUrl: "https://www.instagram.com/" },
-    { key: 'github', label: 'Github', Icon: SiGithub, baseUrl: "https://github.com/" },
-];
-
 
 export const ProfilePage = () => {
     const [isSaved, setIsSaved] = useState(false);
@@ -35,7 +25,7 @@ export const ProfilePage = () => {
 
     const navigate = useNavigate();
     const { slug } = useParams();
-    const mySlug = useUserSlug();
+    const mySlug = useUserSlug() || "guest";
 
 
     const { profile, loading, error } = useProfileInfo(slug);
@@ -117,60 +107,24 @@ export const ProfilePage = () => {
 
                 </div>
                     
+
                 <div className="my-8">
-
                     {backData.tags?.length > 0 ? (
-
-                        < CanTagSection backData={backData} /> ) : (
-                
+                        <CanTagSection backData={backData} />
+                    ) : (
                         <p className="text-center text-gray-400 uppercase text-xs tracking-widest">
-                                Inga kompetenser valda
+                            Inga kompetenser valda
                         </p>
                     )}
-                    
                 </div>
+
 
                 <div className="mt-8 mb-6">
                     <h3>Innehållsförteckning</h3>
                     <p>{backData.description || "Ingen beskrivning tillagd."}</p>
                 </div>
 
-                <div className="flex flex-col gap-4 mb-12 px-2 max-w-sm">
-                    {SOCIAL_CONFIG.map((config) => {
-                        
-                        const username = socialsData[config.key];
-                        if (!username) return null;
-
-                        const { Icon, baseUrl } = config;
-                        
-                        return (
-                            <a 
-                                key={config.key}
-                                href={`${config.baseUrl}${username}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-4 hover:opacity-70 transition-opacity"
-                            >
-                                <Icon className="text-3xl shrink-0" />
-                                <div>
-                                    <span>
-                                        {username}
-                                    </span>
-                                </div>
-                                <MdOutlineArrowOutward className="text-2xl text-black" />
-                            </a>
-                        );
-                    })}
-                    {profile?.email && (
-                        <a href={`mailto:${profile.email}`} className="flex items-center gap-4 hover:opacity-70">
-                            <HiOutlineMail className="text-3xl text-black shrink-0" />
-                            <div className="grow">
-                                <span>{profile.email}</span>
-                            </div>
-                            <MdOutlineArrowOutward className="text-2xl text-black" />
-                        </a>
-                    )}
-                </div>
+                    <CanSocialSection socialsData={socialsData} profile={profile} />
 
                 <div className="flex gap-4 mt-6">
                     {isOwnProfile ? (
