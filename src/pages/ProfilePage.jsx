@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useProfileInfo } from "../features/profile/hooks/useProfileInfo.js";
 import { useUserSlug } from "../features/profile/hooks/useUserSlug.js";
 import { supabase } from "../lib/supabase.js";
-import { Button } from "../components/Button.jsx";
 import { useProfileDesigns } from "../features/profile/hooks/useProfileDesigns.js";
 import { useSaveCanToShelf } from "../features/can-designer/hooks/displayCanDesign/useSaveCanToShelf.js";
 import { CanPreviewSection } from "../features/profile/components/CanPreviewSection.jsx";
@@ -108,7 +107,7 @@ export const ProfilePage = () => {
                 {/* Socials section */}
                 <CanSocialSection socialsData={socialsData} profile={profile} />
 
-                {/* Action buttons section */}
+                {/* Bottom buttons section */}
                 <CanActionSection
                     isOwnProfile={isOwnProfile}
                     isSaved={isSaved}
