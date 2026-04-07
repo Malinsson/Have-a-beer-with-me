@@ -1,7 +1,8 @@
 import { create } from "zustand";
 import supabase from "../lib/supabase";
+import { removeCachedValue } from "../lib/cache";
 
-const initialName = { firstName: '', drinkType: '' };
+const initialName = { firstName: '', lastName: '', drinkType: '' };
 const initialFront = {
     imageUrl: null,
     texturePreset: 'default',
@@ -26,7 +27,7 @@ export const useDesignStore = create((set, get) => ({
     front: initialFront,
     back: initialBack,
     currentShareId: null,
-    setName: (firstName, drinkType) => set({ name: { firstName, drinkType } }),
+    setName: (firstName, lastName, drinkType) => set({ name: { firstName, lastName, drinkType } }),
     setFront: (frontData) => set((state) => ({ front: { ...state.front, ...frontData } })),
     setBack: (backData) => set((state) => ({ back: { ...state.back, ...backData } })),
 
@@ -142,6 +143,7 @@ export const useDesignStore = create((set, get) => ({
                 .maybeSingle();
 
             if (error) throw error;
+            removeCachedValue(`profile-design:${session.user.id}`);
             set({ currentShareId: data?.share_id || effectiveShareId });
             return { success: true, designId: data.id };
         } catch (err) {

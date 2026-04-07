@@ -1,6 +1,7 @@
 import supabase from "../../../lib/supabase";
 import { useState } from "react";
 import { buildProfileSlug } from "../../profile/utils/slug";
+import { removeCachedValue, removeCachedValuesByPrefix } from "../../../lib/cache";
 
 export const useNameStep = () => {
     const [success, setSuccess] = useState(false);
@@ -25,6 +26,9 @@ export const useNameStep = () => {
             if (error) {
                 throw new Error(error.message);
             }
+
+            removeCachedValuesByPrefix("profile-info:");
+            removeCachedValue(`profile-design:${userId}`);
 
             console.log("Name saved successfully");
             setSuccess(true);

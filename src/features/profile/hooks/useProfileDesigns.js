@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../../lib/supabase.js";
+import { getCachedValue, setCachedValue } from "../../../lib/cache.js";
+
+const CACHE_TTL = 5 * 60 * 1000;
 
 export const useProfileDesigns = (userId) => {
     const [design, setDesign] = useState(null);
@@ -14,6 +17,16 @@ export const useProfileDesigns = (userId) => {
         }
 
         let cancelled = false;
+        const cacheKey = `profile-design:${userId}`;
+        const cachedDesign = getCachedValue(cacheKey);
+
+        if (cachedDesign) {
+            setDesign(cachedDesign);
+            setLoading(false);
+            return () => {
+                cancelled = true;
+            };
+        }
 
         const fetchDesign = async () => {
             setLoading(true);
@@ -35,6 +48,7 @@ export const useProfileDesigns = (userId) => {
                 setDesign(null);
             } else {
                 setDesign(data || null);
+                setCachedValue(cacheKey, data || null, CACHE_TTL);
             }
 
             setLoading(false);

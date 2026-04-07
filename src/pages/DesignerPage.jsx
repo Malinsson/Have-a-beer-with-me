@@ -50,6 +50,7 @@ export const DesignerPage = () => {
 
     const front = useDesignStore((state) => state.front);
     const back = useDesignStore((state) => state.back);
+    const setName = useDesignStore((state) => state.setName);
     const setFront = useDesignStore((state) => state.setFront);
     const setBack = useDesignStore((state) => state.setBack);
     const redirectSlug = location.state?.slug || userSlug || "guest";
@@ -68,6 +69,25 @@ export const DesignerPage = () => {
         });
 
         const hydrateLatestDesign = async () => {
+            const hasIncomingState =
+                typeof location.state?.firstName === "string" ||
+                typeof location.state?.lastName === "string" ||
+                typeof location.state?.department === "string";
+
+            if (hasIncomingState) {
+                setName(
+                    location.state?.firstName || "",
+                    location.state?.lastName || "",
+                    location.state?.drinkTypeLabel || ""
+                );
+                setFront({
+                    drinkTypeId: location.state?.drinkTypeId || "",
+                    drinkType: location.state?.drinkTypeLabel || "",
+                });
+                setBack({ department: location.state?.department || "" });
+                return;
+            }
+
             const result = await useDesignStore.getState().loadLatestDesignForCurrentUser();
             if (!result.success && result.error !== "No design found" && result.error !== "User not authenticated") {
                 console.log("Failed to hydrate latest design:", result.error);
@@ -102,7 +122,7 @@ export const DesignerPage = () => {
             unsubscribe();
             authListener.subscription.unsubscribe();
         };
-    }, []);
+    }, [location.state, setBack, setFront, setName]);
 
     const handleTextureSelect = (textureId) => {
         setFront({ texturePreset: textureId });
