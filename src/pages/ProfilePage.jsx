@@ -42,7 +42,6 @@ export const ProfilePage = () => {
     const [currentUserId, setCurrentUserId] = useState(null);
 
     const navigate = useNavigate();
-    const isGuest = useIsGuest();
     const { slug } = useParams();
     const mySlug = useUserSlug();
 
@@ -134,12 +133,7 @@ export const ProfilePage = () => {
                                 icon={isSaved ? MdCheck : MdAdd}
                                 variant="outlined"
                                 disabled={isSaved || saving}
-                                onClick={async () => {
-                                        await saveCanToShelf({
-                                            designId: design.id,
-                                            shareId: design.share_id,
-                                        });
-                                    }}
+                                onClick={handleSave}
                             />
                         )}
                     </div>
