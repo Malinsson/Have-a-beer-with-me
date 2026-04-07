@@ -41,7 +41,7 @@ export const BeerShelfPage = () => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        navigate(`/profile/${searchQuery.trim()}`);
+        navigate(`/can/${searchQuery.trim()}`);
         setSearchQuery("")
     };
 
@@ -91,7 +91,7 @@ export const BeerShelfPage = () => {
                             <div className="flex items-center gap-3">
                                 <input
                                 type="text"
-                                placeholder="andersandersson..."
+                                placeholder="b36db51f..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 className="w-full px-4 py-2 border border-b-grey"

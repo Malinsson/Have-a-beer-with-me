@@ -1,15 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useProfileInfo } from "../features/profile/hooks/useProfileInfo.js";
-import { useIsGuest } from "../shared/hooks/useIsGuest.js";
 import { useUserSlug } from "../features/profile/hooks/useUserSlug.js";
 import { supabase } from "../lib/supabase.js";
 import { Button } from "../components/Button.jsx";
 import { QRScanner } from "../components/QRScanner.jsx";
-import { CanPreview2D } from "../features/can-designer/components/CanPrewiew2D.jsx";
-import { useDesignStore } from "../store/designStore.js";
 import { ProfileQRCode } from "../components/ProfileQRCode.jsx";
-import { MdOutlineArrowForwardIos, MdOutlineArrowBackIosNew } from "react-icons/md";
 import { SiInstagram, SiGithub } from "react-icons/si";
 import { CiLinkedin } from "react-icons/ci";
 import { HiOutlineMail } from "react-icons/hi";
@@ -17,6 +13,7 @@ import { MdOutlineArrowOutward } from "react-icons/md";
 import { MdCheck, MdAdd } from "react-icons/md";
 import { useProfileDesigns } from "../features/profile/hooks/useProfileDesigns.js";
 import { useSaveCanToShelf } from "../features/can-designer/hooks/displayCanDesign/useSaveCanToShelf.js";
+import { CanPreviewSection } from "../features/profile/components/CanPreviewSection.jsx";
 
 import TagRed from "../assets/images/tags/tag-red.svg";
 import TagGreen from "../assets/images/tags/tag-green.svg";
@@ -36,7 +33,6 @@ const SOCIAL_CONFIG = [
 const TAG_ASSETS = [TagRed, TagGreen, TagBlue];
 
 export const ProfilePage = () => {
-    const [previewSide, setPreviewSide] = useState("front");
     const [isSaved, setIsSaved] = useState(false);
     const [saving, setSaving] = useState(false);
     const [currentUserId, setCurrentUserId] = useState(null);
@@ -83,33 +79,13 @@ export const ProfilePage = () => {
     return (
         <div id="top" className="container mx-auto p-4">
 
-            <section className="flex flex-col">
-
-                {designLoading ? (
-                    <p>Laddar burk...</p>
-                ) : designError ? (
-                    <p>Något gick fel när burken laddades.</p>
-                ) : design ? (
-                    <div className="max-w-xl mx-auto w-full">
-
-                        <article className="p-4 bg-white/80 flex flex-col gap-4" >
-                            
-                            <CanPreview2D side={previewSide} design={design.design_data} />
-                            
-                        </article>
-                    </div>
-                ) : (
-                    <p>Ingen burk hittades för den här profilen.</p>
-                )}
-                <div className="flex items-center gap-16 mx-auto my-4">
-                    <a onClick={() => setPreviewSide("front")} >
-                        <MdOutlineArrowBackIosNew />
-                    </a>
-                    <a onClick={() => setPreviewSide("back")}>
-                        <MdOutlineArrowForwardIos />
-                    </a>
-                </div>
-            </section>
+            {designLoading ? (
+                <p>Laddar burk...</p>
+            ) : designError ? (
+                <p>Något gick fel när burken laddades.</p>
+            ) : (
+                <CanPreviewSection design={design} />
+            )}
 
             <section>
                 <div className="flex flex-row justify-between">
@@ -188,7 +164,7 @@ export const ProfilePage = () => {
                                 rel="noopener noreferrer"
                                 className="flex items-center gap-4 hover:opacity-70 transition-opacity"
                             >
-                                <Icon className="text-3xl flex-shrink-0" />
+                                <Icon className="text-3xl shrink-0" />
                                 <div>
                                     <span>
                                         {username}
@@ -200,8 +176,8 @@ export const ProfilePage = () => {
                     })}
                     {profile?.email && (
                         <a href={`mailto:${profile.email}`} className="flex items-center gap-4 hover:opacity-70">
-                            <HiOutlineMail className="text-3xl text-black flex-shrink-0" />
-                            <div className="flex-grow">
+                            <HiOutlineMail className="text-3xl text-black shrink-0" />
+                            <div className="grow">
                                 <span>{profile.email}</span>
                             </div>
                             <MdOutlineArrowOutward className="text-2xl text-black" />

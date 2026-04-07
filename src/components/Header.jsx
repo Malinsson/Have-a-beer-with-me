@@ -36,7 +36,7 @@ export const Header = () => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        // Add your search logic here
+        navigate(`/can/${searchQuery.trim()}`);
         console.log("Search query:", searchQuery);
         closeMenu();
     };
