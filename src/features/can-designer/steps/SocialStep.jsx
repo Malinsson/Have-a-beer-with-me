@@ -1,5 +1,4 @@
-import { ProgressDots } from "../../components/ProgressDots";
-import { useState } from "react";
+import { ProgressDots } from "../../../components/ProgressDots";
 
 export const SocialStep = ({ instagram, linkedin, github, onChange }) => {
     return (

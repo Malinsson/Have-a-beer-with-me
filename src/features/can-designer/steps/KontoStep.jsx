@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SignupForm } from "../Auth/components/SignupForm";
-import { LoginForm } from "../Auth/components/LoginForm";
-import { ProgressDots } from "../../components/ProgressDots";
+import { SignupForm } from "../../Auth/components/SignupForm";
+import { LoginForm } from "../../Auth/components/LoginForm";
+import { ProgressDots } from "../../../components/ProgressDots";
 
 
 export const KontoStep = ({ onSignupSuccess }) => {

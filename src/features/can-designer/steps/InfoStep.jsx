@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { ProgressDots } from "../../components/ProgressDots";
-import { Button } from "../../components/Button";
-import { TAGS } from "./constants";
+import { ProgressDots } from "../../../components/ProgressDots";
+import { Button } from "../../../components/Button";
+import { TAGS } from "../constants";
 import React from "react";
 
 export const InfoStep = ({ selected, onToggle }) => {

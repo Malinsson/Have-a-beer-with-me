@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProgressDots } from "../components/ProgressDots";
-import { NameStep } from "../features/can-designer/NameStep";
+import { NameStep } from "../features/can-designer/steps/NameStep";
 import { GuestSignup } from "../features/Auth/components/GuestSignup";
 
 

@@ -64,6 +64,7 @@ export const BeerShelfPage = () => {
                 </h2>
             </div>
 
+            {/* State when there are no saved cans */}
             {savedCans.length === 0 ? (
                 <div className="flex flex-col items-center gap-6 flex-1 pb-2"> 
                     <img 
@@ -93,7 +94,7 @@ export const BeerShelfPage = () => {
                     </div>
 
                 </div>
-            ) : (
+            ) : ( 
                 <div className="flex flex-col gap-8">
                     <div className="grid grid-cols-2 gap-6 gap-x-4 gap-y-8">
                         {savedCans.map((can) => (

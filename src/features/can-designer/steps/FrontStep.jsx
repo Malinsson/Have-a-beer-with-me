@@ -1,9 +1,9 @@
 import { MdOutlineImage } from "react-icons/md";
 import { BiFontFamily } from "react-icons/bi";
-import { ImageUploader } from "./components/ImageUploader";
-import { AlignmentToggle } from "./components/AlignmentToggle";
+import { ImageUploader } from "../components/ImageUploader";
+import { AlignmentToggle } from "../components/AlignmentToggle";
 
-import { TEXTURES, COLORS, FONTS } from "./constants";
+import { TEXTURES, COLORS, FONTS } from "../constants";
 
 
 export const FrontStep = ({
