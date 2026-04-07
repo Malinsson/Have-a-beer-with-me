@@ -4,35 +4,30 @@ import { useProfileInfo } from "../features/profile/hooks/useProfileInfo.js";
 import { useUserSlug } from "../features/profile/hooks/useUserSlug.js";
 import { supabase } from "../lib/supabase.js";
 import { Button } from "../components/Button.jsx";
-import { QRScanner } from "../components/QRScanner.jsx";
-import { ProfileQRCode } from "../components/ProfileQRCode.jsx";
-import { MdCheck, MdAdd } from "react-icons/md";
 import { useProfileDesigns } from "../features/profile/hooks/useProfileDesigns.js";
 import { useSaveCanToShelf } from "../features/can-designer/hooks/displayCanDesign/useSaveCanToShelf.js";
 import { CanPreviewSection } from "../features/profile/components/CanPreviewSection.jsx";
 import { CanTagSection } from "../features/profile/components/CanTagSection.jsx";
 import { CanSocialSection } from "../features/profile/components/CanSocialSection.jsx";
+import { CanIdentitySection } from "../features/profile/components/CanIdentitySection.jsx";
 
-
-// HTTPS is required — getUserMedia only works on secure connections. 
-// It will work on localhost for development, but once live it must be 
-// served over HTTPS. Most hosting providers (Vercel, Netlify etc.) handle this automatically.
 
 export const ProfilePage = () => {
     const [isSaved, setIsSaved] = useState(false);
     const [saving, setSaving] = useState(false);
     const [currentUserId, setCurrentUserId] = useState(null);
 
+    // Get slug from URL and current user's slug for comparison
     const navigate = useNavigate();
     const { slug } = useParams();
     const mySlug = useUserSlug() || "guest";
 
-
+    // Redirect to own profile if slug is "me"
     const { profile, loading, error } = useProfileInfo(slug);
-    const { design, loading: designLoading, error: designError } = useProfileDesigns(profile?.id);
-    const { saveCanToShelf, savingDesignId } = useSaveCanToShelf();
-
     const isOwnProfile = currentUserId && profile?.id === currentUserId;
+
+    // Save can to shelf hook
+    const { saveCanToShelf } = useSaveCanToShelf();
 
     useEffect(() => {
         const fetchCurrentUser = async () => {
@@ -43,12 +38,16 @@ export const ProfilePage = () => {
         fetchCurrentUser();
     }, []);
 
-    if (loading) return <p className="text-center mt-10">Laddar...</p>;
-    if (error) return <p className="text-center mt-10 text-red-500">Något gick fel.</p>;
-
+    // Fetch the current design for this profile
+    const { design, loading: designLoading, error: designError } = useProfileDesigns(profile?.id);
+    
     const backData = design?.design_data?.back || {};
     const socialsData = backData.socials || {};
-
+    
+    if (loading) return <p className="text-center mt-10">Laddar...</p>;
+    if (error) return <p className="text-center mt-10 text-red-500">Något gick fel.</p>;
+    
+    // Check if the current design is being saved to disable the save button
     const handleSave = async () => {
         if (!design?.share_id) return;
         setSaving(true);
@@ -62,9 +61,11 @@ export const ProfilePage = () => {
         setSaving(false);
     };
 
+
     return (
         <div id="top" className="container mx-auto p-4">
 
+            {/* Beer can preview section */}
             {designLoading ? (
                 <p>Laddar burk...</p>
             ) : designError ? (
@@ -74,40 +75,21 @@ export const ProfilePage = () => {
             )}
 
             <section>
-                <div className="flex flex-row justify-between">
-                    <div className="flex flex-col gap-2">
-                        <h2 className="profile">{profile?.first_name} <br/></h2>
-                        <h2 className="profile profile-italic">{profile?.last_name}</h2>
-                        <h4 className="text-dark-blue text-2xl">{backData.department}</h4>
+                
+                {/* Name, department and QR code section */}
+                <CanIdentitySection 
+                profile={profile}
+                isOwnProfile={isOwnProfile}
+                isSaved={isSaved}
+                saving={saving}
+                slug={slug}
+                department={backData.department}
+                shareId={design?.share_id}
+                onSave={handleSave}
 
-                        {isOwnProfile ? (
-                            <QRScanner 
-                                text="Skanna" 
-                                variant="outlined" 
-                                onScan={(data) => {
-                                    const url = new URL(data);
-                                    navigate(url.pathname);
-                                }}
-                            />
-                        ) : (
-                            <Button
-                                text={isSaved ? "Sparad" : "Spara burk"}
-                                icon={isSaved ? MdCheck : MdAdd}
-                                variant="outlined"
-                                disabled={isSaved || saving}
-                                onClick={handleSave}
-                            />
-                        )}
-                    </div>
+                 />
 
-                    <div className="flex flex-col gap-2 items-center">
-                        <ProfileQRCode slug={slug} size={100} />
-                        <p className="text-xs">ID: {design?.share_id}</p>
-                    </div>
-
-                </div>
-                    
-
+                {/* Tags section */}
                 <div className="my-8">
                     {backData.tags?.length > 0 ? (
                         <CanTagSection backData={backData} />
