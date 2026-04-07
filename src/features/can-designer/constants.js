@@ -87,3 +87,12 @@ const DRINK_TYPE_BY_ID = TYPES.reduce((acc, type) => {
 export const getDrinkTypeById = (id) => DRINK_TYPE_BY_ID[id] || null;
 
 export const getDrinkTypeLabelById = (id) => getDrinkTypeById(id)?.label || "";
+
+const ALL_TAG_ITEMS = TAGS.flatMap(category => category.items);
+
+const TAG_BY_ID = ALL_TAG_ITEMS.reduce((acc, item) => {
+  acc[item.id] = item;
+  return acc;
+}, {});
+
+export const getTagLabelById = (id) => TAG_BY_ID[id]?.label || "";

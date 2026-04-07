@@ -1,42 +1,60 @@
 // The beercan shelf page, where you can see all the cans you have collected.
-import { useSavedDesigns } from "../features/can-designer/hooks/displayCanDesign/useSavedDesigns.js";
+import { useState, useEffect } from "react";
 import scanCanImage from "../assets/images/barhylla_empty.svg";
+
+import { useDesignStore } from "../store/designStore.js";
+import { useProfileInfo } from "../features/profile/hooks/useProfileInfo.js";
+import { useParams, useNavigate } from "react-router-dom";
+import { CanPreview2D } from "../features/can-designer/components/CanPrewiew2D.jsx";
 
 import { useState, useEffect } from "react";
 import { BackButton } from "../components/BackButton";
-import { supabase } from "../lib/supabase.js";
-import { useNavigate } from "react-router-dom";
 import { QRScanner } from "../components/QRScanner.jsx";
 import { IoSearchOutline } from "react-icons/io5";
 import { ShelfItem } from "../features/profile/ShelfItem.jsx";
 
 export const BeerShelfPage = () => {
-    const [userId, setUserId] = useState(null);
-    const [authLoading, setAuthLoading] = useState(true);
-    const [searchQuery, setSearchQuery] = useState("");
+    const { slug } = useParams();
     const navigate = useNavigate();
+    const { profile, loading: profileLoading, error: profileError } = useProfileInfo(slug);
+    const getSavedDesigns = useDesignStore((state) => state.getSavedDesignsByUserId);
+
+    const [savedCans, setSavedCans] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [fetchError, setFetchError] = useState(null);
+    const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
-        const getUser = async () => {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (user) setUserId(user.id);
-            setAuthLoading(false);
+        if (!profile?.id) return;
+
+        const fetchCans = async () => {
+            const result = await getSavedDesigns(profile.id);
+
+            if (result.success) {
+                setSavedCans(result.designs);
+            } else {
+                setFetchError(result.error);
+            }
+            setLoading(false);
         }
-        getUser();
-    }, []);
+        fetchCans();
+    }, [profile?.id]);
 
     const handleSearch = (e) => {
         e.preventDefault();
-        // Add your search logic here
-        console.log("Search query:", searchQuery);
-        closeMenu();
+        navigate(`/profile/${searchQuery.trim()}`);
+        setSearchQuery("")
     };
 
-    const { savedDesigns, loading, error } = useSavedDesigns(userId);
+    if (loading || profileLoading) return (
+        <div className="flex justify-center items-center mt-12">
+            <p>Hämtar din barhylla...</p>
+        </div>
+    );
 
-    if (authLoading) return (
-        <div className="flex justify-center items-center h-screen">
-            <p>Laddar din hylla...</p>
+    if (profileError || fetchError) return (
+        <div className="flex justify-center items-center mt-12">
+            <p>Något gick fel: {profileError?.message || fetchError}</p>;
         </div>
     );
 
@@ -49,54 +67,86 @@ export const BeerShelfPage = () => {
                 </h2>
             </div>
 
-            <div className="flex grow">
-                {loading ? (
-                    <div className="flex justify-center items-center h-40">
-                        <p>Laddar din hylla...</p>
+            
+            {savedCans.length === 0 ? (
+                <div className="flex flex-col items-center gap-6 flex-1 pb-2"> 
+                    <img 
+                        src={scanCanImage}
+                        alt="empty shelf" 
+                        className="w-40 h-auto object-contain my-10"
+                    />
+                    <p className="text-center mt-10">
+                        Din barhylla är tom. Scanna andras burkar för att fylla din barhylla.
+                    </p>
+                    <QRScanner 
+                        text="Scanna din första öl" 
+                        variant="primary" 
+                        onScan={(data) => {
+                            const url = new URL(data);
+                            navigate(url.pathname);
+                        }}
+                    />
+                    <div className="w-full mt-12">
+                        <form onSubmit={handleSearch} className="flex flex-col gap-2 w-full">
+                            <label className="text-base font-semibold uppercase">Sök efter burk-id</label>
+                            <div className="flex items-center gap-3">
+                                <input
+                                type="text"
+                                placeholder="andersandersson..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="w-full px-4 py-2 border border-b-grey"
+                                />
+                                <button type="submit" className="flex-shrink-0">
+                                <IoSearchOutline className="text-2xl" />
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                ) : error ? (
-                    <p className="text-center text-red-500">Något gick fel.</p>
-                ) : savedDesigns.length === 0 ? (
-                    <div className="flex flex-col items-center gap-4 flex-1 pb-2"> 
-                        <img 
-                            src={scanCanImage}
-                            alt="can" 
-                            className="w-40 h-auto object-contain my-10"
-                        />
-                        <p className="text-center mt-10">
-                            Din barhylla är tom. Scanna andras burkar för att fylla din barhylla.
-                        </p>
-                        <QRScanner 
-                            text="Scanna din första öl" 
-                            variant="primary" 
-                            onScan={(data) => navigate(`/profile/${data}`)} 
-                        />
-                        <div className="w-full mt-auto">
-                            <form onSubmit={handleSearch} className="flex flex-col mt-15 gap-2">
-                                <label><p>Sök efter burk-id</p></label>
-                                <div className="flex items-center gap-3">
-                                    <input
-                                        type="text"
-                                        placeholder="andersandersson..."
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                        className="w-full px-4 py-2 border border-b-grey"
-                                    />
-                                    <button type="submit" className="shrink-0">
-                                        <IoSearchOutline className="text-2xl" />
-                                    </button>
+                </div>
+            ) : (
+                <div className="flex flex-col gap-8">
+                    <div className="grid grid-cols-2 gap-6 gap-x-4 gap-y-8">
+                        {savedCans.map((can) => (
+                            <div 
+                                key={can.savedId} 
+                                className="flex flex-col"
+                                onClick={() => navigate(`/profile/${can.ownerSlug}`)}
+                            >
+                                <div className="w-full flex items-center justify-center px-12 mt-4">
+                                    <CanPreview2D side="front" design={can} scale={0.6} />
                                 </div>
-                            </form>
-                        </div>
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-2 gap-6 p-2">
-                        {savedDesigns.map((saved) => (
-                            <ShelfItem key={saved.id} saved={saved} />
+
+                                <div className="pl-2 mt-3">
+                                    <p className="bold text-xl">
+                                        {can.ownerFirstName} <br /> {can.ownerLastName}
+                                    </p>
+                                    <h4 className="text-lg text-black">
+                                        {can.department}
+                                    </h4>
+                                </div>
+                            </div>
                         ))}
                     </div>
-                )}
-            </div>
+                    <div className="w-full pb-4 mt-12">
+                        <form onSubmit={handleSearch} className="flex flex-col gap-2 w-full">
+                            <label className="text-sm font-bold uppercase tracking-wider">Sök efter annan burk</label>
+                            <div className="flex items-center gap-3">
+                                <input
+                                    type="text"
+                                    placeholder="Skriv ett ID..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:border-black"
+                                />
+                                <button type="submit" className="bg-black text-white p-3">
+                                    <IoSearchOutline className="text-2xl" />
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </section>
     );
 }

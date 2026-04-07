@@ -11,7 +11,7 @@ const TEXTURE_STYLES = {
     "texture-4": "repeating-linear-gradient(90deg, #f2f2f290 0px, #f2f2f290 6px, #e4e4e490 6px, #e4e4e490 12px)",
 };
 
-export const CanPreview2D = ({ side = "front", design = null }) => {
+export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
     const nameFromStore = useDesignStore((state) => state.name);
     const frontFromStore = useDesignStore((state) => state.front);
     const backFromStore = useDesignStore((state) => state.back);
@@ -59,7 +59,7 @@ export const CanPreview2D = ({ side = "front", design = null }) => {
     const isFrontSide = side === "front";
 
     return (
-        <div className="relative max-w-45 mx-auto">
+        <div className="relative max-w-45 mx-auto" style={{ maxWidth: `${180 * scale}px` }}>
             <img src={baseCan} alt="Can template" className="w-full h-auto object-contain" />
 
             <div className="absolute left-1/2 top-[20%] -translate-x-1/2 w-[98%] h-[72%] overflow-hidden">
@@ -70,8 +70,8 @@ export const CanPreview2D = ({ side = "front", design = null }) => {
 
                         <div className={`absolute w-full h-full p-3 z-50 flex ${textAlignClass}`}>
                             <p
-                                className="leading-tight text-[clamp(0.2rem,5vw,3rem)]"
-                                style={{ color: front.textColor, fontFamily: front.textFont, fontWeight: front.textFontWeight || "normal" }}
+                                className="leading-tight text-2xl"
+                                style={{ color: front.textColor, fontFamily: front.textFont, fontSize: `${1.5 * scale}rem`, }}
                             >
                                 {firstNamePossessive}
                                 <br />
