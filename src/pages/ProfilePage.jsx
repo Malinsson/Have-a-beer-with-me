@@ -14,11 +14,8 @@ import { MdCheck, MdAdd } from "react-icons/md";
 import { useProfileDesigns } from "../features/profile/hooks/useProfileDesigns.js";
 import { useSaveCanToShelf } from "../features/can-designer/hooks/displayCanDesign/useSaveCanToShelf.js";
 import { CanPreviewSection } from "../features/profile/components/CanPreviewSection.jsx";
+import { CanTagSection } from "../features/profile/components/CanTagSection.jsx";
 
-import TagRed from "../assets/images/tags/tag-red.svg";
-import TagGreen from "../assets/images/tags/tag-green.svg";
-import TagBlue from "../assets/images/tags/tag-blue.svg";
-import { getTagLabelById } from "../features/can-designer/constants.js";
 
 // HTTPS is required — getUserMedia only works on secure connections. 
 // It will work on localhost for development, but once live it must be 
@@ -30,7 +27,6 @@ const SOCIAL_CONFIG = [
     { key: 'github', label: 'Github', Icon: SiGithub, baseUrl: "https://github.com/" },
 ];
 
-const TAG_ASSETS = [TagRed, TagGreen, TagBlue];
 
 export const ProfilePage = () => {
     const [isSaved, setIsSaved] = useState(false);
@@ -118,36 +114,27 @@ export const ProfilePage = () => {
                         <ProfileQRCode slug={slug} size={100} />
                         <p className="text-xs">ID: {design?.share_id}</p>
                     </div>
+
                 </div>
+                    
+                <div className="my-8">
+
+                    {backData.tags?.length > 0 ? (
+
+                        < CanTagSection backData={backData} /> ) : (
+                
+                        <p className="text-center text-gray-400 uppercase text-xs tracking-widest">
+                                Inga kompetenser valda
+                        </p>
+                    )}
+                    
+                </div>
+
                 <div className="mt-8 mb-6">
                     <h3>Innehållsförteckning</h3>
                     <p>{backData.description || "Ingen beskrivning tillagd."}</p>
                 </div>
-                <div className="flex gap-4 mb-8">
-                    {backData.tags?.slice(0, 3).map((tagId, index) => {
-                        const label = getTagLabelById(tagId);
-                        
-                        return (
-                            <div key={tagId} className="flex flex-col items-center gap-2">
-                                <span className="text-sm uppercase tracking-tighter">
-                                    {label}
-                                </span>
-                                <div className="w-8 h-8">
-                                    <img 
-                                        src={TAG_ASSETS[index]} 
-                                        alt={`${label} tag`} 
-                                        className="w-full h-full object-contain"
-                                    />
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
-                {!backData.tags?.length && (
-                    <p className="text-center text-gray-400 uppercase text-xs tracking-widest">
-                        Inga kompetenser valda
-                    </p>
-                )}
+
                 <div className="flex flex-col gap-4 mb-12 px-2 max-w-sm">
                     {SOCIAL_CONFIG.map((config) => {
                         
