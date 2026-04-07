@@ -140,7 +140,7 @@ export const ProfilePage = () => {
 
                     <div className="flex flex-col gap-2 items-center">
                         <ProfileQRCode slug={slug} size={100} />
-                        <p className="text-xs">ID: {profile?.id?.slice(-4)}</p>
+                        <p className="text-xs">ID: {design?.share_id}</p>
                     </div>
                 </div>
                 <div className="mt-8 mb-6">

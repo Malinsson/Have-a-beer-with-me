@@ -2,6 +2,7 @@ import { Carousel } from "../assets/carousel/Carousel"
 import { slides } from "../assets/carousel/carouselData.js"
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/Button";
+import { Footer } from "../components/Footer";
 import homeImgage from "../assets/images/home.png"
 
 
