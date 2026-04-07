@@ -2,12 +2,13 @@
 import { useSavedDesigns } from "../features/can-designer/hooks/displayCanDesign/useSavedDesigns.js";
 import scanCanImage from "../assets/images/barhylla_empty.svg";
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { BackButton } from "../components/BackButton";
 import { supabase } from "../lib/supabase.js";
 import { useNavigate } from "react-router-dom";
 import { QRScanner } from "../components/QRScanner.jsx";
 import { IoSearchOutline } from "react-icons/io5";
+import { ShelfItem } from "../features/profile/ShelfItem.jsx";
 
 export const BeerShelfPage = () => {
     const [userId, setUserId] = useState(null);
@@ -48,7 +49,7 @@ export const BeerShelfPage = () => {
                 </h2>
             </div>
 
-            <div className="flex flex-grow">
+            <div className="flex grow">
                 {loading ? (
                     <div className="flex justify-center items-center h-40">
                         <p>Laddar din hylla...</p>
@@ -81,7 +82,7 @@ export const BeerShelfPage = () => {
                                         onChange={(e) => setSearchQuery(e.target.value)}
                                         className="w-full px-4 py-2 border border-b-grey"
                                     />
-                                    <button type="submit" className="flex-shrink-0">
+                                    <button type="submit" className="shrink-0">
                                         <IoSearchOutline className="text-2xl" />
                                     </button>
                                 </div>
@@ -91,23 +92,7 @@ export const BeerShelfPage = () => {
                 ) : (
                     <div className="grid grid-cols-2 gap-6 p-2">
                         {savedDesigns.map((saved) => (
-                            <div 
-                                key={saved.id} 
-                                className="flex flex-col items-center text-center"
-                                onClick={() => navigate(`/can/${saved.designs.id}`)}
-                            >
-                                <img 
-                                    src={saved.designs?.design_data?.front_design_img} 
-                                    alt={saved.designs?.name} 
-                                    className="w-full h-auto object-cover mb-4" 
-                                />
-                                <h3 className="text-2xl font-semibold uppercase">
-                                    {saved.designs?.name}
-                                </h3>
-                                <p className="text-lg">
-                                    {saved.designs?.design_data?.description}
-                                </p>
-                            </div>
+                            <ShelfItem key={saved.id} saved={saved} />
                         ))}
                     </div>
                 )}

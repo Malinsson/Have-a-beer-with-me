@@ -20,7 +20,8 @@ export const useSavedDesigns = (userId) => {
         .select(`
           id,
           created_at,
-          designs (
+          share_id,
+          designs!saved_designs_share_id_fkey (
             id,
             name,
             design_data,
@@ -34,7 +35,7 @@ export const useSavedDesigns = (userId) => {
       if (cancelled) return;
 
       if (error) setError(error);
-      else setSavedDesigns(data);
+      else setSavedDesigns(data || []);
       setLoading(false);
     };
 

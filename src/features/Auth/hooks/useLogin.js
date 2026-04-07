@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import supabase from "../../../lib/supabase";
 import { getAuthErrorMessage } from './useAuthErrorMessage';
+import { resolveProfileRedirect } from './resolveProfileRedirect';
 
 
 export const useLogin = () => {
@@ -40,12 +41,12 @@ export const useLogin = () => {
             }
 
             console.log('Auth successful:', data);
-            return true;
-            // TODO: Redirect to protected page.
+            const redirectTo = await resolveProfileRedirect();
+            return { success: true, redirectTo };
 
         } catch (err) {
             setError(getAuthErrorMessage(err, 'login'));
-            return false;
+            return { success: false, redirectTo: '/profile/guest' };
         } finally {
             setIsLoading(false);
         }

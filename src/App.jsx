@@ -27,7 +27,7 @@ export function App() {
           <Route path="/design" element={<DesignerPage />}></Route>
           <Route path="/profile/:slug" element={<ProfilePage />}></Route>
           <Route path="/profile/:slug/hylla" element={<BeerShelfPage />}></Route>
-          <Route path="/can/:designId" element={<CanDetailPage />} />
+          <Route path="/can/:shareId" element={<CanDetailPage />} />
         </Routes>
       </Layout>
     </>
