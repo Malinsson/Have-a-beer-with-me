@@ -51,7 +51,8 @@ export const FrontStep = ({
             {mode === "image" && (
                 <>
                 <div className="text-center w-full pb-6">
-                    <p className="bold">Etikettdesign</p>
+                    <h5 className="text-center mt-4"><strong>ETIKETTDESIGN</strong></h5>
+
                 </div>
                 <div className="flex justify-center gap-4">
                     {TEXTURES.map((texture) => (

@@ -36,8 +36,6 @@ const SOCIAL_CONFIG = [
 const TAG_ASSETS = [TagRed, TagGreen, TagBlue];
 
 export const ProfilePage = () => {
-    const [profileDesign, setProfileDesign] = useState(null);
-    const [designLoading, setDesignLoading] = useState(true);
     const [previewSide, setPreviewSide] = useState("front");
     const [isSaved, setIsSaved] = useState(false);
     const [saving, setSaving] = useState(false);
@@ -48,7 +46,6 @@ export const ProfilePage = () => {
     const { slug } = useParams();
     const mySlug = useUserSlug();
 
-    const isOwnProfile = slug === mySlug;
 
     const { profile, loading, error } = useProfileInfo(slug);
     const { design, loading: designLoading, error: designError } = useProfileDesigns(profile?.id);
@@ -68,8 +65,21 @@ export const ProfilePage = () => {
     if (loading) return <p className="text-center mt-10">Laddar...</p>;
     if (error) return <p className="text-center mt-10 text-red-500">Något gick fel.</p>;
 
-    const backData = profileDesign?.back || {};
+    const backData = design?.design_data?.back || {};
     const socialsData = backData.socials || {};
+
+    const handleSave = async () => {
+        if (!design?.share_id) return;
+        setSaving(true);
+        const result = await saveCanToShelf({
+            designId: design.id,
+            shareId: design.share_id,
+        });
+        if (result?.success) {
+            setIsSaved(true);
+        }
+        setSaving(false);
+    };
 
     return (
         <div id="top" className="container mx-auto p-4">
@@ -82,38 +92,17 @@ export const ProfilePage = () => {
                     <p>Något gick fel när burken laddades.</p>
                 ) : design ? (
                     <div className="max-w-xl mx-auto w-full">
-                        <article
-                            className="p-4 bg-white/80 flex flex-col gap-4"
-                        >
-                            
-                            <CanPreview2D side="front" design={design.design_data} />
-                            
 
-                            <div className="flex flex-col gap-2">
-                                                <h2 className="text-center text-3xl font-normal">
-                {profile?.first_name} {profile?.last_name}
-            </h2>
-                                <p className="text-sm text-dark-gray">
-                                    {design.design_data?.back?.department || ""}
-                                </p>
-                            </div>
+                        <article className="p-4 bg-white/80 flex flex-col gap-4" >
+                            
+                            <CanPreview2D side={previewSide} design={design.design_data} />
+                            
                         </article>
-                            {!isOwnProfile && (
-                                <Button
-                                    text={savingDesignId === design.id ? "Sparar..." : "Lägg till i min ölhylla"}
-                                    variant="outlined"
-                                    showIcon={false}
-                                    disabled={savingDesignId === design.id}
-                                    onClick={async () => {
-                                        await saveCanToShelf(design.id);
-                                    }}
-                                />
-                            )}
                     </div>
                 ) : (
                     <p>Ingen burk hittades för den här profilen.</p>
                 )}
-                <div className="flex items-center gap-16">
+                <div className="flex items-center gap-16 mx-auto">
                     <a onClick={() => setPreviewSide("front")} >
                         <MdOutlineArrowBackIosNew />
                     </a>
@@ -144,8 +133,13 @@ export const ProfilePage = () => {
                                 text={isSaved ? "Sparad" : "Spara burk"}
                                 icon={isSaved ? MdCheck : MdAdd}
                                 variant="outlined"
-                                onClick={handleSave}
                                 disabled={isSaved || saving}
+                                onClick={async () => {
+                                        await saveCanToShelf({
+                                            designId: design.id,
+                                            shareId: design.share_id,
+                                        });
+                                    }}
                             />
                         )}
                     </div>
