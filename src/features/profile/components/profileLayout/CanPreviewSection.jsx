@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CanPreview2D } from "../../can-designer/components/CanPrewiew2D.jsx";
+import { CanPreview2D } from "../../../can-designer/components/CanPrewiew2D.jsx";
 import { MdOutlineArrowForwardIos, MdOutlineArrowBackIosNew } from "react-icons/md";
 
 export const CanPreviewSection = ({ design }) => {

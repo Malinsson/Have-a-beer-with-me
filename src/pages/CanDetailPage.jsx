@@ -6,12 +6,12 @@ import { useSaveCanToShelf } from "../features/can-designer/hooks/displayCanDesi
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase.js";
 import { useUserSlug } from "../features/profile/hooks/useUserSlug.js";
-import { CanPreviewSection } from "../features/profile/components/CanPreviewSection.jsx";
-import { CanIdentitySection } from "../features/profile/components/CanIdentitySection.jsx";
-import { CanTagSection } from "../features/profile/components/CanTagSection.jsx";
-import { CanInfoSection } from "../features/profile/components/CanInfoSection.jsx";
-import { CanSocialSection } from "../features/profile/components/CanSocialSection.jsx";
-import { CanActionSection } from "../features/profile/components/CanActionSection.jsx";
+import { CanPreviewSection } from "../features/profile/components/profileLayout/CanPreviewSection.jsx";
+import { CanIdentitySection } from "../features/profile/components/profileLayout/CanIdentitySection.jsx";
+import { CanTagSection } from "../features/profile/components/profileLayout/CanTagSection.jsx";
+import { CanInfoSection } from "../features/profile/components/profileLayout/CanInfoSection.jsx";
+import { CanSocialSection } from "../features/profile/components/profileLayout/CanSocialSection.jsx";
+import { CanActionSection } from "../features/profile/components/profileLayout/CanActionSection.jsx";
 
 export const CanDetailPage = () => {
     const navigate = useNavigate();

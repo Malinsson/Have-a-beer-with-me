@@ -1,7 +1,7 @@
-import TagRed from "../../../assets/images/tags/tag-red.svg";
-import TagGreen from "../../../assets/images/tags/tag-green.svg";
-import TagBlue from "../../../assets/images/tags/tag-blue.svg";
-import { getTagLabelById } from "../../can-designer/constants.js";
+import TagRed from "../../../../assets/images/tags/tag-red.svg";
+import TagGreen from "../../../../assets/images/tags/tag-green.svg";
+import TagBlue from "../../../../assets/images/tags/tag-blue.svg";
+import { getTagLabelById } from "../../../can-designer/constants.js";
 
 const TAG_ASSETS = [TagRed, TagGreen, TagBlue];
 

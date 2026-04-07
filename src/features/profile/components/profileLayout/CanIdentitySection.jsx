@@ -1,7 +1,7 @@
-import { QRScanner } from "../../../components/QRScanner.jsx";
-import { ProfileQRCode } from "../../../components/ProfileQRCode.jsx";
+import { QRScanner } from "../../../../components/QRScanner.jsx";
+import { ProfileQRCode } from "../../../../components/ProfileQRCode.jsx";
 import { MdCheck, MdAdd } from "react-icons/md";
-import { Button } from "../../../components/Button.jsx";
+import { Button } from "../../../../components/Button.jsx";
 import { useNavigate } from "react-router-dom";
 
 export const CanIdentitySection = ({

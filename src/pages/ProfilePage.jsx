@@ -5,12 +5,12 @@ import { useUserSlug } from "../features/profile/hooks/useUserSlug.js";
 import { supabase } from "../lib/supabase.js";
 import { useProfileDesigns } from "../features/profile/hooks/useProfileDesigns.js";
 import { useSaveCanToShelf } from "../features/can-designer/hooks/displayCanDesign/useSaveCanToShelf.js";
-import { CanPreviewSection } from "../features/profile/components/CanPreviewSection.jsx";
-import { CanTagSection } from "../features/profile/components/CanTagSection.jsx";
-import { CanSocialSection } from "../features/profile/components/CanSocialSection.jsx";
-import { CanIdentitySection } from "../features/profile/components/CanIdentitySection.jsx";
-import { CanInfoSection } from "../features/profile/components/CanInfoSection.jsx";
-import { CanActionSection } from "../features/profile/components/CanActionSection.jsx";
+import { CanPreviewSection } from "../features/profile/components/profileLayout/CanPreviewSection.jsx";
+import { CanTagSection } from "../features/profile/components/profileLayout/CanTagSection.jsx";
+import { CanSocialSection } from "../features/profile/components/profileLayout/CanSocialSection.jsx";
+import { CanIdentitySection } from "../features/profile/components/profileLayout/CanIdentitySection.jsx";
+import { CanInfoSection } from "../features/profile/components/profileLayout/CanInfoSection.jsx";
+import { CanActionSection } from "../features/profile/components/profileLayout/CanActionSection.jsx";
 
 
 export const ProfilePage = () => {
