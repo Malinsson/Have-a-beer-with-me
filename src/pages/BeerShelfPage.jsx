@@ -113,7 +113,7 @@ export const BeerShelfPage = () => {
                                 onClick={() => navigate(`/profile/${can.ownerSlug}`)}
                             >
                                 <div className="w-full flex items-center justify-center px-12 mt-4">
-                                    <CanPreview2D side="front" design={can} scale={0.6} />
+                                    <CanPreview2D side="front" design={can} scale={0.4} />
                                 </div>
 
                                 <div className="pl-2 mt-3">
