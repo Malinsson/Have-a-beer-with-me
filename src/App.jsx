@@ -29,6 +29,7 @@ export function App() {
           <Route path="/profile/:slug/hylla" element={<BeerShelfPage />}></Route>
           <Route path="/can/:shareId" element={<CanDetailPage />} />
           <Route path="/404" element={<NotFoundPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
     </Layout>

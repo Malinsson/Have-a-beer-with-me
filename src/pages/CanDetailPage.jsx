@@ -1,5 +1,5 @@
 // This is the view when you tap on a can on the shelf on your profile.
-import { useParams, useNavigate } from "react-router-dom";
+import { Navigate, useParams, useNavigate } from "react-router-dom";
 import { useDesign } from "../features/can-designer/hooks/displayCanDesign/useDesigns.js";
 import { useProfileByUserId } from "../features/profile/hooks/useProfileByUserId.js";
 import { useSaveCanToShelf } from "../features/can-designer/hooks/displayCanDesign/useSaveCanToShelf.js";
@@ -50,9 +50,8 @@ export const CanDetailPage = () => {
         setSaving(false);
     };
 
-    if (designLoading || profileLoading) return <p>Laddar...</p>;
-    if (designError || profileError) return <p>Något gick fel.</p>;
-    if (!design || !profile) return <p>Ingen ölburk hittades.</p>;
+    if (designError || profileError) return <Navigate to="/404" replace />;
+    if (!design || !profile) return <Navigate to="/404" replace />;
 
     const ownerSlug = profile?.slug_value || mySlug;
     
@@ -61,7 +60,7 @@ export const CanDetailPage = () => {
 
             {/* Beer can preview section */}
             {designLoading ? (
-                <p>Laddar burk...</p>
+                <p className="text-center">Laddar burk...</p>
             ) : designError ? (
                 <p>Något gick fel när burken laddades.</p>
             ) : (

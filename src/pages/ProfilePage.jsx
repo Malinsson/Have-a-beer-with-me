@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { Navigate, useParams, useNavigate } from "react-router-dom";
 import { useProfileInfo } from "../features/profile/hooks/useProfileInfo.js";
 import { useUserSlug } from "../features/profile/hooks/useUserSlug.js";
 import { supabase } from "../lib/supabase.js";
@@ -47,6 +47,7 @@ export const ProfilePage = () => {
     const socialsData = backData.socials || {};
     
     if (loading) return <p className="text-center mt-10">Laddar...</p>;
+    if (error?.message === "Profile not found") return <Navigate to="/404" replace />;
     if (error) return <p className="text-center mt-10 text-red-500">Något gick fel.</p>;
     
     // Check if the current design is being saved to disable the save button
