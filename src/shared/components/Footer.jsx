@@ -1,4 +1,4 @@
-import bomarkeWhiteLogo from '../assets/images/logo/bomarke-white.png';
+import bomarkeWhiteLogo from '../../assets/images/logo/bomarke-white.png';
 
 export const Footer = () => {
     return (

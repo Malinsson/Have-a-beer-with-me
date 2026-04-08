@@ -1,6 +1,6 @@
 import { FaArrowRight } from "react-icons/fa6";
 import { Button } from "./Button";
-import image from '../assets/images/beer.png';
+import image from '../../assets/images/beer.png';
 
 export const Modal = ({ onConfirm }) => {
     return (

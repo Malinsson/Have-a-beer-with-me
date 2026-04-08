@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
-import { useIsSignedIn } from "../shared/hooks/useIsSignedIn";
-import { useLogout } from "../features/Auth/hooks/useLogout";
-import { useIsGuest } from "../shared/hooks/useIsGuest";
-import { useUserSlug } from "../features/profile/hooks/useUserSlug";
-import Logo from "../assets/images/yrgo.png";
-import beerHeaderIcon from "../assets/icons/beerHeaderIcon.svg";
-import { useSearchForm } from "../features/profile/components/beershelfLayout/useSearchForm";
-import { SearchForm } from "../features/profile/components/beershelfLayout/SearchForm";
+import { useIsSignedIn } from "../hooks/useIsSignedIn";
+import { useLogout } from "../../features/Auth/hooks/useLogout";
+import { useIsGuest } from "../hooks/useIsGuest";
+import { useUserSlug } from "../../features/profile/hooks/useUserSlug";
+import Logo from "../../assets/images/yrgo.png";
+import beerHeaderIcon from "../../assets/icons/beerHeaderIcon.svg";
+import { useSearchForm } from "../hooks/useSearchForm";
+import { SearchForm } from "./SearchForm";
 import { IoCloseSharp } from "react-icons/io5";
 
 

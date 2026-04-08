@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { ProgressDots } from "../../../components/ProgressDots";
-import { Button } from "../../../components/Button";
+import { ProgressDots } from "../../../shared/components/ProgressDots";
+import { Button } from "../../../shared/components/Button";
 import { TAGS } from "../constants";
 import React from "react";
 
@@ -70,9 +70,7 @@ export const InfoStep = ({ selected, onToggle }) => {
             {count >= MAX_TAGS && (
                 <p className="text-center text-sm text-neutral-600">Du kan välja max 3 tags.</p>
             )}
-            <div className="mt-6">
-                <ProgressDots total={4} current={2} />
-            </div>
+            
         </div>
      );
 }

@@ -8,8 +8,8 @@ import supabase from "../lib/supabase";
 import { DesignerStepContent } from "../features/can-designer/components/DesignerStepContent";
 import { DesignerStepActions } from "../features/can-designer/components/DesignerStepActions";
 import { CanPreview2D } from "../features/can-designer/components/CanPrewiew2D";
-import { Modal } from "../components/Modal";
-import { BackButton } from "../components/BackButton";
+import { Modal } from "../shared/components/Modal";
+import { BackButton } from "../shared/components/BackButton";
 
 
 const STEP_TITLE = {

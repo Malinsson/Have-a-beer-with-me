@@ -1,6 +1,6 @@
 import { useLogin } from "../hooks/useLogin";
 import { useAuthFields } from "../hooks/useAuthFields";
-import { Button } from "../../../components/Button";
+import { Button } from "../../../shared/components/Button";
 
 
 export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {

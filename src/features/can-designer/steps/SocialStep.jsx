@@ -1,4 +1,4 @@
-import { ProgressDots } from "../../../components/ProgressDots";
+import { ProgressDots } from "../../../shared/components/ProgressDots";
 
 export const SocialStep = ({ instagram, linkedin, github, onChange }) => {
     return (
@@ -38,9 +38,6 @@ export const SocialStep = ({ instagram, linkedin, github, onChange }) => {
                         className="border border-b-grey px-4 py-2 w-full"
                     />
                 </div>
-            </div>
-            <div className="mt-6 mb-4">
-                <ProgressDots total={4} current={3} />
             </div>
         </>
      );

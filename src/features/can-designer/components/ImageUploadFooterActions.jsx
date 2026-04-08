@@ -1,4 +1,4 @@
-import { Button } from "../../../components/Button";
+import { Button } from "../../../shared/components/Button";
 
 export const ImageUploadFooterActions = ({
     step,

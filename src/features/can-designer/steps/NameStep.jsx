@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useNameStep } from "../hooks/useNameStep";
-import { Button } from "../../../components/Button";
-import { ProgressDots } from "../../../components/ProgressDots";
+import { Button } from "../../../shared/components/Button";
+import { ProgressDots } from "../../../shared/components/ProgressDots";
 import { DrinkTypeStep } from "./DrinkTypeStep";
 import { useDesignStore } from "../../../store/designStore";
 import { getDrinkTypeLabelById } from "../constants";

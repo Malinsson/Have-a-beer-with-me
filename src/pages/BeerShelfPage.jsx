@@ -4,12 +4,12 @@ import scanCanImage from "../assets/images/barhylla_empty.svg";
 import { useDesignStore } from "../store/designStore.js";
 import { useProfileInfo } from "../features/profile/hooks/useProfileInfo.js";
 import { useParams, useNavigate } from "react-router-dom";
-import { useSearchForm } from "../features/profile/components/beershelfLayout/useSearchForm.js";
+import { useSearchForm } from "../shared/hooks/useSearchForm.js";
 
-import { BackButton } from "../components/BackButton";
-import { QRScanner } from "../components/QRScanner.jsx";
+import { BackButton } from "../shared/components/BackButton.jsx";
+import { QRScanner } from "../shared/components/QRScanner.jsx";
 import { ShelfItem } from "../features/profile/components/beershelfLayout/ShelfItem.jsx";
-import { SearchForm } from "../features/profile/components/beershelfLayout/SearchForm.jsx";
+import { SearchForm } from "../shared/components/SearchForm.jsx";
 
 export const BeerShelfPage = () => {
     const { slug } = useParams();

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../../../../lib/supabase";
-import { buildProfileSlug } from "../../utils/slug";
+import { supabase } from "../../lib/supabase";
+import { buildProfileSlug } from "../../features/profile/utils/slug";
 
 export const useSearchForm = ({ onSuccess } = {}) => {
     const [searchQuery, setSearchQuery] = useState("");

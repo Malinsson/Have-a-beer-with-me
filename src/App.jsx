@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import './App.css'
 
 // Pages
-import { Layout } from './components/Layout.jsx'
+import { Layout } from './shared/components/Layout.jsx'
 import { HomePage } from './pages/HomePage.jsx'
 import { IntroPage } from './pages/IntroPage.jsx'
 import { AuthPage } from './pages/AuthPage.jsx'
