@@ -57,7 +57,7 @@ export const DesignerStepActions = ({
                         <Button text="Gästkonto" onClick={onFinalizeAsGuest} variant="outlined" showIcon={false} />
                         <Button
                             text="Skapa konto"
-                            onClick={() => document.getElementById("konto-signup-form")?.requestSubmit()}
+                            onClick={() => document.getElementById("signup-form")?.requestSubmit()}
                             variant="primary"
                         />
                     </div>
