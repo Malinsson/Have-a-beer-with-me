@@ -11,11 +11,11 @@ import { CanSocialSection } from "../features/profile/components/profileLayout/C
 import { CanIdentitySection } from "../features/profile/components/profileLayout/CanIdentitySection.jsx";
 import { CanInfoSection } from "../features/profile/components/profileLayout/CanInfoSection.jsx";
 import { CanActionSection } from "../features/profile/components/profileLayout/CanActionSection.jsx";
+import { useSavedCan } from "../features/profile/hooks/useSavedCan.js";
 
 
 export const ProfilePage = () => {
-    const [isSaved, setIsSaved] = useState(false);
-    const [saving, setSaving] = useState(false);
+    
     const [currentUserId, setCurrentUserId] = useState(null);
 
     // Get slug from URL and current user's slug for comparison
@@ -41,6 +41,7 @@ export const ProfilePage = () => {
 
     // Fetch the current design for this profile
     const { design, loading: designLoading, error: designError } = useProfileDesigns(profile?.id);
+    const { isSaved, setIsSaved, saving, setSaving } = useSavedCan(design?.share_id);
     
     const backData = design?.design_data?.back || {};
     const socialsData = backData.socials || {};

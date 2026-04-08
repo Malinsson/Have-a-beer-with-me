@@ -6,6 +6,7 @@ import { useSaveCanToShelf } from "../features/can-designer/hooks/displayCanDesi
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase.js";
 import { useUserSlug } from "../features/profile/hooks/useUserSlug.js";
+import { useSavedCan } from "../features/profile/hooks/useSavedCan.js";
 import { CanPreviewSection } from "../features/profile/components/profileLayout/CanPreviewSection.jsx";
 import { CanIdentitySection } from "../features/profile/components/profileLayout/CanIdentitySection.jsx";
 import { CanTagSection } from "../features/profile/components/profileLayout/CanTagSection.jsx";
@@ -17,13 +18,12 @@ export const CanDetailPage = () => {
     const navigate = useNavigate();
     const { shareId } = useParams();
     const mySlug = useUserSlug() || "guest";
-    const [isSaved, setIsSaved] = useState(false);
-    const [saving, setSaving] = useState(false);
     const [currentUserId, setCurrentUserId] = useState(null);
 
     const { design, loading: designLoading, error: designError } = useDesign(shareId);
     const { profile, loading: profileLoading, error: profileError } = useProfileByUserId(design?.user_id);
     const { saveCanToShelf } = useSaveCanToShelf();
+    const { isSaved, setIsSaved, saving, setSaving } = useSavedCan(design?.share_id);
     const isOwnProfile = !!currentUserId && currentUserId === design?.user_id;
     const backData = design?.design_data?.back || {};
     const socialsData = backData.socials || {};
