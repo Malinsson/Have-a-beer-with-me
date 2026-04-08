@@ -1,15 +1,20 @@
-import React from "react";
-import QRCode from "react-qr-code";
+import { ReactQRCode } from '@lglab/react-qr-code'
 
-const ProfileQRCode = ({ userId, size = 128 }) => {
-    const profileUrl = `https://example.com/user/${userId}`;
+export const ProfileQRCode = ({ slug, size = 128 }) => {
+    const host = window.location.origin;
+    const profileUrl = `${host}/profile/${slug}`;
+
+    if (!slug) return null;
     
     return (
-        <div className="qr-wrapper" 
-            style={{ padding: '10px', background: 'white', display: 'inline-block' }}>
-            <QRCode value={profileUrl} size={size} />
+        <div 
+            className="qr-wrapper inline-block"
+            style={{ display: 'inline-block' }}
+        >
+            <ReactQRCode 
+                value={profileUrl} 
+                size={size} 
+            />
         </div>
     );
 }
-
-export default ProfileQRCode;

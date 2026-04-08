@@ -1,32 +1,36 @@
+import { useState } from "react";
 import { useLogin } from "../hooks/useLogin";
 import { useAuthFields } from "../hooks/useAuthFields";
+import { LuEye, LuEyeClosed } from "react-icons/lu";
+import { Button } from "../../../shared/components/Button";
 
 
 export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
 
     const { email, setEmail, password, setPassword, reset } = useAuthFields();
     const { login, error, isLoading } = useLogin();
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const success = await login(email, password);
-        if (success) {
+        const result = await login(email, password);
+        if (result.success) {
             reset();
-            onSuccess?.();
+            onSuccess?.(result.redirectTo);
         }
     };
 
     return (
         <form onSubmit={handleSubmit} noValidate
-        className="mt-2 p-4 bg-white max-w-md mx-auto"
+        className="mt-2"
         >
-            <div className="flex flex-col gap-1 border border-var(--border-color) p-4 justify-center">
+            <div className="flex flex-col gap-4 border p-4 my-4 justify-center">
 
                 <div>
-                    <label htmlFor="loginEmail" className="block text-sm font-medium text-gray-700">Mejladress</label>
+                    <label htmlFor="loginEmail"><p>Mejladress</p></label>
 
                     <input 
-                    className="mt-2 px-4 py-2 border border-var(--border-color) rounded-xl bg-white max-w-md mx-auto"
+                        className="mt-2 px-4 py-2 border w-full text-sm"
                         id="loginEmail"
                         type="text" 
                         placeholder="Mejladress"
@@ -37,44 +41,58 @@ export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
                         autoCapitalize="none"
                         autoCorrect="off"
                         spellCheck={false}
+                        style={{ fontSize: "0.8rem" }}
                     />
                 </div>
 
                 <div>
 
-                    <label htmlFor="loginPassword" className="block text-sm font-medium text-gray-700">Lösenord</label>
+                    <label htmlFor="loginPassword" className="mt-2"><p>Lösenord</p></label>
 
-                    <input 
-                    className="mt-2 px-4 py-2 border border-var(--border-color) rounded-xl bg-white max-w-md mx-auto"
-                        id="loginPassword"
-                        type="password" 
-                        placeholder="Lösenord"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required    
-                        minLength={8}
-                        autoComplete={"current-password"}
-                    />
+                    <div className="grid grid-flow-col gap-3">
+                        <input 
+                            className="mt-2 px-4 py-2 border col-span-3 text-sm"
+                            id="loginPassword"
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Lösenord"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required    
+                            minLength={8}
+                            autoComplete={"current-password"}
+                            style={{ fontSize: "0.8rem" }}
+                        />
+
+                        <Button 
+                            type="button"
+                            variant="outlined"
+                            icon={showPassword ? LuEye : LuEyeClosed}
+                            className="mt-2 w-10 h-10 flex items-center justify-center col-span-1"
+                            onClick={() => setShowPassword((prev) => !prev)}
+                        />
+                    </div>
                 </div>
 
-                <a href="#"
+                <a 
+                className="a-underline"
+                href="#"
                 onClick={(e) => {
                     e.preventDefault();
                     onSwitchToSignup?.();
                 }}
-                className="text-sm mt-2 inline-block underline"
-                >Har inget konto? Skapa nu</a>
+                >Har inget konto? Skapa nu!</a>
 
             </div>
 
             {error && <p role="alert">{error}</p>}
 
-            <button type="submit" disabled={isLoading}
-            className="mt-4 py-2 px-4 bg-dark-blue text-white rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                {isLoading
-                    ? "Loggar in…"
-                    : "Logga in"}
-            </button>
+            <Button 
+                type="submit" 
+                disabled={isLoading}
+                text={isLoading ? "Loggar in…" : "Logga in"}
+                className="w-full"
+            />
+
         </form>
     );
 };

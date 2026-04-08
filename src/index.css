@@ -4,7 +4,7 @@
     --color-yrgo-red: #E51236;
     --color-dark-blue: #001A52;
     --color-dark-gray: #5B5B5B;
-    --color-border-grey: #797979;
+    --color-b-grey: #797979;
 }
 
 @layer base {
@@ -22,13 +22,16 @@
     }
 
     h2 {
-        font-size: var(--text-xl);
+        font-size: var(--text-4xl);
         font-weight: 600;
+        line-height: 1;
+        text-transform: uppercase;
     }
     
     h3 {
         font-size: var(--text-xl);
         font-weight: 600;
+        text-transform: uppercase;
     }
 
     h4 {
@@ -39,7 +42,7 @@
         color: var(--color-yrgo-red);
     }
 
-    large {
+    .large {
         font-size: var(--text-lg);
         font-weight: 600;
         text-transform: uppercase;
@@ -48,11 +51,45 @@
     
     p {
         font-weight: 400;
+        text-transform: uppercase;
+        line-height: 1.2;
+    }
+
+    .bold {
+        font-weight: 600;
     }
     
     a {
-        font-size: var(--text-xl);
+        text-transform: uppercase;
+        font-size: var(--text-base);
         font-weight: 600;
+    }
+
+    .a-underline {
+        font-weight: 400;
+        font-size: var(--text-xs);
+        text-decoration: underline;
+    }
+
+    .profile {
+        color: var(--color-dark-blue);
+    }
+
+    .profile-italic {
+        font-style: italic;
+    }
+
+    span {
+        font-weight: 500;
+        line-height: 1.2;
+        font-size: var(--text-sm);
+        text-transform: none;
+    }
+
+    .profileCan {
+        color: var(--color-dark-blue);
+        font-size: var(--text-xl);
+        
     }
     
   }

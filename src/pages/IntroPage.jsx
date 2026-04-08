@@ -1,25 +1,26 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ProgressDots } from "../components/ProgressDots";
-import { SignupForm } from "../features/Auth/components/SignupForm";
+import { ProgressDots } from "../shared/components/ProgressDots";
+import { NameStep } from "../features/can-designer/steps/NameStep";
+import { GuestSignup } from "../features/Auth/components/GuestSignup";
 
-import can from "../assets/images/can.jpg";
+
+import can from "../assets/images/baseCan.png";
 import cans from "../assets/images/cans.jpg";
-import { Button } from "../components/Button";
-import { BackButton } from "../components/BackButton";
+import { Button } from "../shared/components/Button";
 
 const STEPS = ["first", "secound", "last"];
 
 const STEP_TITLE = {
-    first: "Skapa din egen öl",
-    secound: "Dela din öl och scanna andras på eventet",
-    last:  "Skapa ett konto",
+    first: "Skapa din egna burk",
+    secound: "Mingla",
+    last:  "Vem är du?",
 };
 
 const STEP_SUBTITLE = {
-    first: "Uttryck dig själv med en personligetikett",
-    secound:  "Mingla och upptäck unika öl på eventet",
-    last:  "Spara din design och alla du tar en öl med på din ölhylla.",
+    first: "Uttryck dig själv med en personlig design",
+    secound:  "Scanna andras burkar och samla dem i din Barhylla",
+    last:  "Namnge din öl med ditt eget namn.",
 };
 
 const STEP_IMG = {
@@ -31,32 +32,28 @@ export const IntroPage = () => {
     const [step, setStep] = useState("first");
     const navigate = useNavigate();
 
-    const handleBack = () => {
-        const currentIndex = STEPS.indexOf(step);
-        if (currentIndex === 0) navigate(-1);
-        else setStep(STEPS[currentIndex - 1]);
-    };
-
     return (
         <>
-            <div className="container mx-auto p-4">
-                <BackButton onClick={handleBack} />
-                <h2 className="text-3xl text-center">{STEP_TITLE[step]}</h2>
-                <h3 className="text-center mt-4">{STEP_SUBTITLE[step]}</h3>
+
+            <div className="p-4">
+                <h2>{STEP_TITLE[step]}</h2>
+                <p className="pt-3 w-55">{STEP_SUBTITLE[step]}</p>
             </div>
 
-            <div className="container mx-auto p-4 flex justify-center">
-                <img src={STEP_IMG[step]} alt="" />
-            </div>
+            {(step === "first" || step === "secound") && (
+                <div className="mx-auto p-4 flex justify-center">
+                    <img src={STEP_IMG[step]} alt="" />
+                </div>
+            )}
 
             {step === "first" && (
                 <div className="flex flex-col p-4 justify-center items-center gap-6">
-                    <section className="w-full">
+                    <section>
                         <ProgressDots total={3} current={1} />
                     </section>
-                    <div className="flex flex-row gap-4">
+                    <div className="flex flex-row gap-4 w-full">
                         <Button text="Skippa" onClick={() => setStep("last")} variant="outlined" />
-                        <Button text="Nästa" onClick={() => setStep("secound")} variant="primary" />
+                        <Button text="Nästa" onClick={() => setStep("secound")} />
                     </div>
                 </div>
             )}
@@ -66,7 +63,7 @@ export const IntroPage = () => {
                     <section>
                         <ProgressDots total={3} current={2} />
                     </section>
-                    <div className="flex flex-row gap-4">
+                    <div className="flex flex-row gap-4 w-full">
                         <Button text="Skippa" onClick={() => setStep("last")} variant="outlined" />
                         <Button text="Nästa" onClick={() => setStep("last")} variant="primary" />
                     </div>
@@ -75,21 +72,8 @@ export const IntroPage = () => {
 
             {step === "last" && (
                 <div className="flex flex-col p-4 justify-center items-center gap-6">
-                        <SignupForm
-                            formId="intro-signup-form"
-                            hideSubmitButton
-                            onSuccess={() => navigate("/design")}
-                        />
-                    <section>
-                        <ProgressDots total={3} current={3} />
-                    </section>
-                    <Button
-                        text="Skapa konto och fortsätt"
-                        onClick={() => document.getElementById("intro-signup-form")?.requestSubmit()}
-                        variant="primary"
-                    />
-                    <Button text="Fortsätt som gäst" onClick={() => navigate("/design")} variant="outlined" />
-
+                    <GuestSignup />
+                    <NameStep />
                 </div>
             )}
 

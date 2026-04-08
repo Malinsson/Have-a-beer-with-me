@@ -1,73 +1,194 @@
+import { useParams } from "react-router-dom";
 import { useDesignStore } from "../../../store/designStore";
+import { useProfileInfo } from "../../profile/hooks/useProfileInfo";
+import { useUserSlug } from "../../profile/hooks/useUserSlug";
+
 import baseCan from "../../../assets/images/baseCan.png";
-import { TAGS, TEXT_ALIGNMENT } from "../constants";
+import logo from "../../../assets/images/yrgo.png";
+
+import TagRed from "../../../assets/images/tags/tag-red.svg";
+import TagGreen from "../../../assets/images/tags/tag-green.svg";
+import TagBlue from "../../../assets/images/tags/tag-blue.svg";
+
+import { TAGS, TEXT_ALIGNMENT, getTagLabelById } from "../constants";
+import { ProfileQRCode } from "../../../components/ProfileQRCode.jsx";
+
+import { SiInstagram, SiGithub } from "react-icons/si";
+import { CiLinkedin } from "react-icons/ci";
+
+const TAG_ASSETS = [TagRed, TagGreen, TagBlue];
 
 const TEXTURE_STYLES = {
-    default: "linear-gradient(135deg, #f0f0f0 0%, #e2e2e2 100%)",
-    "texture-1": "repeating-linear-gradient(135deg, #f7f7f7 0px, #f7f7f7 8px, #ececec 8px, #ececec 16px)",
-    "texture-2": "radial-gradient(circle at 20% 20%, #ffffff 0%, #f0f0f0 40%, #d7d7d7 100%)",
-    "texture-3": "linear-gradient(180deg, #f9f9f9 0%, #ececec 55%, #dcdcdc 100%)",
-    "texture-4": "repeating-linear-gradient(90deg, #f2f2f2 0px, #f2f2f2 6px, #e4e4e4 6px, #e4e4e4 12px)",
+    default: "linear-gradient(135deg, #f0f0f090 0%, #e2e2e290 100%)",
+    "texture-1": "repeating-linear-gradient(135deg, #f7f7f790 0px, #f7f7f790 8px, #ececec90 8px, #ececec90 16px)",
+    "texture-2": "radial-gradient(circle at 20% 20%, #0c8e4090 0%, #32adaf7f 40%, #1fa8ca90 100%)",
+    "texture-3": "linear-gradient(180deg, #b126269d 0%, #250d0d90 55%, #95898989 100%)",
+    "texture-4": "repeating-linear-gradient(90deg, #f2f2f290 0px, #f2f2f290 6px, #e4e4e490 6px, #e4e4e490 12px)",
 };
 
-export const CanPreview2D = () => {
-    const name = useDesignStore((state) => state.name);
-    const front = useDesignStore((state) => state.front);
-    const back = useDesignStore((state) => state.back);
+const SOCIAL_CONFIG = [
+    { key: 'linkedin', label: 'LinkedIn', Icon: CiLinkedin },
+    { key: 'instagram', label: 'Instagram', Icon: SiInstagram },
+    { key: 'github', label: 'Github', Icon: SiGithub },
+];
+
+export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
+    const { slug } = useParams();
+    const { profile, loading, error } = useProfileInfo(slug);
+    const nameFromStore = useDesignStore((state) => state.name);
+    const frontFromStore = useDesignStore((state) => state.front);
+    const backFromStore = useDesignStore((state) => state.back);
+
+    const useStoreData = !design;
+    
+    const name = useStoreData ? nameFromStore : { firstName: "", drinkType: "", ...(design?.name || {}) };
+    const front = useStoreData
+        ? frontFromStore
+        : {
+              imageUrl: null,
+              imageTransform: { x: 0, y: 0, scale: 1 },
+              texturePreset: "default",
+              textColor: "#000000",
+              textFont: "Inter, sans-serif",
+              textAlignment: "center",
+              ...(design?.front || {}),
+          };
+    const back = useStoreData
+        ? backFromStore
+        : {
+              tags: [],
+              description: "",
+              department: "",
+              socials: {},
+              ...(design?.back || {}),
+          };
 
     const tagLookup = TAGS.flatMap((group) => group.items).reduce((acc, tag) => {
         acc[tag.id] = tag.label;
         return acc;
     }, {});
 
-    const headingText = [name.firstName, name.lastName].filter(Boolean).join(" ") || "DIN DESIGN";
     const textureBackground = TEXTURE_STYLES[front.texturePreset] || TEXTURE_STYLES.default;
     const textAlignClass = TEXT_ALIGNMENT[front.textAlignment] || TEXT_ALIGNMENT.center;
+    const imageTransform = {
+        x: front.imageTransform?.x || 0,
+        y: front.imageTransform?.y || 0,
+        scale: front.imageTransform?.scale || 1,
+    };
+
+    const firstName = (name.firstName || "").trim();
+    const firstNamePossessive = firstName
+    ? `${firstName}${/s$/i.test(firstName) ? "'" : "'s"}`
+    : "";
+
+    const isFrontSide = side === "front";
+    const socialsData = back.socials || {};
 
     return (
-        <div className="relative max-w-45 mx-auto">
+        <div className="relative max-w-45 mx-auto" style={{ maxWidth: `${180 * scale}px` }}>
             <img src={baseCan} alt="Can template" className="w-full h-auto object-contain" />
 
-            <div className="absolute left-1/2 top-[15%] -translate-x-1/2 w-[58%] h-[62%] overflow-hidden border border-black/10">
-                <div className="absolute inset-0" style={{ background: textureBackground }} />
+            <div className="absolute left-1/2 top-[20%] -translate-x-1/2 w-[98%] h-[72%] overflow-hidden">
+            
+                {isFrontSide && (
+                <div>
+                    <div className="absolute inset-0 bg-black/10" />
 
-                {front.imageUrl && (
-                    <img
+                        <div className={`absolute w-full h-full p-3 z-50 flex ${textAlignClass}`}>
+                            <p
+                                className="leading-tight text-2xl"
+                                style={{ color: front.textColor, fontFamily: front.textFont, fontSize: `${1.5 * scale}rem`, }}
+                            >
+                                {firstNamePossessive}
+                                <br />
+                                {name.drinkType}
+                            </p>
+                        </div>
+
+                    
+                    <div className="absolute inset-0 z-5" style={{ background: textureBackground }} />
+
+                    {front.imageUrl && (
+                        <img
                         src={front.imageUrl}
                         alt="Uploaded label"
-                        className="absolute inset-0 w-full h-full object-cover"
-                    />
-                )}
-
-                <div className="absolute inset-0 bg-black/10" />
-
-                <div className={`absolute left-0 right-0 top-6 px-3 ${textAlignClass}`}>
-                    <p
-                        className="font-bold uppercase leading-tight"
-                        style={{ color: front.textColor, fontFamily: front.textFont }}
-                    >
-                        {headingText}
-                    </p>
-                </div>
-
-                {!!back.description && (
-                    <div className={`absolute left-0 right-0 bottom-12 px-3 ${textAlignClass}`}>
-                        <p
-                            className="text-xs leading-tight"
-                            style={{ color: front.textColor, fontFamily: front.textFont }}
-                        >
-                            {back.description.slice(0, 120)}
-                        </p>
+                        className="absolute inset-0 w-full h-full object-cover z-10 select-none pointer-events-none"
+                        style={{
+                            transform: `translate(${imageTransform.x}%, ${imageTransform.y}%) scale(${imageTransform.scale})`,
+                            transformOrigin: "center center",
+                        }}
+                        />
+                    )}
                     </div>
+
                 )}
 
-                {back.tags.length > 0 && (
-                    <div className="absolute left-2 right-2 bottom-2 flex flex-wrap gap-1 justify-center">
-                        {back.tags.slice(0, 3).map((tagId) => (
-                            <span key={tagId} className="text-[10px] px-2 py-0.5 border border-black/40 bg-white/70">
-                                #{tagLookup[tagId] || tagId}
-                            </span>
-                        ))}
+                {!isFrontSide &&(
+                    <div className=" absolute bg-white/80 w-full h-full inset-0 p-2 flex flex-col">
+                        <div className="flex justify-between w-full">
+                            <div className="flex flex-col leading-tight">
+                                <h2 className="profileCan">{profile?.first_name}</h2>
+                                <h2 className="profileCan profile-italic">{profile?.last_name}</h2>
+                                <h4 className="text-dark-blue text-lg">{back.department}</h4>
+                            </div>
+                            <img src={logo} alt="Yrgo Logo" className="w-8 h-8" />
+                        </div>
+
+                        <div className="">
+                            <h3 className="text-[10px] pb-1">Innehållsförteckning</h3>
+                            <p className="text-[7px] h-8 overflow-hidden">{back.description || "Ingen beskrivning tillagd."}</p>
+                        </div>
+
+                        <div className="flex justify-between mt-2">
+                            <div className="flex flex-col gap-2">
+                                <div className="flex gap-1">
+                                    {back.tags?.slice(0, 3).map((tagId, index) => {
+                                        const label = getTagLabelById(tagId);
+                                        
+                                        return (
+                                            <div key={tagId} className="flex flex-col items-center gap-1">
+                                                <span className="text-[7px] uppercase tracking-tighter">
+                                                    {label}
+                                                </span>
+                                                <div className="w-4 h-4">
+                                                    <img 
+                                                        src={TAG_ASSETS[index]} 
+                                                        alt={`${label} tag`} 
+                                                        className="w-full h-full object-contain"
+                                                    />
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+
+                                    {!back.tags?.length && (
+                                        <p className="uppercase text-[7px] tracking-widest mt-1">
+                                            Inga kompetenser valda
+                                        </p>
+                                    )}
+                                </div>
+
+                                <div className="flex flex-col gap-1 pl-1">
+                                    {SOCIAL_CONFIG.map((config) => {
+                                        const username = socialsData[config.key];
+                                        if (!username) return null;
+                                        const { Icon } = config;
+                                        
+                                        return (
+                                            <div key={config.key} className="flex items-center gap-1">
+                                                {Icon && <Icon className="w-3 h-3" />}
+                                                <span className="text-[8px] truncate">{username}</span>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col items-center">
+                                <p className="text-[7px] self-end pr-2">330 ML</p>
+                                <ProfileQRCode slug={slug} size={70} />
+                            </div>
+                        </div>
                     </div>
                 )}
             </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+// No-op async function to use as a default for onUploadComplete
 const asyncNoop = async () => {}
 
 export const useBlobUpload = ({
@@ -10,16 +11,20 @@ export const useBlobUpload = ({
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState(null)
 
-  const handleUpload = async () => {
+  // Handles the entire upload process: gets the cropped image blob, uploads it to the server, and calls the provided callback with the resulting URL
+  const handleUpload = async (extraData = {}) => {
     if (uploading) return
     setUploading(true)
     setError(null)
 
     try {
       const blob = await getCroppedBlob()
+
+      // Prepare the form data for upload, appending the cropped image blob with a filename
       const formData = new FormData()
       formData.append('file', blob, 'label.png')
 
+      // Send the POST request to the upload API endpoint
       const res = await fetch('/api/vercelBLOB', { method: 'POST', body: formData })
       if (!res.ok) {
         const responseText = await res.text()
@@ -42,7 +47,7 @@ export const useBlobUpload = ({
         throw new Error('Uppladdningen lyckades men ingen bild-URL returnerades.')
       }
 
-      await Promise.resolve(onUploadComplete(url))
+      await Promise.resolve(onUploadComplete(url, extraData))
       onUploadSuccess?.()
       console.log('Uppladdning lyckades, bild-URL:', url)
       
