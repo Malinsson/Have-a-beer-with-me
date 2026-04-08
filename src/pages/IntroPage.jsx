@@ -5,7 +5,7 @@ import { NameStep } from "../features/can-designer/steps/NameStep";
 import { GuestSignup } from "../features/Auth/components/GuestSignup";
 
 
-import can from "../assets/images/baseCan.png";
+import can from "../assets/images/baseCan.svg";
 import cans from "../assets/images/cans.jpg";
 import { Button } from "../shared/components/Button";
 
@@ -34,48 +34,53 @@ export const IntroPage = () => {
 
     return (
         <>
+            <div className="flex flex-col">
+                <div className="p-4 shrink-0">
+                    <h2>{STEP_TITLE[step]}</h2>
+                    <p className="pt-3 w-55">{STEP_SUBTITLE[step]}</p>
+                </div>
 
-            <div className="p-4">
-                <h2>{STEP_TITLE[step]}</h2>
-                <p className="pt-3 w-55">{STEP_SUBTITLE[step]}</p>
+                {(step === "first" || step === "secound") && (
+                    <div className="flex-1 flex justify-center items-center p-4 min-h-0">
+                        <img 
+                            src={STEP_IMG[step]} 
+                            alt=""
+                            className="max-h-full max-w-full object-contain" 
+                        />
+                    </div>
+                )}
+
+                {step === "first" && (
+                    <div className="fixed bottom-0 left-0 right-0 flex flex-col p-4 justify-center items-center gap-6 mt-2">
+                        <section>
+                            <ProgressDots total={3} current={1} />
+                        </section>
+                        <div className="flex flex-row gap-4 w-full">
+                            <Button text="Skippa" onClick={() => setStep("last")} variant="outlined" />
+                            <Button text="Nästa" onClick={() => setStep("secound")} />
+                        </div>
+                    </div>
+                )}
+
+                {step === "secound" && (
+                    <div className="fixed bottom-0 left-0 right-0 flex flex-col p-4 justify-center items-center gap-6">
+                        <section>
+                            <ProgressDots total={3} current={2} />
+                        </section>
+                        <div className="flex flex-row gap-4 w-full">
+                            <Button text="Skippa" onClick={() => setStep("last")} variant="outlined" />
+                            <Button text="Nästa" onClick={() => setStep("last")} variant="primary" />
+                        </div>
+                    </div>
+                )}
+
+                {step === "last" && (
+                    <div className="fixed bottom-0 left-0 right-0 flex flex-col p-4 justify-center items-center gap-6">
+                        <GuestSignup />
+                        <NameStep />
+                    </div>
+                )}
             </div>
-
-            {(step === "first" || step === "secound") && (
-                <div className="mx-auto p-4 flex justify-center">
-                    <img src={STEP_IMG[step]} alt="" />
-                </div>
-            )}
-
-            {step === "first" && (
-                <div className="flex flex-col p-4 justify-center items-center gap-6">
-                    <section>
-                        <ProgressDots total={3} current={1} />
-                    </section>
-                    <div className="flex flex-row gap-4 w-full">
-                        <Button text="Skippa" onClick={() => setStep("last")} variant="outlined" />
-                        <Button text="Nästa" onClick={() => setStep("secound")} />
-                    </div>
-                </div>
-            )}
-
-            {step === "secound" && (
-                <div className="flex flex-col p-4 justify-center items-center gap-6">
-                    <section>
-                        <ProgressDots total={3} current={2} />
-                    </section>
-                    <div className="flex flex-row gap-4 w-full">
-                        <Button text="Skippa" onClick={() => setStep("last")} variant="outlined" />
-                        <Button text="Nästa" onClick={() => setStep("last")} variant="primary" />
-                    </div>
-                </div>
-            )}
-
-            {step === "last" && (
-                <div className="flex flex-col p-4 justify-center items-center gap-6">
-                    <GuestSignup />
-                    <NameStep />
-                </div>
-            )}
 
         </>
     );
