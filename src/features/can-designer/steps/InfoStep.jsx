@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { TAGS } from "../constants";
 
 export const InfoStep = ({ selected, onToggle }) => {
@@ -14,7 +14,7 @@ export const InfoStep = ({ selected, onToggle }) => {
                 <p className="bold w-full mb-2">JAG GILLAR ({count}/3)</p>
                 
                 {visibleTagGroups.map((tagGroup) =>
-                    <React.Fragment key={tagGroup.category || "general"}>
+                    <Fragment key={tagGroup.category || "general"}>
                         {showAllCategories && tagGroup.category && (
                             <p className="bold w-full my-2 uppercase ">
                                 {tagGroup.category}</p>
@@ -40,7 +40,7 @@ export const InfoStep = ({ selected, onToggle }) => {
                                 </button>
                             );
                         })}
-                    </React.Fragment>
+                    </Fragment>
                 )}
                 {!showAllCategories && TAGS.length > 1 && (
                     <button 
