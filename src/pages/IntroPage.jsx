@@ -5,10 +5,9 @@ import { NameStep } from "../features/can-designer/steps/NameStep";
 import { GuestSignup } from "../features/Auth/components/GuestSignup";
 
 
-import can from "../assets/images/can.jpg";
+import can from "../assets/images/baseCan.png";
 import cans from "../assets/images/cans.jpg";
 import { Button } from "../shared/components/Button";
-import { BackButton } from "../shared/components/BackButton";
 
 const STEPS = ["first", "secound", "last"];
 

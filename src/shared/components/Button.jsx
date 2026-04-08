@@ -9,7 +9,7 @@ export const Button = ({
   icon: Icon = MdOutlineArrowOutward,
   showIcon = true,
   iconSize = "text-base",
-  className = "" // Added this prop
+  className = ""
 }) => {
 
   const styles = {

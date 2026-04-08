@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { useLogin } from "../hooks/useLogin";
 import { useAuthFields } from "../hooks/useAuthFields";
+import { LuEye, LuEyeClosed } from "react-icons/lu";
 import { Button } from "../../../shared/components/Button";
 
 
@@ -7,6 +9,7 @@ export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
 
     const { email, setEmail, password, setPassword, reset } = useAuthFields();
     const { login, error, isLoading } = useLogin();
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -27,7 +30,7 @@ export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
                     <label htmlFor="loginEmail"><p>Mejladress</p></label>
 
                     <input 
-                        className="mt-2 px-4 py-2 border w-full"
+                        className="mt-2 px-4 py-2 border w-full text-sm"
                         id="loginEmail"
                         type="text" 
                         placeholder="Mejladress"
@@ -38,6 +41,7 @@ export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
                         autoCapitalize="none"
                         autoCorrect="off"
                         spellCheck={false}
+                        style={{ fontSize: "0.8rem" }}
                     />
                 </div>
 
@@ -45,17 +49,28 @@ export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
 
                     <label htmlFor="loginPassword" className="mt-2"><p>Lösenord</p></label>
 
-                    <input 
-                        className="mt-2 px-4 py-2 border w-full"
-                        id="loginPassword"
-                        type="password" 
-                        placeholder="Lösenord"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required    
-                        minLength={8}
-                        autoComplete={"current-password"}
-                    />
+                    <div className="grid grid-flow-col gap-3">
+                        <input 
+                            className="mt-2 px-4 py-2 border col-span-3 text-sm"
+                            id="loginPassword"
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Lösenord"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required    
+                            minLength={8}
+                            autoComplete={"current-password"}
+                            style={{ fontSize: "0.8rem" }}
+                        />
+
+                        <Button 
+                            type="button"
+                            variant="outlined"
+                            icon={showPassword ? LuEye : LuEyeClosed}
+                            className="mt-2 w-10 h-10 flex items-center justify-center col-span-1"
+                            onClick={() => setShowPassword((prev) => !prev)}
+                        />
+                    </div>
                 </div>
 
                 <a 
