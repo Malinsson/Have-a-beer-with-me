@@ -11,7 +11,12 @@ export const useProfileInfo = (slug) => {
     const [error, setError] = useState(null);
   
     useEffect(() => {
-        if (!slug) return;
+        if (!slug) {
+            setProfile(null);
+            setError(null);
+            setLoading(false);
+            return;
+        }
 
         let cancelled = false;
         const cacheKey = `profile-info:${slug}`;
