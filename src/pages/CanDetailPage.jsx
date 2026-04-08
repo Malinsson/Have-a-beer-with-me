@@ -17,6 +17,7 @@ import { CanActionSection } from "../features/profile/components/profileLayout/C
 export const CanDetailPage = () => {
     const navigate = useNavigate();
     const { shareId } = useParams();
+    if (!shareId) return <Navigate to="/404" replace />;
     const mySlug = useUserSlug() || "guest";
     const [currentUserId, setCurrentUserId] = useState(null);
 

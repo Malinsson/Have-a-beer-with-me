@@ -33,8 +33,10 @@ const SOCIAL_CONFIG = [
 ];
 
 export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
-    const { slug } = useParams();
-    const { profile, loading, error } = useProfileInfo(slug);
+    const { slug: routeSlug } = useParams();
+    const userSlug = useUserSlug();
+    const effectiveSlug = routeSlug || userSlug || null;
+    const { profile } = useProfileInfo(effectiveSlug);
     const nameFromStore = useDesignStore((state) => state.name);
     const frontFromStore = useDesignStore((state) => state.front);
     const backFromStore = useDesignStore((state) => state.back);
@@ -54,7 +56,13 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
               ...(design?.front || {}),
           };
     const back = useStoreData
-        ? backFromStore
+        ? {
+              tags: [],
+              description: "",
+              department: "",
+              socials: {},
+              ...(backFromStore || {}),
+          }
         : {
               tags: [],
               description: "",
@@ -62,11 +70,6 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
               socials: {},
               ...(design?.back || {}),
           };
-
-    const tagLookup = TAGS.flatMap((group) => group.items).reduce((acc, tag) => {
-        acc[tag.id] = tag.label;
-        return acc;
-    }, {});
 
     const textureBackground = TEXTURE_STYLES[front.texturePreset] || TEXTURE_STYLES.default;
     const textAlignClass = TEXT_ALIGNMENT[front.textAlignment] || TEXT_ALIGNMENT.center;
@@ -82,7 +85,7 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
     : "";
 
     const isFrontSide = side === "front";
-    const socialsData = back.socials || {};
+    const socialsData = back?.socials || {};
 
     return (
         <div className="relative max-w-45 mx-auto" style={{ maxWidth: `${180 * scale}px` }}>
@@ -186,7 +189,7 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
 
                             <div className="flex flex-col items-center">
                                 <p className="text-[7px] self-end pr-2">330 ML</p>
-                                <ProfileQRCode slug={slug} size={70} />
+                                <ProfileQRCode slug={effectiveSlug} size={70} />
                             </div>
                         </div>
                     </div>

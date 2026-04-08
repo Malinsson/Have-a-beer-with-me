@@ -11,7 +11,12 @@ export const useProfileInfo = (slug) => {
     const [error, setError] = useState(null);
   
     useEffect(() => {
-        if (!slug) return;
+        if (!slug || slug === "guest") {
+            setProfile(null);
+            setError(null);
+            setLoading(false);
+            return;
+        }
 
         let cancelled = false;
         const cacheKey = `profile-info:${slug}`;
@@ -32,7 +37,7 @@ export const useProfileInfo = (slug) => {
                 .from("profiles")
                 .select("*")
                 .eq("slug_value", slug)
-                .single();
+                .maybeSingle();
 
             if (cancelled) return;
 

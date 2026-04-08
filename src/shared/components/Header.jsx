@@ -43,9 +43,8 @@ export const Header = () => {
         closeMenu();
     };
 
-    const handleNavLinkClick = async (event, link) => {
+    const handleNavLinkClick = async (link) => {
         if (link.action === "logout") {
-            event.preventDefault();
             const didLogout = await logout();
             closeMenu();
             if (didLogout) {
@@ -55,6 +54,7 @@ export const Header = () => {
             return;
         }
 
+        navigate(link.href);
         closeMenu();
     };
 
@@ -116,12 +116,13 @@ export const Header = () => {
                       `}>
                         {NAV_LINKS.map((link) => (
                             <li key={link.href}>
-                                <a 
-                                    href={link.href} 
-                                    onClick={(event) => handleNavLinkClick(event, link)}
+                                <button
+                                    type="button"
+                                    className="text-left"
+                                    onClick={() => handleNavLinkClick(link)}
                                 >
                                     {link.label}
-                                </a>
+                                </button>
                             </li>
                         ))}
 

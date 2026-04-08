@@ -7,7 +7,11 @@ export const useDesign = (shareId) => {
     const [error, setError] = useState(null);
   
     useEffect(() => {
-      if (!shareId) return;
+      if (!shareId) {
+        setDesign(null);
+        setLoading(false);
+        return;
+      }
 
       let cancelled = false;
 

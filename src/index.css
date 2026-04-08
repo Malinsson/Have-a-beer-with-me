@@ -59,7 +59,7 @@
         font-weight: 600;
     }
     
-    a {
+    .menu-links {
         text-transform: uppercase;
         font-size: var(--text-base);
         font-weight: 600;
