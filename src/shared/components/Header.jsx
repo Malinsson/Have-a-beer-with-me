@@ -118,7 +118,7 @@ export const Header = () => {
                             <li key={link.href}>
                                 <button
                                     type="button"
-                                    className="text-left"
+                                    className="menu-links text-left"
                                     onClick={() => handleNavLinkClick(link)}
                                 >
                                     {link.label}
