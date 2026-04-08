@@ -183,7 +183,7 @@ export const DesignerPage = () => {
     const handleSocialChange = (field, value) => {
         setBack({
             socials: {
-                ...back.socials,
+                ...(back?.socials || {}),
                 [field]: value,
             },
         });

@@ -21,6 +21,8 @@ export const DesignerStepContent = ({
     onSocialChange,
     onSignupSuccess,
 }) => {
+    const socials = back?.socials || {};
+
     return (
         <>
             {step === "front" && (
@@ -55,9 +57,9 @@ export const DesignerStepContent = ({
 
             {step === "social" && (
                 <SocialStep
-                    instagram={back.socials.instagram}
-                    linkedin={back.socials.linkedin}
-                    github={back.socials.github}
+                    instagram={socials.instagram || ""}
+                    linkedin={socials.linkedin || ""}
+                    github={socials.github || ""}
                     onChange={onSocialChange}
                 />
             )}
