@@ -11,7 +11,7 @@ export const useProfileInfo = (slug) => {
     const [error, setError] = useState(null);
   
     useEffect(() => {
-        if (!slug) {
+        if (!slug || slug === "guest") {
             setProfile(null);
             setError(null);
             setLoading(false);
@@ -37,7 +37,7 @@ export const useProfileInfo = (slug) => {
                 .from("profiles")
                 .select("*")
                 .eq("slug_value", slug)
-                .single();
+                .maybeSingle();
 
             if (cancelled) return;
 
