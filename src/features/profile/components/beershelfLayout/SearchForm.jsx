@@ -9,7 +9,7 @@ export const SearchForm = ({ searchQuery, setSearchQuery, labelText, handleSearc
 
                 <input
                     type="text"
-                    placeholder="Skriv ett ID..."
+                    placeholder="Skriv ett burk ID eller namn..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:border-black"

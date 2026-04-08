@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../../../../lib/supabase";
 import { buildProfileSlug } from "../../utils/slug";
 
-export const useSearchForm = () => {
+export const useSearchForm = ({ onSuccess } = {}) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [searchError, setSearchError] = useState(null);
     const [isSearching, setIsSearching] = useState(false);
@@ -28,6 +28,7 @@ export const useSearchForm = () => {
             if (canMatch?.share_id) {
                 navigate(`/can/${canMatch.share_id}`);
                 setSearchQuery("");
+                onSuccess?.();
                 return;
             }
 
@@ -43,6 +44,7 @@ export const useSearchForm = () => {
                 const slug = slugMatch.slug_value || buildProfileSlug(slugMatch.first_name, slugMatch.last_name);
                 navigate(`/profile/${slug}`);
                 setSearchQuery("");
+                onSuccess?.();
                 return;
             }
 
@@ -79,6 +81,7 @@ export const useSearchForm = () => {
                 const slug = nameMatch.slug_value || buildProfileSlug(nameMatch.first_name, nameMatch.last_name);
                 navigate(`/profile/${slug}`);
                 setSearchQuery("");
+                onSuccess?.();
                 return;
             }
 

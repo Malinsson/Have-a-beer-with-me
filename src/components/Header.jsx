@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { IoSearchOutline, IoCloseSharp } from "react-icons/io5";
+import { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
 import { useIsSignedIn } from "../shared/hooks/useIsSignedIn";
@@ -8,10 +7,13 @@ import { useIsGuest } from "../shared/hooks/useIsGuest";
 import { useUserSlug } from "../features/profile/hooks/useUserSlug";
 import Logo from "../assets/images/yrgo.png";
 import beerHeaderIcon from "../assets/icons/beerHeaderIcon.svg";
+import { useSearchForm } from "../features/profile/components/beershelfLayout/useSearchForm";
+import { SearchForm } from "../features/profile/components/beershelfLayout/SearchForm";
+import { IoCloseSharp } from "react-icons/io5";
+
 
 export const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState("");
     
     const navigate = useNavigate();
     const slug = useUserSlug();
@@ -34,12 +36,7 @@ export const Header = () => {
     const toggleMenu = () => setMenuOpen((prev) => !prev);
     const closeMenu = () => setMenuOpen(false);
 
-    const handleSearch = (e) => {
-        e.preventDefault();
-        navigate(`/can/${searchQuery.trim()}`);
-        console.log("Search query:", searchQuery);
-        closeMenu();
-    };
+    const { searchQuery, setSearchQuery, handleSearch, searchError, isSearching } = useSearchForm({ onSuccess: closeMenu });
 
     const handleProfileClick = () => {
         navigate(`/profile/${slug}`);
@@ -128,29 +125,24 @@ export const Header = () => {
                             </li>
                         ))}
 
-                        <form onSubmit={handleSearch} className="w-full mb-2">
-                            <label className="text-base font-semibold uppercase">Sök burk-ID</label>
-                            <div className="flex justify-between gap-2 mt-2">
-                                <input
-                                    type="text"
-                                    placeholder="Sök öl burk..."
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="w-full px-4 py-2 border border-b-grey"
-                                />
-                                <button type="submit">
-                                    <IoSearchOutline className="text-3xl" />
-                                </button>
-                            </div>
-                        </form>
+                        <li>
+                            <SearchForm 
+                                searchQuery={searchQuery} 
+                                setSearchQuery={setSearchQuery}
+                                handleSearch={handleSearch}
+                                labelText="Sök burk-id"
+                                closeMenu={closeMenu}
+                            />
+                            {searchError && (
+                                <p className="mt-2 text-sm text-red-500">{searchError}</p>
+                            )}
+                            {isSearching && (
+                                <p className="mt-2 text-sm text-gray-500">Söker...</p>
+                            )}
+                        </li>
                     </ul>
                 
-                    
-                {/* {!isSignedIn && !isGuest && (
-                    <div className="w-full max-w-sm mx-auto mt-12">
-                        <LoginForm onSuccess={closeMenu} />
-                    </div>
-                )} */}
+            
             </nav>
         </header>
     );
