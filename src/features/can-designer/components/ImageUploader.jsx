@@ -1,108 +1,14 @@
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
-import { useEffect, useRef, useState } from 'react'
-import { useDrag, usePinch, useWheel } from "@use-gesture/react";
+import { useEffect, useState } from 'react'
 import { useImageUploader } from '../hooks/uploadUserImages/useImageUploader'
 import { GoUpload } from "react-icons/go";
-import { Button } from '../../../components/Button';
-import baseCan from '../../../assets/images/baseCan.png';
+import ImagePositioner from './ImagePositioner';
+import { ImageUploadFooterActions } from './ImageUploadFooterActions';
 
 // --- Constants ---
 const DEFAULT_IMAGE_TRANSFORM = { x: 0, y: 0, scale: 1 };
-const MIN_SCALE = 0.5;
-const MAX_SCALE = 3;
 const STEPS = { CROP: 'crop', POSITION: 'position' }
-
-// --- Helpers ---
-const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-
-const normalizeValue = (value) => ({
-  x: Number.isFinite(value?.x) ? value.x : DEFAULT_IMAGE_TRANSFORM.x,
-  y: Number.isFinite(value?.y) ? value.y : DEFAULT_IMAGE_TRANSFORM.y,
-  scale: Number.isFinite(value?.scale) ? value.scale : DEFAULT_IMAGE_TRANSFORM.scale,
-});
-
-// --- Image Positioner ---
-function ImagePositioner({ imageUrl, value, onChange }) {
-  const areaRef = useRef(null);
-  const transform = normalizeValue(value);
-
-  const updatePosition = (deltaX, deltaY) => {
-    const rect = areaRef.current?.getBoundingClientRect();
-    if (!rect || !onChange) return;
-
-    const xDeltaPercent = (deltaX / rect.width) * 100;
-    const yDeltaPercent = (deltaY / rect.height) * 100;
-
-    onChange({
-      ...transform,
-      x: clamp(transform.x + xDeltaPercent, -80, 80),
-      y: clamp(transform.y + yDeltaPercent, -80, 80),
-    });
-  };
-
-  useDrag(
-    ({ delta: [dx, dy], event }) => {
-      event.preventDefault();
-      updatePosition(dx, dy);
-    },
-    { target: areaRef, eventOptions: { passive: false }, pointer: { touch: true } }
-  );
-
-  useWheel(
-    ({ delta: [, dy], event }) => {
-      event.preventDefault();
-      if (!onChange) return;
-      onChange({
-        ...transform,
-        scale: clamp(transform.scale - dy * 0.0015, MIN_SCALE, MAX_SCALE),
-      });
-    },
-    { target: areaRef, eventOptions: { passive: false } }
-  );
-
-  usePinch(
-    ({ offset: [scale], event }) => {
-      event.preventDefault();
-      if (!onChange) return;
-      onChange({
-        ...transform,
-        scale: clamp(scale, MIN_SCALE, MAX_SCALE),
-      });
-    },
-    {
-      target: areaRef,
-      eventOptions: { passive: false },
-      scaleBounds: { min: MIN_SCALE, max: MAX_SCALE },
-      rubberband: true,
-    }
-  );
-
-  return (
-    <section className="w-full mt-2 mb-4">
-      <div className="relative max-w-45 mx-auto w-full">
-        <img src={baseCan} alt="Can template" className="w-full h-auto object-contain pointer-events-none" />
-
-        <div
-          ref={areaRef}
-          className="absolute left-1/2 top-[20%] -translate-x-1/2 w-[98%] h-[72%] overflow-hidden touch-none border border-dashed border-neutral-400"
-          style={{ cursor: "grab" }}
-        >
-          <img
-            src={imageUrl}
-            alt="Position preview"
-            className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
-            draggable={false}
-            style={{
-              transform: `translate(${transform.x}%, ${transform.y}%) scale(${transform.scale})`,
-              transformOrigin: "center center",
-            }}
-          />
-        </div>
-      </div>
-    </section>
-  );
-}
 
 // --- Main Component ---
 export function ImageUploader({ onUploadComplete }) {
@@ -122,6 +28,8 @@ export function ImageUploader({ onUploadComplete }) {
     }
   }, [imageSrc])
 
+
+// Clean up the object URL for the cropped preview when it changes or when the component unmounts to prevent memory leaks
   useEffect(() => {
     return () => {
       if (croppedPreviewUrl) {
@@ -158,7 +66,7 @@ export function ImageUploader({ onUploadComplete }) {
   return (
     <div className="w-full min-h-15 flex items-center justify-center mx-4 relative">
 
-      {/* Upload trigger */}
+      {/* Upload button */}
       <label htmlFor='imageUploader' className="w-full flex items-center justify-center">
         <div className="p-3">
           <GoUpload className="text-base" />
@@ -169,7 +77,7 @@ export function ImageUploader({ onUploadComplete }) {
       <input
         id='imageUploader'
         type="file"
-        accept="image/*"
+        accept="image/jpeg, image/png, image/gif, image/webp"
         onChange={onFileChange}
         className="absolute inset-0 opacity-0 w-full h-full"
       />
@@ -232,45 +140,16 @@ export function ImageUploader({ onUploadComplete }) {
               )}
             </div>
 
-            {/* Footer buttons */}
-            <div className="mt-4 flex items-center justify-between gap-3">
-
-              {/* Left — cancel or back */}
-              {step === STEPS.CROP ? (
-                <Button
-                  type="button"
-                  onClick={clearImage}
-                  variant="outlined"
-                  text="Avbryt"
-                />
-              ) : (
-                <Button
-                  type="button"
-                  onClick={handleBack}
-                  variant="outlined"
-                  text="Tillbaka"
-                />
-              )}
-
-              {/* Right — next or upload */}
-              {step === STEPS.CROP ? (
-                <Button
-                  type="button"
-                  onClick={handleNext}
-                  variant="primary"
-                  text={preparingPreview ? 'Förbereder...' : 'Nästa'}
-                  disabled={!crop || preparingPreview}
-                />
-              ) : (
-                <Button
-                  type="submit"
-                  onClick={() => handleUpload({ imageTransform })}
-                  disabled={uploading || !crop}
-                  text={uploading ? 'Laddar upp...' : 'Ladda upp'}
-                  variant="primary"
-                />
-              )}
-            </div>
+            <ImageUploadFooterActions
+              step={step}
+              uploading={uploading}
+              preparingPreview={preparingPreview}
+              hasCrop={!!crop}
+              onCancel={clearImage}
+              onBack={handleBack}
+              onNext={handleNext}
+              onUpload={() => handleUpload({ imageTransform })}
+            />
 
           </div>
         </section>

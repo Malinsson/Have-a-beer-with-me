@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { LoginForm } from '../features/Auth/components/LoginForm'
 import { SignupForm } from '../features/Auth/components/SignupForm'
 import { useIsGuest } from '../shared/hooks/useIsGuest'
@@ -7,7 +6,6 @@ import { useIsGuest } from '../shared/hooks/useIsGuest'
 export const LoginPage = () => {
 
     const [signUp, setSignUp] = useState(false);
-    const navigate = useNavigate();
     const isGuest = useIsGuest();
 
     useEffect(() => {

@@ -1,4 +1,4 @@
-import { TYPES } from "./constants";
+import { TYPES } from "../constants";
 
 // Renamed props for clarity: 'selected' is now a single value, 'onSelect' replaces 'onToggle'
 export const DrinkTypeStep = ({ selected, onSelect }) => {

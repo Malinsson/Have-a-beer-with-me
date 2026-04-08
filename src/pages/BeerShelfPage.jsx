@@ -1,16 +1,15 @@
 // The beercan shelf page, where you can see all the cans you have collected.
 import { useState, useEffect } from "react";
 import scanCanImage from "../assets/images/barhylla_empty.svg";
-
 import { useDesignStore } from "../store/designStore.js";
 import { useProfileInfo } from "../features/profile/hooks/useProfileInfo.js";
 import { useParams, useNavigate } from "react-router-dom";
-import { CanPreview2D } from "../features/can-designer/components/CanPrewiew2D.jsx";
+import { useSearchForm } from "../shared/hooks/useSearchForm.js";
 
-import { BackButton } from "../components/BackButton";
-import { QRScanner } from "../components/QRScanner.jsx";
-import { IoSearchOutline } from "react-icons/io5";
-import { ShelfItem } from "../features/profile/ShelfItem.jsx";
+import { BackButton } from "../shared/components/BackButton.jsx";
+import { QRScanner } from "../shared/components/QRScanner.jsx";
+import { ShelfItem } from "../features/profile/components/beershelfLayout/ShelfItem.jsx";
+import { SearchForm } from "../shared/components/SearchForm.jsx";
 
 export const BeerShelfPage = () => {
     const { slug } = useParams();
@@ -21,7 +20,7 @@ export const BeerShelfPage = () => {
     const [savedCans, setSavedCans] = useState([]);
     const [loading, setLoading] = useState(true);
     const [fetchError, setFetchError] = useState(null);
-    const [searchQuery, setSearchQuery] = useState("");
+    const { searchQuery, setSearchQuery, handleSearch, searchError, isSearching } = useSearchForm();
 
     useEffect(() => {
         if (!profile?.id) return;
@@ -38,12 +37,6 @@ export const BeerShelfPage = () => {
         }
         fetchCans();
     }, [profile?.id]);
-
-    const handleSearch = (e) => {
-        e.preventDefault();
-        navigate(`/profile/${searchQuery.trim()}`);
-        setSearchQuery("")
-    };
 
     if (loading || profileLoading) return (
         <div className="flex justify-center items-center mt-12">
@@ -66,7 +59,7 @@ export const BeerShelfPage = () => {
                 </h2>
             </div>
 
-            
+            {/* State when there are no saved cans */}
             {savedCans.length === 0 ? (
                 <div className="flex flex-col items-center gap-6 flex-1 pb-2"> 
                     <img 
@@ -77,6 +70,7 @@ export const BeerShelfPage = () => {
                     <p className="text-center mt-10">
                         Din barhylla är tom. Scanna andras burkar för att fylla din barhylla.
                     </p>
+
                     <QRScanner 
                         text="Scanna din första öl" 
                         variant="primary" 
@@ -85,64 +79,46 @@ export const BeerShelfPage = () => {
                             navigate(url.pathname);
                         }}
                     />
+
                     <div className="w-full mt-12">
-                        <form onSubmit={handleSearch} className="flex flex-col gap-2 w-full">
-                            <label className="text-base font-semibold uppercase">Sök efter burk-id</label>
-                            <div className="flex items-center gap-3">
-                                <input
-                                type="text"
-                                placeholder="andersandersson..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full px-4 py-2 border border-b-grey"
-                                />
-                                <button type="submit" className="flex-shrink-0">
-                                <IoSearchOutline className="text-2xl" />
-                                </button>
-                            </div>
-                        </form>
+                        <SearchForm 
+                        searchQuery={searchQuery} 
+                        setSearchQuery={setSearchQuery}
+                        handleSearch={handleSearch}
+                        labelText="Sök efter en burk" />
+                        {searchError && (
+                            <p className="mt-2 text-sm text-red-500">{searchError}</p>
+                        )}
+                        {isSearching && (
+                            <p className="mt-2 text-sm text-gray-500">Söker...</p>
+                        )}
                     </div>
+
                 </div>
-            ) : (
+            ) : ( 
                 <div className="flex flex-col gap-8">
                     <div className="grid grid-cols-2 gap-6 gap-x-4 gap-y-8">
                         {savedCans.map((can) => (
-                            <div 
-                                key={can.savedId} 
-                                className="flex flex-col"
-                                onClick={() => navigate(`/profile/${can.ownerSlug}`)}
-                            >
-                                <div className="w-full flex items-center justify-center px-12 mt-4">
-                                    <CanPreview2D side="front" design={can} scale={0.4} />
-                                </div>
-
-                                <div className="pl-2 mt-3">
-                                    <p className="bold text-xl">
-                                        {can.ownerFirstName} <br /> {can.ownerLastName}
-                                    </p>
-                                    <h4 className="text-lg text-black">
-                                        {can.department}
-                                    </h4>
-                                </div>
-                            </div>
+                            <ShelfItem 
+                            key={can.savedId || can.id || can.share_id} 
+                            can={can}
+                            />
                         ))}
                     </div>
+
                     <div className="w-full pb-4 mt-12">
-                        <form onSubmit={handleSearch} className="flex flex-col gap-2 w-full">
-                            <label className="text-sm font-bold uppercase tracking-wider">Sök efter annan burk</label>
-                            <div className="flex items-center gap-3">
-                                <input
-                                    type="text"
-                                    placeholder="Skriv ett ID..."
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:border-black"
-                                />
-                                <button type="submit" className="bg-black text-white p-3">
-                                    <IoSearchOutline className="text-2xl" />
-                                </button>
-                            </div>
-                        </form>
+                        <SearchForm 
+                            searchQuery={searchQuery} 
+                            setSearchQuery={setSearchQuery}
+                            handleSearch={handleSearch}
+                            labelText="Sök efter en annan burk" 
+                        />
+                        {searchError && (
+                            <p className="mt-2 text-sm text-red-500">{searchError}</p>
+                        )}
+                        {isSearching && (
+                            <p className="mt-2 text-sm text-gray-500">Söker...</p>
+                        )}
                     </div>
                 </div>
             )}

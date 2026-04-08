@@ -19,6 +19,7 @@ export const config = {
   },
 }
 
+// Parses the incoming multipart/form-data request using formidable, extracting the uploaded file and returning it as a promise
 const parseMultipartForm = (req) =>
   new Promise((resolve, reject) => {
     const form = formidable({
