@@ -1,5 +1,6 @@
 import { IoSearchOutline } from "react-icons/io5";
 
+
 export const SearchForm = ({ searchQuery, setSearchQuery, labelText, handleSearch }) => {
     return (
         <form onSubmit={handleSearch} className="flex flex-col gap-2 w-full">

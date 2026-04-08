@@ -11,6 +11,7 @@ import { DesignerPage } from './pages/DesignerPage.jsx'
 import { BeerShelfPage } from './pages/BeerShelfPage.jsx'
 import { CanDetailPage } from './pages/CanDetailPage.jsx'
 import { LoginPage } from './pages/LoginPage.jsx'
+import { NotFoundPage } from './pages/NotFoundPage.jsx'
 
 
 export function App() {
@@ -26,6 +27,7 @@ export function App() {
           <Route path="/profile/:slug" element={<ProfilePage />}></Route>
           <Route path="/profile/:slug/hylla" element={<BeerShelfPage />}></Route>
           <Route path="/can/:shareId" element={<CanDetailPage />} />
+          <Route path="/404" element={<NotFoundPage />} />
         </Routes>
       </Layout>
     </>

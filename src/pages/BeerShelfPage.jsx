@@ -4,6 +4,7 @@ import scanCanImage from "../assets/images/barhylla_empty.svg";
 import { useDesignStore } from "../store/designStore.js";
 import { useProfileInfo } from "../features/profile/hooks/useProfileInfo.js";
 import { useParams, useNavigate } from "react-router-dom";
+import { useSearchForm } from "../features/profile/components/beershelfLayout/useSearchForm.js";
 
 import { BackButton } from "../components/BackButton";
 import { QRScanner } from "../components/QRScanner.jsx";
@@ -19,7 +20,7 @@ export const BeerShelfPage = () => {
     const [savedCans, setSavedCans] = useState([]);
     const [loading, setLoading] = useState(true);
     const [fetchError, setFetchError] = useState(null);
-    const [searchQuery, setSearchQuery] = useState("");
+    const { searchQuery, setSearchQuery, handleSearch, searchError, isSearching } = useSearchForm();
 
     useEffect(() => {
         if (!profile?.id) return;
@@ -36,12 +37,6 @@ export const BeerShelfPage = () => {
         }
         fetchCans();
     }, [profile?.id]);
-
-    const handleSearch = (e) => {
-        e.preventDefault();
-        navigate(`/can/${searchQuery.trim()}`);
-        setSearchQuery("")
-    };
 
     if (loading || profileLoading) return (
         <div className="flex justify-center items-center mt-12">
@@ -91,6 +86,12 @@ export const BeerShelfPage = () => {
                         setSearchQuery={setSearchQuery}
                         handleSearch={handleSearch}
                         labelText="Sök efter en burk" />
+                        {searchError && (
+                            <p className="mt-2 text-sm text-red-500">{searchError}</p>
+                        )}
+                        {isSearching && (
+                            <p className="mt-2 text-sm text-gray-500">Söker...</p>
+                        )}
                     </div>
 
                 </div>
@@ -112,6 +113,12 @@ export const BeerShelfPage = () => {
                             handleSearch={handleSearch}
                             labelText="Sök efter en annan burk" 
                         />
+                        {searchError && (
+                            <p className="mt-2 text-sm text-red-500">{searchError}</p>
+                        )}
+                        {isSearching && (
+                            <p className="mt-2 text-sm text-gray-500">Söker...</p>
+                        )}
                     </div>
                 </div>
             )}
