@@ -5,15 +5,11 @@ import { useUserSlug } from "../features/profile/hooks/useUserSlug";
 import supabase from "../lib/supabase";
  
 // import type { DesignerMode, Step } from "../features/can-designer/types.ts";
-import { KontoStep } from "../features/can-designer/KontoStep";
-import { FrontStep } from "../features/can-designer/FrontStep";
-import { BackStep } from "../features/can-designer/BackStep";
-import { InfoStep } from "../features/can-designer/InfoStep";
-import { SocialStep } from "../features/can-designer/SocialStep";
+import { DesignerStepContent } from "../features/can-designer/components/DesignerStepContent";
+import { DesignerStepActions } from "../features/can-designer/components/DesignerStepActions";
 import { CanPreview2D } from "../features/can-designer/components/CanPrewiew2D";
-import { Modal } from "../components/Modal";
-import { Button } from "../components/Button";
-import { BackButton } from "../components/BackButton";
+import { Modal } from "../shared/components/Modal";
+import { BackButton } from "../shared/components/BackButton";
 
 
 const STEP_TITLE = {
@@ -217,7 +213,7 @@ export const DesignerPage = () => {
     };
 
     return (
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto p-4 max-w-2xl">
    
             <div className="flex items-center justify-between mb-6">
                 {(step === "front") && (
@@ -233,96 +229,39 @@ export const DesignerPage = () => {
                 )}
             </div>
 
-            <div className="mb-4 max-h-40vh">
-                <CanPreview2D side={previewSide} />
+            <div className="mb-4 max-h-40vh flex justify-center">
+                <CanPreview2D side={previewSide} scale={0.85} />
             </div>
         
             <p className="bold">{STEP_SUBTITLE[step]}</p>
 
-            {/* Steps */}
+            {/* Steps and Content */}
+            <DesignerStepContent
+                step={step}
+                canSkipKonto={canSkipKonto}
+                mode={mode}
+                onModeChange={setMode}
+                front={front}
+                back={back}
+                onTextureSelect={handleTextureSelect}
+                onColorSelect={handleColorSelect}
+                onFontSelect={handleFontSelect}
+                onAlignmentChange={handleAlignmentChange}
+                onImageUpload={handleImageUpload}
+                onBackDescriptionChange={handleBackDescriptionChange}
+                onToggleTag={toggleOption}
+                onSocialChange={handleSocialChange}
+                onSignupSuccess={handleCreateCan}
+            />
 
-            {step === "front" && (
-                <FrontStep
-                    mode={mode}
-                    onModeChange={setMode}
-                    selectedTexture={front.texturePreset}
-                    selectedColor={front.textColor}
-                    selectedFont={front.textFont}
-                    selectedAlignment={front.textAlignment}
-                    onTextureSelect={handleTextureSelect}
-                    onColorSelect={handleColorSelect}
-                    onFontSelect={handleFontSelect}
-                    onAlignmentChange={handleAlignmentChange}
-                    onImageUpload={handleImageUpload}
-                />
-            )}
-
-            {step === "back" && (
-                <BackStep
-                    value={back.description}
-                    onChange={handleBackDescriptionChange}
-                />
-            )}
-
-            {step === "info" && (
-                <InfoStep
-                    selected={new Set(back.tags)}
-                    onToggle={toggleOption}
-                />
-             )}
-
-            {step === "konto" && !canSkipKonto && (
-                <KontoStep onSignupSuccess={handleCreateCan} />
-            )}
-
-            {/* Bottom buttons */}
-            <div className="flex justify-center gap-4 mt-4">
-                {step === "front" && (
-                    <Button text="Designa Baksida" onClick={() => setStep("back")} variant="primary" />
-                )}
-
-                {step === "back" && (
-                    <>
-                        <Button text="Skippa" onClick={() => setStep("konto")} variant="outlined" />
-                        <Button text="Gå vidare" onClick={() => setStep("info")} variant="primary" />
-                    </>
-                )}
-
-                {step === "info" && (
-                    <>
-                        <Button text="Skippa" onClick={() => setStep("konto")} variant="outlined" showIcon={false} />
-                        <Button text="Gå vidare" onClick={() => setStep("social")} variant="primary" />
-                    </>
-                )}
-            </div>
-
-            {step === "social" && (
-                <>
-                    <SocialStep
-                        instagram={back.socials.instagram}
-                        linkedin={back.socials.linkedin}
-                        github={back.socials.github}
-                        onChange={handleSocialChange}
-                    />
-                    <div className="flex justify-center gap-4">
-                        <Button text="Skippa" onClick={() => setStep("konto")} variant="outlined" showIcon={false} />
-                        <Button text="Gå vidare" onClick={handleSocialContinue} variant="primary" />
-                    </div>
-                </>
-            )}
-
-            {step === "konto" && !canSkipKonto && (
-                <>
-                    <div className="flex justify-center gap-4 mt-8">
-                        <Button text="Gästkonto" onClick={finalizeDesignAndOpenModal} variant="outlined" showIcon={false} />
-                        <Button
-                            text="Skapa konto"
-                            onClick={() => document.getElementById("konto-signup-form")?.requestSubmit()}
-                            variant="primary"
-                        />
-                    </div>
-                </>
-            )}
+            {/* Navigation buttons */}
+            <DesignerStepActions
+                step={step}
+                canSkipKonto={canSkipKonto}
+                onSetStep={setStep}
+                onSocialContinue={handleSocialContinue}
+                onFinalizeAsGuest={finalizeDesignAndOpenModal}
+            />
                   
             {/* Modal */}
             {modalOpen && (

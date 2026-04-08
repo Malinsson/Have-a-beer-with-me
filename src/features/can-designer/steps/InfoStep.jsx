@@ -1,6 +1,12 @@
 import { useState } from "react";
+<<<<<<< HEAD:src/features/can-designer/InfoStep.jsx
 import { ProgressDots } from "../../components/ProgressDots";
 import { TAGS } from "./constants";
+=======
+import { ProgressDots } from "../../../shared/components/ProgressDots";
+import { Button } from "../../../shared/components/Button";
+import { TAGS } from "../constants";
+>>>>>>> d525b625ef87c316a6559b4311b0eac7fc586045:src/features/can-designer/steps/InfoStep.jsx
 import React from "react";
 
 export const InfoStep = ({ selected, onToggle }) => {
@@ -69,9 +75,7 @@ export const InfoStep = ({ selected, onToggle }) => {
             {count >= MAX_TAGS && (
                 <p className="text-center text-sm text-neutral-600">Du kan välja max 3 tags.</p>
             )}
-            <div className="mt-6">
-                <ProgressDots total={4} current={2} />
-            </div>
+            
         </div>
      );
 }

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useLogin } from "../hooks/useLogin";
 import { useAuthFields } from "../hooks/useAuthFields";
-import { Button } from "../../../components/Button";
 import { LuEye, LuEyeClosed } from "react-icons/lu";
+import { Button } from "../../../shared/components/Button";
 
 
 export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {

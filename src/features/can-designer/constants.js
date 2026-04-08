@@ -79,6 +79,7 @@ export const TYPES = [
   { id: "6", label: "Ale" },
 ];
 
+
 const DRINK_TYPE_BY_ID = TYPES.reduce((acc, type) => {
   acc[type.id] = type;
   return acc;

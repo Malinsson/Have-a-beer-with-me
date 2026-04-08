@@ -1,6 +1,6 @@
 import { useAuthFields } from "../hooks/useAuthFields";
 import { useSignup } from "../hooks/useSignup";
-import { Button } from "../../../components/Button";
+import { Button } from "../../../shared/components/Button";
 
 
 export const SignupForm = ({ formId = "signup-form", hideSubmitButton = false, onSuccess, onSwitchToLogin }) => {

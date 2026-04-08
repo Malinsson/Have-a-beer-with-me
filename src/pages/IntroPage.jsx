@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ProgressDots } from "../components/ProgressDots";
-import { NameStep } from "../features/can-designer/NameStep";
+import { ProgressDots } from "../shared/components/ProgressDots";
+import { NameStep } from "../features/can-designer/steps/NameStep";
 import { GuestSignup } from "../features/Auth/components/GuestSignup";
 
 
 import can from "../assets/images/baseCan.png";
 import cans from "../assets/images/cans.jpg";
-import { Button } from "../components/Button";
+import { Button } from "../shared/components/Button";
 
 const STEPS = ["first", "secound", "last"];
 

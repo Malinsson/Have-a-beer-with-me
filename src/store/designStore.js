@@ -147,17 +147,30 @@ export const useDesignStore = create((set, get) => ({
                 .order('created_at', { ascending: false });
 
             if (error) throw error;
-            
-            const formatted = await Promise.all(
-                (data || []).map(async (item) => {
-                  const design = item.designs;
-                  const designData = design?.design_data || {};
-                
-                  const { data: profile, error: profileFetchError } = await supabase
+
+            const ownerIds = Array.from(
+                new Set((data || []).map((item) => item.designs?.user_id).filter(Boolean))
+            );
+
+            let profileMap = {};
+            if (ownerIds.length > 0) {
+                const { data: profiles, error: profileFetchError } = await supabase
                     .from('profiles')
-                    .select('first_name, last_name, slug_value')
-                    .eq('id', design?.user_id)
-                    .single();
+                    .select('id, first_name, last_name, slug_value')
+                    .in('id', ownerIds);
+
+                if (profileFetchError) throw profileFetchError;
+
+                profileMap = (profiles || []).reduce((acc, profile) => {
+                    acc[profile.id] = profile;
+                    return acc;
+                }, {});
+            }
+            
+            const formatted = (data || []).map((item) => {
+                const design = item.designs;
+                const designData = design?.design_data || {};
+                const profile = profileMap[design?.user_id] || null;
 
                 return {
                     savedId: item.id,
@@ -172,9 +185,8 @@ export const useDesignStore = create((set, get) => ({
                     design_data: designData
                 };
             })
-        );
 
-        return { success: true, designs: formatted };
+            return { success: true, designs: formatted };
         } catch (error) {
             console.error("Error fetching shelf:", error);
             return { success: false, error: error.message };
