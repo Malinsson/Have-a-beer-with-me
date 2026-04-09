@@ -3,6 +3,7 @@ import { useState } from "react";
 import { HiOutlineCamera } from "react-icons/hi2";
 import { CameraView } from "./CameraView.jsx";
 import { Button } from "./Button.jsx";
+import { IoCloseSharp } from "react-icons/io5";
 
 export const QRScanner = ({ onScan, text = "Scanna QR", variant = "primary" }) => {
     const [cameraOpen, setCameraOpen] = useState(false);
@@ -26,9 +27,9 @@ export const QRScanner = ({ onScan, text = "Scanna QR", variant = "primary" }) =
         <div className="fixed inset-0 bg-black z-50 flex flex-col">
             <button
                 onClick={() => setCameraOpen(false)}
-                className="text-white text-xl p-4 self-end"
+                className="text-white text-2xl p-4 self-end"
             >
-                Stäng kamera
+                <IoCloseSharp />
             </button>
             <CameraView onScan={handleScan} />
         </div>
