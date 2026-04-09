@@ -87,6 +87,8 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
 
     //Bottom curve
     const labelClipStyle = {
+        borderTopLeftRadius: "48% 1%",
+        borderTopRightRadius: "48% 1%",
         borderBottomLeftRadius: "48% 3%",
         borderBottomRightRadius: "48% 3%",
     };
@@ -103,7 +105,7 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
 
             {/* Label area */}
             <div
-                className="absolute left-1/2 top-[20%] -translate-x-1/2 w-[98%] h-[73%] overflow-hidden"
+                className="absolute left-1/2 top-[18.5%] -translate-x-1/2 w-[98%] h-[75%] overflow-hidden"
                 style={labelClipStyle}
             >
             
