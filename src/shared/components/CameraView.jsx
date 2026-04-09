@@ -6,8 +6,9 @@ export const CameraView = ({ onScan }) => {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const animationRef = useRef(null);
+    const streamRef = useRef(null);
+    
     const navigate = useNavigate();
-
     const [error, setError] = useState(null);
     const [scannedData, setScannedData] = useState(null);
     
@@ -19,6 +20,8 @@ export const CameraView = ({ onScan }) => {
                     video: { facingMode: 'environment' }, 
                     audio: false  
                 });
+
+                streamRef.current = stream;
 
                 if (videoRef.current) {
                     videoRef.current.srcObject = stream;
@@ -35,9 +38,7 @@ export const CameraView = ({ onScan }) => {
         const scanLoop = () => {
             const video = videoRef.current;
             const canvas = canvasRef.current;
-
             if (!video || !canvas) return;
-            
             const ctx = canvas.getContext('2d');
             
             const trick = () => {
@@ -71,12 +72,28 @@ export const CameraView = ({ onScan }) => {
         startCamera();
         
         // Städa upp när komponenten unmountas
-        return () => {
-            if (videoRef.current?.srcObject) {
-                videoRef.current.srcObject.getTracks().forEach(track => track.stop());
-            }
-        };
-    }, []);
+    //     return () => {
+    //         if (videoRef.current?.srcObject) {
+    //             videoRef.current.srcObject.getTracks().forEach(track => track.stop());
+    //         }
+    //     };
+    // }, []);
+            return () => {
+                // 1. Stop the animation loop
+                if (animationRef.current) {
+                    cancelAnimationFrame(animationRef.current);
+                }
+
+                // 2. Stop all camera tracks using the streamRef
+                if (streamRef.current) {
+                    streamRef.current.getTracks().forEach(track => {
+                        track.stop();
+                        console.log("Stopped track:", track.kind); // Debug log
+                    });
+                    streamRef.current = null;
+                }
+            };
+        }, []);
 
     // if (error) return <p>Kamera ej tillgänglig: {error}</p>
 
