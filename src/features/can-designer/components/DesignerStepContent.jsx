@@ -9,6 +9,8 @@ export const DesignerStepContent = ({
     canSkipKonto,
     mode,
     onModeChange,
+    authMode,
+    onAuthModeChange,
     front,
     back,
     onTextureSelect,
@@ -65,7 +67,11 @@ export const DesignerStepContent = ({
             )}
 
             {step === "konto" && !canSkipKonto && (
-                <KontoStep onSignupSuccess={onSignupSuccess} />
+                <KontoStep 
+                    authMode={authMode} 
+                    onAuthModeChange={onAuthModeChange} 
+                    onSignupSuccess={onSignupSuccess} 
+                />
             )}
         </>
     );

@@ -34,6 +34,7 @@ export const DesignerPage = () => {
     
     const [step, setStep] = useState("front");
     const [mode, setMode] = useState("image");
+    const [authMode, setAuthMode] = useState("signup");
     const [modalOpen, setModalOpen] = useState(false);
     const [canSkipKonto, setCanSkipKonto] = useState(false);
 
@@ -213,7 +214,7 @@ export const DesignerPage = () => {
     };
 
     return (
-        <div className="container mx-auto p-4 max-w-2xl">
+        <div className="container mx-auto p-4 max-w-2xl flex flex-col min-h-[100dvh]">
    
             <div className="flex items-center justify-between mb-6">
                 {(step === "front") && (
@@ -241,6 +242,8 @@ export const DesignerPage = () => {
                 canSkipKonto={canSkipKonto}
                 mode={mode}
                 onModeChange={setMode}
+                authMode={authMode} 
+                onAuthModeChange={setAuthMode}
                 front={front}
                 back={back}
                 onTextureSelect={handleTextureSelect}
@@ -258,6 +261,7 @@ export const DesignerPage = () => {
             <DesignerStepActions
                 step={step}
                 canSkipKonto={canSkipKonto}
+                authMode={authMode}
                 onSetStep={setStep}
                 onSocialContinue={handleSocialContinue}
                 onFinalizeAsGuest={finalizeDesignAndOpenModal}
