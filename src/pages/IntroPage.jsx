@@ -41,7 +41,7 @@ export const IntroPage = () => {
                 </div>
 
                 {(step === "first" || step === "secound") && (
-                    <div className="flex-1 flex justify-center items-center p-4 min-h-0">
+                    <div className="flex justify-center items-center p-4 w-5/6 mx-auto">
                         <img 
                             src={STEP_IMG[step]} 
                             alt=""
@@ -75,7 +75,7 @@ export const IntroPage = () => {
                 )}
 
                 {step === "last" && (
-                    <div className="fixed bottom-0 left-0 right-0 flex flex-col p-4 justify-center items-center gap-6">
+                    <div className="flex flex-col p-4 justify-center items-center gap-6">
                         <GuestSignup />
                         <NameStep />
                     </div>

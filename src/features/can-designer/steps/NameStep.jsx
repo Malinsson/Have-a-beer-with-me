@@ -107,17 +107,20 @@ export const NameStep = () => {
                     onSelect={(id) => setSelectedDrink(id)} 
                 />
             </div>
-            <section>
-                <ProgressDots total={3} current={3} />
-            </section>
-            
-            <Button
-                type="submit"
-                variant="primary"
-                text="Börja designa din ölburk"
-                disabled={isLoading}
-            >      
-            </Button>
+            <div className="fixed bottom-0 left-0 right-0 flex flex-col p-4 justify-center items-center gap-6">
+                <section>
+                    <ProgressDots total={3} current={3} />
+                </section>
+                
+                <Button
+                    type="submit"
+                    variant="primary"
+                    text="Börja designa din ölburk"
+                    disabled={isLoading}
+                >      
+                </Button>
+
+            </div>
            
         </form>
     );
