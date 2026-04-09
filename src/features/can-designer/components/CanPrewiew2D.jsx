@@ -5,6 +5,7 @@ import { useUserSlug } from "../../profile/hooks/useUserSlug";
 
 import baseCan from "../../../assets/images/baseCan.png";
 import logo from "../../../assets/images/yrgo.png";
+import overlay from "../../../assets/images/overlay.png";
 
 import TagRed from "../../../assets/images/tags/tag-red.svg";
 import TagGreen from "../../../assets/images/tags/tag-green.svg";
@@ -78,6 +79,10 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
         y: front.imageTransform?.y || 0,
         scale: front.imageTransform?.scale || 1,
     };
+    const imageLayerStyle = {
+        transform: `translate(${imageTransform.x}%, ${imageTransform.y}%) scale(${imageTransform.scale})`,
+        transformOrigin: "center center",
+    };
 
     const firstName = (name.firstName || "").trim();
     const firstNameEndsWithS = /s$/i.test(firstName);
@@ -122,19 +127,20 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
 
                     
                     <div className="absolute inset-0 z-5" style={{ background: textureBackground }} />
+                        <img
+                            src={overlay}
+                            alt="Overlay"
+                            className="absolute inset-0 w-full h-full object-fill z-20 pointer-events-none"
+                            
+                        />
 
                     {front.imageUrl && (
                         <>
-                            {/* Cylindrical light overlay — dark left, light center, dark right */}
-                            <div className="absolute inset-0 bg-linear-to-r from-black/50 via-white/20 to-black/50 pointer-events-none z-15 "/>
                             <img
                             src={front.imageUrl}
                             alt="Uploaded label"
-                            className="absolute inset-0 w-full h-full object-cover z-10 select-none pointer-events-none filter-"
-                            style={{
-                                transform: `translate(${imageTransform.x}%, ${imageTransform.y}%) scale(${imageTransform.scale})`,
-                                transformOrigin: "center center",
-                            }}
+                            className="absolute inset-0 w-full h-full object-cover z-10 select-none pointer-events-none"
+                            style={imageLayerStyle}
                             />
                         </>
                     )}
