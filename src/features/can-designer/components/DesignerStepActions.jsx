@@ -10,7 +10,7 @@ export const DesignerStepActions = ({
 }) => {
     return (
         <>
-            <div className="flex justify-center gap-4 mt-4">
+            <div className="fixed bottom-0 right-0 left-0 flex justify-center gap-4 p-4">
                 {step === "front" && (
                     <Button text="Designa Baksida" onClick={() => onSetStep("back")} variant="primary" />
                 )}

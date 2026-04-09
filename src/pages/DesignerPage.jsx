@@ -230,7 +230,7 @@ export const DesignerPage = () => {
             </div>
 
             <div className="mb-4 max-h-40vh flex justify-center">
-                <CanPreview2D side={previewSide} scale={0.85} />
+                <CanPreview2D side={previewSide} scale={1} />
             </div>
         
             <p className="bold">{STEP_SUBTITLE[step]}</p>
