@@ -82,14 +82,14 @@ export const useDesignStore = create((set, get) => ({
                 .maybeSingle();
 
             if (error) throw error;
-            return { 
-                success: true, 
-                designData: { 
-                    id: data.id, 
+            return {
+                success: true,
+                shareId: data?.share_id || null,
+                designData: {
+                    id: data.id,
                     share_id: data.share_id,
-                    ...data.design_data 
+                    ...data.design_data
                 },
-                
             };
         } catch (err) {
             console.error('Failed to fetch latest design:', err);
@@ -119,7 +119,7 @@ export const useDesignStore = create((set, get) => ({
                         ...(backData?.socials || {}),
                     },
                 },
-                currentShareId: latest.shareId || null,
+                currentShareId: latest.shareId || latest.designData?.share_id || null,
             });
 
             return { success: true };
