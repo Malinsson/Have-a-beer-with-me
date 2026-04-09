@@ -26,7 +26,7 @@ export const BeerShelfPage = () => {
     useEffect(() => {
         if (profileLoading) return;
         if (!profile?.id) {
-            setLoading(false); // ← this is the missing piece
+            setLoading(false);
             return;
         }
 
@@ -60,7 +60,7 @@ export const BeerShelfPage = () => {
         }
     }, [profile, loading, profileLoading]);
 
-    if (profile?.id == null) return (
+    if (profile?.id == null && !loading && !profileLoading) return (
         <div className="flex flex-col mt-12 gap-4 w-full text-center p-6">
             <h3>Du behöver ett konto för att se din barhylla.</h3>
             <div className="flex justify-center">
@@ -118,10 +118,11 @@ export const BeerShelfPage = () => {
 
                     <div className="w-full mt-12">
                         <SearchForm 
-                        searchQuery={searchQuery} 
-                        setSearchQuery={setSearchQuery}
-                        handleSearch={handleSearch}
-                        labelText="Sök efter en burk" />
+                            searchQuery={searchQuery} 
+                            setSearchQuery={setSearchQuery}
+                            handleSearch={handleSearch}
+                            labelText="Sök efter en burk" 
+                        />
                         {searchError && (
                             <p className="mt-2 text-sm text-red-500">{searchError}</p>
                         )}
@@ -136,8 +137,8 @@ export const BeerShelfPage = () => {
                     <div className="grid grid-cols-2 gap-6 gap-x-4 gap-y-8">
                         {savedCans.map((can) => (
                             <ShelfItem 
-                            key={can.savedId || can.id || can.share_id} 
-                            can={can}
+                                key={can.savedId || can.id || can.share_id} 
+                                can={can}
                             />
                         ))}
                     </div>
