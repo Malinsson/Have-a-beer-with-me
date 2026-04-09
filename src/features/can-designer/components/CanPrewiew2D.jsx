@@ -80,9 +80,7 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
     };
 
     const firstName = (name.firstName || "").trim();
-    const firstNamePossessive = firstName
-    ? `${firstName}${/s$/i.test(firstName) ? "'" : "'s"}`
-    : "";
+    const firstNameEndsWithS = /s$/i.test(firstName);
 
     const isFrontSide = side === "front";
     const socialsData = back?.socials || {};
@@ -100,9 +98,23 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
                         <div className={`absolute w-full h-full p-3 z-50 flex ${textAlignClass}`}>
                             <p
                                 className="leading-tight text-2xl"
-                                style={{ color: front.textColor, fontFamily: front.textFont, fontSize: `${1.5 * scale}rem`, }}
+                                style={{ color: front.textColor, fontFamily: front.textFont, fontSize: `${1.5 * scale}rem`, fontWeight: front.textFont === "Inter, sans-serif" ? 600 : 400 }}
                             >
-                                {firstNamePossessive}
+                                {firstName && (
+                                    <>
+                                        {firstName}
+                                        {firstNameEndsWithS ? (
+                                            "'"
+                                        ) : (
+                                            <>
+                                                {"'"}
+                                                <span className="text-[1em]" style={{ color: front.textColor, fontFamily: front.textFont, fontWeight: front.textFont === "Inter, sans-serif" ? 600 : 400 }}>
+                                                    s
+                                                </span>
+                                            </>
+                                        )}
+                                    </>
+                                )}
                                 <br />
                                 {name.drinkType}
                             </p>
@@ -112,15 +124,19 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
                     <div className="absolute inset-0 z-5" style={{ background: textureBackground }} />
 
                     {front.imageUrl && (
-                        <img
-                        src={front.imageUrl}
-                        alt="Uploaded label"
-                        className="absolute inset-0 w-full h-full object-cover z-10 select-none pointer-events-none"
-                        style={{
-                            transform: `translate(${imageTransform.x}%, ${imageTransform.y}%) scale(${imageTransform.scale})`,
-                            transformOrigin: "center center",
-                        }}
-                        />
+                        <>
+                            {/* Cylindrical light overlay — dark left, light center, dark right */}
+                            <div className="absolute inset-0 bg-linear-to-r from-black/50 via-white/20 to-black/50 pointer-events-none z-15 "/>
+                            <img
+                            src={front.imageUrl}
+                            alt="Uploaded label"
+                            className="absolute inset-0 w-full h-full object-cover z-10 select-none pointer-events-none filter-"
+                            style={{
+                                transform: `translate(${imageTransform.x}%, ${imageTransform.y}%) scale(${imageTransform.scale})`,
+                                transformOrigin: "center center",
+                            }}
+                            />
+                        </>
                     )}
                     </div>
 
