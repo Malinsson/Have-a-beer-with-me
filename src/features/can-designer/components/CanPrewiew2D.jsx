@@ -33,7 +33,7 @@ const SOCIAL_CONFIG = [
     { key: 'github', label: 'Github', Icon: SiGithub },
 ];
 
-export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
+export const CanPreview2D = ({ side = "front", design = null, scale = 1, textScale = null }) => {
     const { slug: routeSlug } = useParams();
     const userSlug = useUserSlug();
     const effectiveSlug = routeSlug || userSlug || null;
@@ -41,6 +41,7 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
     const nameFromStore = useDesignStore((state) => state.name);
     const frontFromStore = useDesignStore((state) => state.front);
     const backFromStore = useDesignStore((state) => state.back);
+    const fontScale = textScale !== null ? textScale : scale;
 
     const useStoreData = !design;
     
@@ -116,7 +117,12 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
                         <div className={`absolute w-full h-full p-3 z-50 flex ${textAlignClass}`}>
                             <p
                                 className="leading-tight text-2xl"
-                                style={{ color: front.textColor, fontFamily: front.textFont, fontSize: `${1.5 * scale}rem`, fontWeight: front.textFont === "Inter, sans-serif" ? 600 : 400 }}
+                                style={{ 
+                                    color: front.textColor, 
+                                    fontFamily: front.textFont, 
+                                    fontSize: `${1.5 * fontScale}rem`, 
+                                    fontWeight: front.textFont === "Inter, sans-serif" ? 600 : 400 
+                                }}
                             >
                                 {firstName && (
                                     <>

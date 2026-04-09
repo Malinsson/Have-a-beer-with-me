@@ -134,7 +134,7 @@ export const BeerShelfPage = () => {
                 </div>
             ) : ( 
                 <div className="flex flex-col gap-8">
-                    <div className="grid grid-cols-2 gap-6 gap-x-4 gap-y-8">
+                    <div className="grid grid-cols-2 gap-6"> 
                         {savedCans.map((can) => (
                             <ShelfItem 
                                 key={can.savedId || can.id || can.share_id} 

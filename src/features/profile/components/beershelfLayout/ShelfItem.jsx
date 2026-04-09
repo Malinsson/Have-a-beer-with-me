@@ -10,15 +10,20 @@ export const ShelfItem = ({ can }) => {
             className="flex flex-col"
             onClick={() => navigate(`/profile/${can.ownerSlug}`)}
         >
-            <div className="w-full flex items-center justify-center px-12 mt-4">
-                <CanPreview2D side="front" design={can} scale={0.6} />
+            <div className="flex items-center justify-center w-1/2 mt-4 mx-auto">
+            <CanPreview2D 
+                side="front" 
+                design={can} 
+                scale={2} 
+                textScale={0.45} 
+            />
             </div>
 
             <div className="pl-2 mt-3">
-                <p className="bold text-xl">
+                <p className="bold text-base leading-5">
                     {can.ownerFirstName} <br /> {can.ownerLastName}
                 </p>
-                <h4 className="text-lg text-black">
+                <h4 className="text-base text-black">
                     {can.department}
                 </h4>
             </div>
