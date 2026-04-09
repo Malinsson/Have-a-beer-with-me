@@ -20,10 +20,15 @@ export const BeerShelfPage = () => {
     const [savedCans, setSavedCans] = useState([]);
     const [loading, setLoading] = useState(true);
     const [fetchError, setFetchError] = useState(null);
+    const [countdown, setCountdown] = useState(3);
     const { searchQuery, setSearchQuery, handleSearch, searchError, isSearching } = useSearchForm();
 
     useEffect(() => {
-        if (!profile?.id) return;
+        if (profileLoading) return;
+        if (!profile?.id) {
+            setLoading(false); // ← this is the missing piece
+            return;
+        }
 
         const fetchCans = async () => {
             const result = await getSavedDesigns(profile.id);
@@ -36,7 +41,38 @@ export const BeerShelfPage = () => {
             setLoading(false);
         }
         fetchCans();
-    }, [profile?.id]);
+    }, [profile?.id, profileLoading]);
+
+    useEffect(() => {
+        if (profile?.id == null && !loading && !profileLoading) {
+            const timer = setInterval(() => {
+                setCountdown((prev) => prev - 1);
+            }, 1000);
+    
+            const redirect = setTimeout(() => {
+                navigate("/login");
+            }, 3000);
+    
+            return () => {
+                clearInterval(timer);
+                clearTimeout(redirect);
+            };
+        }
+    }, [profile, loading, profileLoading]);
+
+    if (profile?.id == null) return (
+        <div className="flex flex-col mt-12 gap-4 w-full text-center p-6">
+            <h3>Du behöver ett konto för att se din barhylla.</h3>
+            <div className="flex justify-center">
+                <img 
+                    src={scanCanImage}
+                    alt="empty shelf" 
+                    className="w-40 h-auto object-contain my-10"
+                />
+            </div>
+            <p>Du skickas till inloggningen om <span className="bold text-xl text-yrgo-red">{countdown}</span> sekunder...</p>
+        </div>
+    );
 
     if (loading || profileLoading) return (
         <div className="flex justify-center items-center mt-12">
