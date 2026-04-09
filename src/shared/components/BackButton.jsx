@@ -1,4 +1,5 @@
-import { FaArrowLeftLong } from "react-icons/fa6";
+import { MdArrowBackIos } from "react-icons/md";
+
 import { useNavigate } from "react-router-dom";
 
 export const BackButton = ({ to, onClick }) => {  // ← onClick was missing here
@@ -12,7 +13,7 @@ export const BackButton = ({ to, onClick }) => {  // ← onClick was missing her
 
     return (
         <button onClick={handleClick} aria-label="Go back">
-            <FaArrowLeftLong className="border rounded-full p-2 text-4xl" />
+            <MdArrowBackIos className="p-2 text-4xl" />
         </button>
     );
 };
