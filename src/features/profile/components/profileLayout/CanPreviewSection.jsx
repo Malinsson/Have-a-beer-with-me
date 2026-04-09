@@ -14,14 +14,14 @@ export const CanPreviewSection = ({ design }) => {
     }
 
     return (
-        <section className="flex flex-col gap-4">
+        <section className="flex flex-col">
             <div className="max-w-xl mx-auto w-full">
                 <article className="p-4 bg-white/80 flex flex-col gap-4">
                     <CanPreview2D side={previewSide} design={design?.design_data} />
                 </article>
             </div>
 
-            <div className="flex items-center justify-center gap-16">
+            <div className="flex items-center justify-center gap-16 pb-2">
                 <button
                     type="button"
                     onClick={handleSideToggle}

@@ -3,15 +3,18 @@ import { PiAlignBottom, PiAlignCenterVertical, PiAlignTop  } from "react-icons/p
 
 const ORDER = TEXT_ALIGNMENT ? Object.keys(TEXT_ALIGNMENT) : ["top", "center", "bottom"];
 
-const LABEL = [
-    {top: "Topp", icon: <PiAlignTop className="text-2xl"/> },
-    {center: "Centrera", icon: <PiAlignCenterVertical className="text-2xl"/> },
-    {bottom: "Nertill", icon: <PiAlignBottom className="text-2xl"/> },
-];
+const LABELS = {
+    top: { label: "Topp", icon: <PiAlignTop className="text-2xl" /> },
+    center: { label: "Centrera", icon: <PiAlignCenterVertical className="text-2xl" /> },
+    bottom: { label: "Nertill", icon: <PiAlignBottom className="text-2xl" /> },
+};
 
 export const AlignmentToggle = ({ value = "center", onChange }) => {
     const currentIndex = ORDER.indexOf(value);
     const safeIndex = currentIndex === -1 ? 1 : currentIndex;
+    const currentKey = ORDER[safeIndex];
+    const currentLabel = LABELS[currentKey]?.label || "?";
+    const currentIcon = LABELS[currentKey]?.icon || "?";
 
     const handleClick = () => {
         const nextIndex = (safeIndex + 1) % ORDER.length;
@@ -23,10 +26,10 @@ export const AlignmentToggle = ({ value = "center", onChange }) => {
             type="button"
             onClick={handleClick}
             className="bg-dark-blue p-2.5 text-white text-sm"
-            aria-label="Byt textjustering "{...LABEL.find(item => item[ORDER[safeIndex]])?.label || "?"}
+            aria-label={`Byt textjustering: ${currentLabel}`}
             title="Byt textjustering"
         >
-            {LABEL.find(item => item[ORDER[safeIndex]])?.icon || "?"}
+            {currentIcon}
         </button>
     );
 };

@@ -84,9 +84,10 @@ export const FrontStep = ({
 
                     <div className="flex justify-center flex-row items-center gap-4 mx-6">
                         <select
-                            className="border border-black px-4 py-2 w-full h-10"
+                            className="border border-black px-4 py-2 w-full h-10 bg-white p-2"
+
                             aria-label="Välj typsnitt"
-                            style={{ fontFamily: selectedFontStyle }}
+                            style={{ fontFamily: selectedFontStyle, WebkitAppearance: "none", appearance: "none" }}
                             value={selectedFontStyle}
                             onChange={(e) => onFontSelect(e.target.value)}
                         >
