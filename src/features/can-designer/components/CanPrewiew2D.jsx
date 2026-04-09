@@ -84,6 +84,12 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
         transformOrigin: "center center",
     };
 
+    //Bottom curve
+    const labelClipStyle = {
+        borderBottomLeftRadius: "48% 3%",
+        borderBottomRightRadius: "48% 3%",
+    };
+
     const firstName = (name.firstName || "").trim();
     const firstNameEndsWithS = /s$/i.test(firstName);
 
@@ -94,12 +100,17 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
         <div className="relative max-w-45 mx-auto" style={{ maxWidth: `${180 * scale}px` }}>
             <img src={baseCan} alt="Can template" className="w-full h-auto object-contain" />
 
-            <div className="absolute left-1/2 top-[20%] -translate-x-1/2 w-[98%] h-[72%] overflow-hidden">
+            {/* Label area */}
+            <div
+                className="absolute left-1/2 top-[20%] -translate-x-1/2 w-[98%] h-[73%] overflow-hidden"
+                style={labelClipStyle}
+            >
             
                 {isFrontSide && (
                 <div>
                     <div className="absolute inset-0 bg-black/10" />
 
+                        {/* Text layer */}
                         <div className={`absolute w-full h-full p-3 z-50 flex ${textAlignClass}`}>
                             <p
                                 className="leading-tight text-2xl"
@@ -125,7 +136,7 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
                             </p>
                         </div>
 
-                    
+                    {/* Texture layer */}
                     <div className="absolute inset-0 z-5" style={{ background: textureBackground }} />
                         <img
                             src={overlay}
@@ -148,6 +159,7 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
 
                 )}
 
+                {/* Back side content */}
                 {!isFrontSide &&(
                     <div className=" absolute bg-white/80 w-full h-full inset-0 p-2 flex flex-col">
                         <div className="flex justify-between w-full">
@@ -159,6 +171,7 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
                             <img src={logo} alt="Yrgo Logo" className="w-8 h-8" />
                         </div>
 
+                        {/* Description */}
                         <div className="">
                             <h3 className="text-[10px] pb-1">Innehållsförteckning</h3>
                             <p className="text-[7px] h-8 overflow-hidden">{back.description || "Ingen beskrivning tillagd."}</p>
@@ -167,6 +180,8 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
                         <div className="flex justify-between mt-2">
                             <div className="flex flex-col gap-2">
                                 <div className="flex gap-1">
+
+                                    {/* Show 3 tags max */}
                                     {back.tags?.slice(0, 3).map((tagId, index) => {
                                         const label = getTagLabelById(tagId);
                                         
@@ -192,7 +207,8 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1 }) => {
                                         </p>
                                     )}
                                 </div>
-
+                                
+                                {/* Social media handles */}
                                 <div className="flex flex-col gap-1 pl-1">
                                     {SOCIAL_CONFIG.map((config) => {
                                         const username = socialsData[config.key];
