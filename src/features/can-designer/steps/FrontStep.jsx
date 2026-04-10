@@ -2,6 +2,7 @@ import { MdOutlineImage } from "react-icons/md";
 import { BiFontFamily } from "react-icons/bi";
 import { ImageUploader } from "../components/ImageUploader";
 import { AlignmentToggle } from "../components/AlignmentToggle";
+import { FontPicker } from "../components/FontPicker";
 
 import { TEXTURES, COLORS, FONTS } from "../constants";
 
@@ -22,9 +23,7 @@ export const FrontStep = ({
 
     const activeClass = "border-1 py-1 px-3";
     const inactiveClass = "py-1 px-3";
-    const selectedFontStyle = FONTS.some((font) => font.style === selectedFont)
-        ? selectedFont
-        : FONTS[0].style;
+
 
     return (
         <>
@@ -83,25 +82,13 @@ export const FrontStep = ({
                 <h5 className="text-center mt-4"><strong>TYPSNITT DESIGN</strong></h5>
 
                     <div className="flex justify-center flex-row items-center gap-4 mx-6">
-                        <select
-                            className="border border-black px-4 py-2 w-full h-10 bg-white p-2"
 
-                            aria-label="Välj typsnitt"
-                            style={{ fontFamily: selectedFontStyle, WebkitAppearance: "none", appearance: "none" }}
-                            value={selectedFontStyle}
-                            onChange={(e) => onFontSelect(e.target.value)}
-                        >
-                            {FONTS.map((font) => (
-                                <option key={font.id} value={font.style} style={{ fontFamily: font.style }}>
-                                    {font.label}
-                                </option>
-                            ))}
-                        </select>
+                        <FontPicker selectedFont={selectedFont} onSelect={onFontSelect} />
                         <AlignmentToggle value={selectedAlignment} onChange={onAlignmentChange} />
                     </div>
 
 
-                    <div className="flex justify-center gap-4">
+                    <div className="flex justify-center gap-4 mb-4">
                         {COLORS.map((color) => (
                             <button
                                 key={color.id}
