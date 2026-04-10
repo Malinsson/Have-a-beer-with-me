@@ -17,7 +17,12 @@ export const CanPreviewSection = ({ design }) => {
         <section className="flex flex-col">
             <div className="max-w-xl mx-auto w-full">
                 <article className="p-4 bg-white/80 flex flex-col gap-4">
-                    <CanPreview2D side={previewSide} design={design?.design_data} />
+                    <div className={previewSide === "front" ? "block" : "hidden"}>
+                        <CanPreview2D side="front" design={design?.design_data} />
+                    </div>
+                    <div className={previewSide === "back" ? "block" : "hidden"}>
+                        <CanPreview2D side="back" design={design?.design_data} />
+                    </div>
                 </article>
             </div>
 
