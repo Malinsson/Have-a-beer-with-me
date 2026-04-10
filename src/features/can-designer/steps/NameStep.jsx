@@ -14,6 +14,7 @@ export const NameStep = () => {
     const [department, setDepartment] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [selectedDrink, setSelectedDrink] = useState(null);
+    const [drinkTypeError, setDrinkTypeError] = useState("");
 
     // Access design store to set name and drink type before navigating to the next step
     const setName = useDesignStore((state) => state.setName);
@@ -21,9 +22,16 @@ export const NameStep = () => {
     const setBack = useDesignStore((state) => state.setBack);
     const navigate = useNavigate();
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
+
+        if (!selectedDrink) {
+            setIsLoading(false);
+            return setDrinkTypeError("Välj en dryckestyp för att fortsätta.");
+        }
+
         const result = await saveName(firstName, lastName);
         const didSave = result?.success;
         const profileSlug = result?.slug || "";
@@ -67,6 +75,8 @@ export const NameStep = () => {
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                         required
+                        max={20}
+                        maxLength={20}
                         className="mt-2 mb-4 px-4 py-2 border border-gray-300 w-full"
                     />
                 </div>
@@ -80,6 +90,8 @@ export const NameStep = () => {
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
                         required
+                        max={20}
+                        maxLength={20}
                         className="mt-2 mb-4 px-4 py-2 border border-gray-300 w-full"
                     />
                 </div>
@@ -93,6 +105,8 @@ export const NameStep = () => {
                         value={department}
                         onChange={(e) => setDepartment(e.target.value)}
                         required
+                        max={30}
+                        maxLength={30}
                         className="mt-2 px-4 py-2 border border-gray-300 w-full"
                     />
                 </div>
@@ -107,7 +121,15 @@ export const NameStep = () => {
                     onSelect={(id) => setSelectedDrink(id)} 
                 />
             </div>
+
+            {drinkTypeError && (
+                <p role="alert" className="text-red-500">
+                    Välj en dryckestyp för att fortsätta.
+                </p>
+            )}
+
             <div className="fixed bottom-0 left-0 right-0 flex flex-col p-4 justify-center items-center gap-6">
+
                 <section>
                     <ProgressDots total={3} current={3} />
                 </section>
