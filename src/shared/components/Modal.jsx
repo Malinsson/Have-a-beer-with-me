@@ -9,7 +9,7 @@ export const Modal = ({ onConfirm }) => {
             onClick={onConfirm}
         >
             <div
-                className="bg-white border p-4 mx-6 flex flex-col max-w-sm w-full h-[70vh] relative"
+                className="bg-white border p-4 mx-6 flex flex-col max-w-sm w-full h-[70vh] relative overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
             >
                 <h3 className="text-2xl text-center text-dark-blue w-full absolute top-10 left-1/2 -translate-x-1/2">
@@ -21,6 +21,7 @@ export const Modal = ({ onConfirm }) => {
                         src={canReadyComp} 
                         alt="Din färdiga burk"
                         className="max-h-full max-w-full object-contain"
+                        playsInline
                         autoPlay
                         muted
                     />
