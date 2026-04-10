@@ -1,6 +1,5 @@
 import { supabase } from "../../../lib/supabase.js";
 import { useState, useEffect } from "react";
-import { buildProfileSlug } from "../utils/slug";
 import { getCachedValue, setCachedValue } from "../../../lib/cache.js";
 
 const CACHE_TTL = 5 * 60 * 1000;
@@ -11,7 +10,7 @@ export const useProfileInfo = (slug) => {
     const [error, setError] = useState(null);
   
     useEffect(() => {
-        if (!slug || slug === "guest") {
+        if (!slug) {
             setProfile(null);
             setError(null);
             setLoading(false);
@@ -48,29 +47,7 @@ export const useProfileInfo = (slug) => {
                 return;
             }
 
-            const { data: profiles, error: fallbackError } = await supabase
-                .from("profiles")
-                .select("*");
-
-            if (cancelled) return;
-
-            if (fallbackError) {
-                setError(fallbackError);
-                setLoading(false);
-                return;
-            }
-
-            const matchedProfile = (profiles || []).find((profileRow) => {
-                const generatedSlug = buildProfileSlug(profileRow.first_name, profileRow.last_name);
-                return profileRow.slug_value === slug || generatedSlug === slug;
-            });
-
-            if (!matchedProfile) {
-                setError(new Error("Profile not found"));
-            } else {
-                setProfile(matchedProfile);
-                setCachedValue(cacheKey, matchedProfile, CACHE_TTL);
-            }
+            setError(error || new Error("Profile not found"));
 
             setLoading(false);
         };
