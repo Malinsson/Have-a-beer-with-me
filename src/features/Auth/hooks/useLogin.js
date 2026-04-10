@@ -46,7 +46,7 @@ export const useLogin = () => {
 
         } catch (err) {
             setError(getAuthErrorMessage(err, 'login'));
-            return { success: false, redirectTo: '/profile/guest' };
+            return { success: false, redirectTo: '/login' };
         } finally {
             setIsLoading(false);
         }

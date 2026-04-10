@@ -18,7 +18,7 @@ export const CanDetailPage = () => {
     const navigate = useNavigate();
     const { shareId } = useParams();
     if (!shareId) return <Navigate to="/404" replace />;
-    const mySlug = useUserSlug() || "guest";
+    const mySlug = useUserSlug();
     const [currentUserId, setCurrentUserId] = useState(null);
 
     const { design, loading: designLoading, error: designError } = useDesign(shareId);

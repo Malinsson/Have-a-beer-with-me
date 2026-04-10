@@ -50,7 +50,7 @@ export const DesignerPage = () => {
     const setName = useDesignStore((state) => state.setName);
     const setFront = useDesignStore((state) => state.setFront);
     const setBack = useDesignStore((state) => state.setBack);
-    const redirectSlug = location.state?.slug || userSlug || "guest";
+    const redirectSlug = location.state?.slug || userSlug;
     const previewSide = step === "front" ? "front" : "back";
 
     useEffect(() => {
