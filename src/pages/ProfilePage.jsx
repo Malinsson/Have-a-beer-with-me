@@ -21,7 +21,7 @@ export const ProfilePage = () => {
     // Get slug from URL and current user's slug for comparison
     const navigate = useNavigate();
     const { slug } = useParams();
-    const mySlug = useUserSlug() || "guest";
+    const mySlug = useUserSlug();
 
     // Redirect to own profile if slug is "me"
     const { profile, loading, error } = useProfileInfo(slug);
@@ -49,7 +49,7 @@ export const ProfilePage = () => {
     if (loading) return <p className="text-center mt-10">Laddar...</p>;
 
     if (error?.message === "Profile not found") return <Navigate to="/404" replace />;
-    
+
     if (error) return <p className="text-center mt-10 text-red-500">Något gick fel.</p>;
     
     // Check if the current design is being saved to disable the save button

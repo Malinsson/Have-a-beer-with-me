@@ -20,14 +20,6 @@ export const useProfileDesigns = (userId) => {
         const cacheKey = `profile-design:${userId}`;
         const cachedDesign = getCachedValue(cacheKey);
 
-        if (cachedDesign) {
-            setDesign(cachedDesign);
-            setLoading(false);
-            return () => {
-                cancelled = true;
-            };
-        }
-
         const fetchDesign = async () => {
             setLoading(true);
             setError(null);
@@ -54,10 +46,32 @@ export const useProfileDesigns = (userId) => {
             setLoading(false);
         };
 
+        if (cachedDesign) {
+            setDesign(cachedDesign);
+            setLoading(false);
+        }
+
         fetchDesign();
+
+        const channel = supabase
+            .channel(`designs-user-${userId}`)
+            .on(
+                "postgres_changes",
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "designs",
+                    filter: `user_id=eq.${userId}`,
+                },
+                () => {
+                    fetchDesign();
+                }
+            )
+            .subscribe();
 
         return () => {
             cancelled = true;
+            supabase.removeChannel(channel);
         };
     }, [userId]);
 
