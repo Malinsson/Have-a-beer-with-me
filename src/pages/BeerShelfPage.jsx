@@ -10,6 +10,7 @@ import { BackButton } from "../shared/components/BackButton.jsx";
 import { QRScanner } from "../shared/components/QRScanner.jsx";
 import { ShelfItem } from "../features/profile/components/beershelfLayout/ShelfItem.jsx";
 import { SearchForm } from "../shared/components/SearchForm.jsx";
+import { LoginRedirectMessage } from "../shared/components/LoginRedirectMessage.jsx";
 
 export const BeerShelfPage = () => {
     const { slug } = useParams();
@@ -20,7 +21,6 @@ export const BeerShelfPage = () => {
     const [savedCans, setSavedCans] = useState([]);
     const [loading, setLoading] = useState(true);
     const [fetchError, setFetchError] = useState(null);
-    const [countdown, setCountdown] = useState(3);
     const { searchQuery, setSearchQuery, handleSearch, searchError, isSearching } = useSearchForm();
 
     useEffect(() => {
@@ -43,35 +43,8 @@ export const BeerShelfPage = () => {
         fetchCans();
     }, [profile?.id, profileLoading]);
 
-    useEffect(() => {
-        if (profile?.id == null && !loading && !profileLoading) {
-            const timer = setInterval(() => {
-                setCountdown((prev) => prev - 1);
-            }, 1000);
-    
-            const redirect = setTimeout(() => {
-                navigate("/login");
-            }, 3000);
-    
-            return () => {
-                clearInterval(timer);
-                clearTimeout(redirect);
-            };
-        }
-    }, [profile, loading, profileLoading]);
-
     if (profile?.id == null && !loading && !profileLoading) return (
-        <div className="flex flex-col mt-12 gap-4 w-full text-center p-6">
-            <h3>Du behöver ett konto för att se din barhylla.</h3>
-            <div className="flex justify-center">
-                <img 
-                    src={scanCanImage}
-                    alt="empty shelf" 
-                    className="w-40 h-auto object-contain my-10"
-                />
-            </div>
-            <p>Du skickas till inloggningen om <span className="bold text-xl text-yrgo-red">{countdown}</span> sekunder...</p>
-        </div>
+        <LoginRedirectMessage message="Du behöver ett konto för att se din barhylla." />
     );
 
     if (loading || profileLoading) return (
