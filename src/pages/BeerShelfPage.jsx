@@ -1,6 +1,6 @@
 // The beercan shelf page, where you can see all the cans you have collected.
 import { useState, useEffect } from "react";
-import scanCanImage from "../assets/images/barhylla_empty.svg";
+import scanCanImage from "../assets/images/yrgo-can.png";
 import { useDesignStore } from "../store/designStore.js";
 import { useProfileInfo } from "../features/profile/hooks/useProfileInfo.js";
 import { useParams, useNavigate } from "react-router-dom";
@@ -101,9 +101,9 @@ export const BeerShelfPage = () => {
                     <img 
                         src={scanCanImage}
                         alt="empty shelf" 
-                        className="w-40 h-auto object-contain my-10"
+                        className="w-60 h-auto object-contain mt-10"
                     />
-                    <p className="text-center mt-10">
+                    <p className="text-center">
                         Din barhylla är tom. Scanna andras burkar för att fylla din barhylla.
                     </p>
 
@@ -116,7 +116,7 @@ export const BeerShelfPage = () => {
                         }}
                     />
 
-                    <div className="w-full mt-12">
+                    <div className="fixed bottom-0 right-0 left-0 p-4 w-full mt-15 bg-white">
                         <SearchForm 
                             searchQuery={searchQuery} 
                             setSearchQuery={setSearchQuery}
@@ -143,7 +143,7 @@ export const BeerShelfPage = () => {
                         ))}
                     </div>
 
-                    <div className="w-full pb-4 mt-12">
+                    <div className="w-full mt-12">
                         <SearchForm 
                             searchQuery={searchQuery} 
                             setSearchQuery={setSearchQuery}

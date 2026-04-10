@@ -14,7 +14,7 @@ export const ShelfItem = ({ can }) => {
             <CanPreview2D 
                 side="front" 
                 design={can} 
-                scale={2} 
+                scale={1} 
                 textScale={0.45} 
             />
             </div>

@@ -33,15 +33,14 @@ export const IntroPage = () => {
     const navigate = useNavigate();
 
     return (
-        <>
-            <div className="flex flex-col">
+        <section className="flex flex-col min-h-[calc(100vh-80px)]">
                 <div className="p-4 shrink-0">
                     <h2>{STEP_TITLE[step]}</h2>
                     <p className="pt-3 w-55">{STEP_SUBTITLE[step]}</p>
                 </div>
 
                 {(step === "first" || step === "secound") && (
-                    <div className="flex-1 flex justify-center items-center p-4 min-h-0">
+                    <div className="flex justify-center items-center p-4 w-5/6 mx-auto">
                         <img 
                             src={STEP_IMG[step]} 
                             alt=""
@@ -63,7 +62,7 @@ export const IntroPage = () => {
                 )}
 
                 {step === "secound" && (
-                    <div className="fixed bottom-0 left-0 right-0 flex flex-col p-4 justify-center items-center gap-6">
+                    <div className="fixed bottom-0 left-0 right-0 flex flex-col p-4 justify-center items-center gap-6 mt-auto">
                         <section>
                             <ProgressDots total={3} current={2} />
                         </section>
@@ -75,14 +74,12 @@ export const IntroPage = () => {
                 )}
 
                 {step === "last" && (
-                    <div className="fixed bottom-0 left-0 right-0 flex flex-col p-4 justify-center items-center gap-6">
+                    <div className="flex flex-col flex-1 p-4 items-stretch gap-6 w-full">
                         <GuestSignup />
                         <NameStep />
                     </div>
                 )}
-            </div>
-
-        </>
+        </section>
     );
 }
 

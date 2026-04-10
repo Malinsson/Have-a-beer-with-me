@@ -199,25 +199,45 @@ export const useDesignStore = create((set, get) => ({
             const { data: { session } } = await supabase.auth.getSession();
             if (!session?.user?.id) throw new Error('User not authenticated');
 
-
             const state = get();
-            const effectiveShareId = shareId || state.currentShareId || crypto.randomUUID().slice(0, 8);
+            const { data: existingDesign, error: existingDesignError } = await supabase
+                .from('designs')
+                .select('id, share_id')
+                .eq('user_id', session.user.id)
+                .order('updated_at', { ascending: false })
+                .limit(1)
+                .maybeSingle();
+
+            if (existingDesignError) throw existingDesignError;
+
+            const effectiveShareId = shareId || state.currentShareId || existingDesign?.share_id || crypto.randomUUID().slice(0, 8);
             const designData = {
                 name: state.name,
                 front: state.front,
                 back: state.back,
             };
 
-            const { data, error } = await supabase
-                .from('designs')
-                .upsert({
-                    user_id: session.user.id,
-                    design_data: designData,
-                    name: designName,
-                    share_id: effectiveShareId,
-                }, { onConflict: 'share_id' })
-                .select('id, share_id')
-                .maybeSingle();
+            const savePayload = {
+                user_id: session.user.id,
+                design_data: designData,
+                name: designName,
+                share_id: effectiveShareId,
+            };
+
+            const saveQuery = existingDesign?.id
+                ? supabase
+                    .from('designs')
+                    .update(savePayload)
+                    .eq('id', existingDesign.id)
+                    .select('id, share_id')
+                    .maybeSingle()
+                : supabase
+                    .from('designs')
+                    .insert(savePayload)
+                    .select('id, share_id')
+                    .maybeSingle();
+
+            const { data, error } = await saveQuery;
 
             if (error) throw error;
             removeCachedValue(`profile-design:${session.user.id}`);

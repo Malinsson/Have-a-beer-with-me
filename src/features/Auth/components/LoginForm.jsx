@@ -5,7 +5,7 @@ import { LuEye, LuEyeClosed } from "react-icons/lu";
 import { Button } from "../../../shared/components/Button";
 
 
-export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
+export const LoginForm = ({ formId = "login-form", onSwitchToSignup, onSuccess, hideSubmitButton = false }) => {
 
     const { email, setEmail, password, setPassword, reset } = useAuthFields();
     const { login, error, isLoading } = useLogin();
@@ -21,8 +21,11 @@ export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} noValidate
-        className="mt-2"
+        <form 
+            id={formId}
+            onSubmit={handleSubmit} 
+            noValidate
+            className="mt-2"
         >
             <div className="flex flex-col gap-4 border p-4 my-4 justify-center">
 
@@ -86,12 +89,14 @@ export const LoginForm = ({ onSwitchToSignup, onSuccess }) => {
 
             {error && <p role="alert">{error}</p>}
 
-            <Button 
-                type="submit" 
-                disabled={isLoading}
-                text={isLoading ? "Loggar in…" : "Logga in"}
-                className="w-full"
-            />
+            {!hideSubmitButton && (
+                <Button 
+                    type="submit" 
+                    disabled={isLoading}
+                    text={isLoading ? "Loggar in…" : "Logga in"}
+                    className="w-full"
+                />
+            )}
 
         </form>
     );

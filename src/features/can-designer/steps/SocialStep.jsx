@@ -7,26 +7,32 @@ export const SocialStep = ({ instagram, linkedin, github, onChange }) => {
 
                 <div className="flex flex-col gap-2">
                     <p>
-                        <label>Instagram</label>
-                    </p>
-                    <input
-                        value={instagram}
-                        onChange={(e) => onChange("instagram", e.target.value)}
-                        placeholder="@Andersandersson54"
-                        className="border border-b-grey px-4 py-2 w-full"
-                    />
-                </div>
-                <div className="flex flex-col gap-2">
-                    <p>
                         <label>LinkedIn</label>
                     </p>
                     <input
                         value={linkedin}
                         onChange={(e) => onChange("linkedin", e.target.value)}
                         placeholder="Anders Andersson"
+                        max={30}
+                        maxLength={30}
                         className="border border-b-grey px-4 py-2 w-full"
                     />
                 </div>
+
+                <div className="flex flex-col gap-2">
+                    <p>
+                        <label>Instagram</label>
+                    </p>
+                    <input
+                        value={instagram}
+                        onChange={(e) => onChange("instagram", e.target.value)}
+                        placeholder="@Andersandersson54"
+                        max={30}
+                        maxLength={30}
+                        className="border border-b-grey px-4 py-2 w-full"
+                    />
+                </div>
+
                 <div className="flex flex-col gap-2">
                     <p>
                         <label>GitHub</label>
@@ -35,6 +41,8 @@ export const SocialStep = ({ instagram, linkedin, github, onChange }) => {
                         value={github}
                         onChange={(e) => onChange("github", e.target.value)}
                         placeholder="AndersAndersson"
+                        max={30}
+                        maxLength={30}
                         className="border border-b-grey px-4 py-2 w-full"
                     />
                 </div>

@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useUserSlug } from "../features/profile/hooks/useUserSlug";
 import supabase from "../lib/supabase";
  
-// import type { DesignerMode, Step } from "../features/can-designer/types.ts";
 import { DesignerStepContent } from "../features/can-designer/components/DesignerStepContent";
 import { DesignerStepActions } from "../features/can-designer/components/DesignerStepActions";
 import { CanPreview2D } from "../features/can-designer/components/CanPrewiew2D";
@@ -34,6 +33,7 @@ export const DesignerPage = () => {
     
     const [step, setStep] = useState("front");
     const [mode, setMode] = useState("image");
+    const [authMode, setAuthMode] = useState("signup");
     const [modalOpen, setModalOpen] = useState(false);
     const [canSkipKonto, setCanSkipKonto] = useState(false);
 
@@ -43,6 +43,7 @@ export const DesignerPage = () => {
 
     const timerRef = useRef(null);
     const hasHydratedRef = useRef(false);
+    const isHydratingRef = useRef(true);
 
     const front = useDesignStore((state) => state.front);
     const back = useDesignStore((state) => state.back);
@@ -65,44 +66,35 @@ export const DesignerPage = () => {
         });
 
         const hydrateLatestDesign = async () => {
-            const hasIncomingState =
-                typeof location.state?.firstName === "string" ||
-                typeof location.state?.lastName === "string" ||
-                typeof location.state?.department === "string";
+            try {
+                const result = await useDesignStore.getState().loadLatestDesignForCurrentUser();
+                const { firstName, lastName, drinkTypeId, drinkTypeLabel, department } = location.state || {};
 
-            if (hasIncomingState) {
-                setName(
-                    location.state?.firstName || "",
-                    location.state?.lastName || "",
-                    location.state?.drinkTypeLabel || ""
-                );
-                setFront({
-                    drinkTypeId: location.state?.drinkTypeId || "",
-                    drinkType: location.state?.drinkTypeLabel || "",
-                });
-                setBack({ department: location.state?.department || "" });
-                return;
-            }
-
-            const result = await useDesignStore.getState().loadLatestDesignForCurrentUser();
-            const { firstName, drinkTypeLabel, department } = location.state || {};
-
-            if (firstName) {
-                useDesignStore.getState().setName(firstName, drinkTypeLabel || "");
-            }
-            if (department) {
-                useDesignStore.getState().setBack({ department });
-            }
-            if (!result.success && result.error !== "No design found" && result.error !== "User not authenticated") {
-                console.log("Failed to hydrate latest design:", result.error);
+                if (typeof firstName === "string" || typeof lastName === "string" || typeof drinkTypeLabel === "string") {
+                    useDesignStore.getState().setName(firstName || "", lastName || "", drinkTypeLabel || "");
+                }
+                if (typeof drinkTypeId === "string" || typeof drinkTypeLabel === "string") {
+                    useDesignStore.getState().setFront({
+                        drinkTypeId: drinkTypeId || "",
+                        drinkType: drinkTypeLabel || "",
+                    });
+                }
+                if (typeof department === "string") {
+                    useDesignStore.getState().setBack({ department });
+                }
+                if (!result.success && result.error !== "No design found" && result.error !== "User not authenticated") {
+                    console.log("Failed to hydrate latest design:", result.error);
+                }
+            } finally {
+                hasHydratedRef.current = true;
+                isHydratingRef.current = false;
             }
         };
 
         hydrateLatestDesign();
 
         const unsubscribe = useDesignStore.subscribe((state, prevState) => {
-            if (!hasHydratedRef.current) {
-                hasHydratedRef.current = true;
+            if (!hasHydratedRef.current || isHydratingRef.current) {
                 return;
             }
 
@@ -205,15 +197,21 @@ export const DesignerPage = () => {
     };
 
     const handleSocialContinue = async () => {
-        if (canSkipKonto) {
+        const { data: { session } } = await supabase.auth.getSession();
+        const canSkipNow = !!session && !session.user?.is_anonymous;
+
+        if (canSkipNow) {
+            setCanSkipKonto(true);
             await finalizeDesignAndOpenModal();
             return;
         }
+
+        setCanSkipKonto(false);
         setStep("konto");
     };
 
     return (
-        <div className="container mx-auto p-4 max-w-2xl">
+        <div className="container mx-auto p-4 max-w-2xl flex flex-col min-h-[calc(100vh-80px)]">
    
             <div className="flex items-center justify-between mb-6">
                 {(step === "front") && (
@@ -229,8 +227,8 @@ export const DesignerPage = () => {
                 )}
             </div>
 
-            <div className="mb-4 max-h-40vh flex justify-center">
-                <CanPreview2D side={previewSide} scale={0.85} />
+            <div className="mb-4 max-h-50vh flex justify-center">
+                <CanPreview2D side={previewSide} scale={1} />
             </div>
         
             <p className="bold">{STEP_SUBTITLE[step]}</p>
@@ -241,6 +239,8 @@ export const DesignerPage = () => {
                 canSkipKonto={canSkipKonto}
                 mode={mode}
                 onModeChange={setMode}
+                authMode={authMode} 
+                onAuthModeChange={setAuthMode}
                 front={front}
                 back={back}
                 onTextureSelect={handleTextureSelect}
@@ -258,6 +258,7 @@ export const DesignerPage = () => {
             <DesignerStepActions
                 step={step}
                 canSkipKonto={canSkipKonto}
+                authMode={authMode}
                 onSetStep={setStep}
                 onSocialContinue={handleSocialContinue}
                 onFinalizeAsGuest={finalizeDesignAndOpenModal}
