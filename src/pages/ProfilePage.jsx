@@ -18,6 +18,7 @@ import { LoginRedirectMessage } from "../shared/components/LoginRedirectMessage.
 export const ProfilePage = () => {
     
     const [currentUserId, setCurrentUserId] = useState(null);
+    const [authLoading, setAuthLoading] = useState(true);
 
     // Get slug from URL and current user's slug for comparison
     const navigate = useNavigate();
@@ -40,6 +41,7 @@ export const ProfilePage = () => {
         const fetchCurrentUser = async () => {
             const { data: { user } } = await supabase.auth.getUser();
             setCurrentUserId(user?.id || null);
+            setAuthLoading(false);
         };
         fetchCurrentUser();
     }, []);
@@ -51,11 +53,11 @@ export const ProfilePage = () => {
     const backData = design?.design_data?.back || {};
     const socialsData = backData.socials || {};
 
-    if (!profile && !loading) return (
+    if (!profile && !loading && !authLoading) return (
         <LoginRedirectMessage message="Du behöver ett konto för att se din profil." />
     );
     
-    if (loading) return <p className="text-center mt-10">Laddar profil...</p>;
+    if (loading || authLoading) return <p className="text-center mt-10">Laddar profil...</p>;
 
     const isOwnProfile = currentUserId && profile?.id === currentUserId;
     
