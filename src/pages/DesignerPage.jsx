@@ -211,7 +211,7 @@ export const DesignerPage = () => {
     };
 
     return (
-        <div className="container mx-auto p-4 max-w-2xl flex flex-col min-h-default-screen">
+        <div className="container mx-auto p-4 max-w-2xl flex flex-col min-h-[calc(100vh-80px)]">
    
             <div className="flex items-center justify-between mb-6">
                 {(step === "front") && (
