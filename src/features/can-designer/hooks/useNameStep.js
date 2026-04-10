@@ -1,6 +1,5 @@
 import supabase from "../../../lib/supabase";
 import { useState } from "react";
-import { buildProfileSlug } from "../../profile/utils/slug";
 import { removeCachedValue, removeCachedValuesByPrefix } from "../../../lib/cache";
 
 export const useNameStep = () => {
@@ -14,14 +13,14 @@ export const useNameStep = () => {
                 throw new Error("User is not authenticated");
             }
             const userId = session.user.id;
-            const slugValue = buildProfileSlug(firstName, lastName);
-
-            const { error } = await supabase
+            const { data, error } = await supabase
                 .from('profiles')
                 .upsert(
-                    { id: userId, first_name: firstName, last_name: lastName, slug_value: slugValue },
+                    { id: userId, first_name: firstName, last_name: lastName },
                     { onConflict: 'id' }
-                );
+                )
+                .select('slug_value')
+                .single();
 
             if (error) {
                 throw new Error(error.message);
@@ -33,7 +32,7 @@ export const useNameStep = () => {
             console.log("Name saved successfully");
             setSuccess(true);
             setError(null);
-            return { success: true, slug: slugValue };
+            return { success: true, slug: data?.slug_value || "" };
 
         } catch (error) {
             
