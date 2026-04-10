@@ -4,7 +4,7 @@ import { ImageUploader } from "../components/ImageUploader";
 import { AlignmentToggle } from "../components/AlignmentToggle";
 import { FontPicker } from "../components/FontPicker";
 
-import { TEXTURES, COLORS, FONTS } from "../constants";
+import { TEXTURES, COLORS } from "../constants";
 
 
 export const FrontStep = ({
@@ -66,7 +66,7 @@ export const FrontStep = ({
                                 selectedTexture === texture.id ? "border-black" : "border-transparent"
                             }`}
                         >
-                            <img src={texture.src} alt={texture.label} className="w-10 h-10 object-cover" />
+                            <img src={texture.icon} alt={texture.label} className="w-10 h-10 object-cover" />
                         </button>
                     ))}
                 </div>
