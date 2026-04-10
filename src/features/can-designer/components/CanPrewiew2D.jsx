@@ -11,7 +11,7 @@ import TagRed from "../../../assets/images/tags/tag-red.svg";
 import TagGreen from "../../../assets/images/tags/tag-green.svg";
 import TagBlue from "../../../assets/images/tags/tag-blue.svg";
 
-import { TAGS, TEXT_ALIGNMENT, getTagLabelById } from "../constants";
+import { TEXT_ALIGNMENT, TEXTURES , getTagLabelById } from "../constants";
 import { ProfileQRCode } from "../../../components/ProfileQRCode.jsx";
 
 import { SiInstagram, SiGithub } from "react-icons/si";
@@ -19,13 +19,11 @@ import { CiLinkedin } from "react-icons/ci";
 
 const TAG_ASSETS = [TagRed, TagGreen, TagBlue];
 
-const TEXTURE_STYLES = {
-    default: "linear-gradient(135deg, #f0f0f090 0%, #e2e2e290 100%)",
-    "texture-1": "repeating-linear-gradient(135deg, #f7f7f790 0px, #f7f7f790 8px, #ececec90 8px, #ececec90 16px)",
-    "texture-2": "radial-gradient(circle at 20% 20%, #0c8e4090 0%, #32adaf7f 40%, #1fa8ca90 100%)",
-    "texture-3": "linear-gradient(180deg, #b126269d 0%, #250d0d90 55%, #95898989 100%)",
-    "texture-4": "repeating-linear-gradient(90deg, #f2f2f290 0px, #f2f2f290 6px, #e4e4e490 6px, #e4e4e490 12px)",
-};
+const DEFAULT_TEXTURE_BG = "linear-gradient(135deg, #f0f0f090 0%, #e2e2e290 100%)";
+const TEXTURE_SRC_BY_ID = TEXTURES.reduce((acc, texture) => {
+    acc[texture.id] = texture.src;
+    return acc;
+}, {});
 
 const SOCIAL_CONFIG = [
     { key: 'linkedin', label: 'LinkedIn', Icon: CiLinkedin },
@@ -81,7 +79,7 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
               ...(design?.back || {}),
           };
 
-    const textureBackground = TEXTURE_STYLES[front.texturePreset] || TEXTURE_STYLES.default;
+    const textureSrc = TEXTURE_SRC_BY_ID[front.texturePreset] || null;
     const textAlignClass = TEXT_ALIGNMENT[front.textAlignment] || TEXT_ALIGNMENT.center;
     const imageTransform = {
         x: front.imageTransform?.x || 0,
@@ -155,7 +153,15 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
                         </div>
 
                     {/* Texture layer */}
-                    <div className="absolute inset-0 z-5" style={{ background: textureBackground }} />
+                    {textureSrc ? (
+                        <img
+                            src={textureSrc}
+                            alt="Texture"
+                            className="absolute inset-0 w-full h-full object-cover z-5 pointer-events-none"
+                        />
+                    ) : (
+                        <div className="absolute inset-0 z-5" style={{ background: DEFAULT_TEXTURE_BG }} />
+                    )}
                         <img
                             src={overlay}
                             alt="Overlay"

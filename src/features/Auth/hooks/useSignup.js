@@ -73,7 +73,7 @@ export const useSignup = () => {
 
         } catch (err) {
             setError(getAuthErrorMessage(err, 'signup'));
-            return { success: false, redirectTo: '/profile/guest' };
+            return { success: false, redirectTo: '/login' };
             
         } finally {
             setIsLoading(false);

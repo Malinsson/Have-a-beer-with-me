@@ -50,7 +50,7 @@ export const DesignerPage = () => {
     const setName = useDesignStore((state) => state.setName);
     const setFront = useDesignStore((state) => state.setFront);
     const setBack = useDesignStore((state) => state.setBack);
-    const redirectSlug = location.state?.slug || userSlug || "guest";
+    const redirectSlug = location.state?.slug || userSlug;
     const previewSide = step === "front" ? "front" : "back";
 
     useEffect(() => {
@@ -144,6 +144,17 @@ export const DesignerPage = () => {
         setFront({
             imageUrl,
             imageTransform: options.imageTransform || {
+                x: 0,
+                y: 0,
+                scale: 1,
+            },
+        });
+    };
+
+    const handleRemoveImage = () => {
+        setFront({
+            imageUrl: null,
+            imageTransform: {
                 x: 0,
                 y: 0,
                 scale: 1,
@@ -248,6 +259,7 @@ export const DesignerPage = () => {
                 onFontSelect={handleFontSelect}
                 onAlignmentChange={handleAlignmentChange}
                 onImageUpload={handleImageUpload}
+                onRemoveImage={handleRemoveImage}
                 onBackDescriptionChange={handleBackDescriptionChange}
                 onToggleTag={toggleOption}
                 onSocialChange={handleSocialChange}

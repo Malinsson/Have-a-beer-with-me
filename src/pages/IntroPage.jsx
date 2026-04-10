@@ -6,7 +6,7 @@ import { GuestSignup } from "../features/Auth/components/GuestSignup";
 
 
 import can from "../assets/images/baseCan.svg";
-import cans from "../assets/images/cans.jpg";
+import onboardP2Comp from "../assets/animations/onbordP2Comp.mp4";
 import { Button } from "../shared/components/Button";
 
 const STEPS = ["first", "secound", "last"];
@@ -24,8 +24,7 @@ const STEP_SUBTITLE = {
 };
 
 const STEP_IMG = {
-    first: can,
-    secound: cans,
+    first: can
 };
     
 export const IntroPage = () => {
@@ -39,7 +38,7 @@ export const IntroPage = () => {
                     <p className="pt-3 w-55">{STEP_SUBTITLE[step]}</p>
                 </div>
 
-                {(step === "first" || step === "secound") && (
+                {step === "first" && (
                     <div className="flex justify-center items-center p-4 w-5/6 mx-auto">
                         <img 
                             src={STEP_IMG[step]} 
@@ -62,7 +61,18 @@ export const IntroPage = () => {
                 )}
 
                 {step === "secound" && (
-                    <div className="fixed bottom-0 left-0 right-0 flex flex-col p-4 justify-center items-center gap-6 mt-auto">
+                <div className="flex flex-col flex-1 min-h-0 items-stretch p-4">
+                    <div className="flex flex-1 items-start p-4 w-5/6 mx-auto">
+                        <video 
+                            src={onboardP2Comp} 
+                            alt="Två animerade burkar som skålar mot varandra"
+                            className="max-h-full max-w-full object-contain"
+                            autoPlay
+                            loop
+                            muted
+                        />
+                    </div>
+                    <div className="flex flex-col w-full gap-6 mt-auto">
                         <section>
                             <ProgressDots total={3} current={2} />
                         </section>
@@ -71,6 +81,7 @@ export const IntroPage = () => {
                             <Button text="Nästa" onClick={() => setStep("last")} variant="primary" />
                         </div>
                     </div>
+                </div>
                 )}
 
                 {step === "last" && (

@@ -4,7 +4,7 @@ import { ImageUploader } from "../components/ImageUploader";
 import { AlignmentToggle } from "../components/AlignmentToggle";
 import { FontPicker } from "../components/FontPicker";
 
-import { TEXTURES, COLORS, FONTS } from "../constants";
+import { TEXTURES, COLORS } from "../constants";
 
 
 export const FrontStep = ({
@@ -19,6 +19,8 @@ export const FrontStep = ({
     onFontSelect,
     onAlignmentChange,
     onImageUpload,
+    hasImage,
+    onRemoveImage,
 }) => {
 
     const activeClass = "border-1 py-1 px-3";
@@ -64,13 +66,17 @@ export const FrontStep = ({
                                 selectedTexture === texture.id ? "border-black" : "border-transparent"
                             }`}
                         >
-                            <img src={texture.src} alt={texture.label} className="w-10 h-10 object-cover" />
+                            <img src={texture.icon} alt={texture.label} className="w-10 h-10 object-cover" />
                         </button>
                     ))}
                 </div>
 
                 <section className="flex border items-center relative w-full mt-4 mb-12 mx-auto">
-                        <ImageUploader onUploadComplete={onImageUpload} />
+                    <ImageUploader
+                        onUploadComplete={onImageUpload}
+                        hasImage={hasImage}
+                        onRemoveImage={onRemoveImage}
+                    />
                 </section>
 
                 </>

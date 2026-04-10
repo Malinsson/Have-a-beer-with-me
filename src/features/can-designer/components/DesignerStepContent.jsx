@@ -18,6 +18,7 @@ export const DesignerStepContent = ({
     onFontSelect,
     onAlignmentChange,
     onImageUpload,
+    onRemoveImage,
     onBackDescriptionChange,
     onToggleTag,
     onSocialChange,
@@ -40,6 +41,8 @@ export const DesignerStepContent = ({
                     onFontSelect={onFontSelect}
                     onAlignmentChange={onAlignmentChange}
                     onImageUpload={onImageUpload}
+                    hasImage={!!front.imageUrl}
+                    onRemoveImage={onRemoveImage}
                 />
             )}
 

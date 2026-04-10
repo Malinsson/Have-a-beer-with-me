@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
-import { buildProfileSlug } from "../../features/profile/utils/slug";
 
 export const useSearchForm = ({ onSuccess } = {}) => {
     const [searchQuery, setSearchQuery] = useState("");
@@ -35,14 +34,13 @@ export const useSearchForm = ({ onSuccess } = {}) => {
             const slugCandidate = term.toLowerCase().replace(/\s+/g, "-");
             const { data: slugMatch, error: slugError } = await supabase
                 .from("profiles")
-                .select("slug_value, first_name, last_name")
+                .select("slug_value")
                 .eq("slug_value", slugCandidate)
                 .maybeSingle();
 
             if (slugError) throw slugError;
             if (slugMatch) {
-                const slug = slugMatch.slug_value || buildProfileSlug(slugMatch.first_name, slugMatch.last_name);
-                navigate(`/profile/${slug}`);
+                navigate(`/profile/${slugMatch.slug_value}`);
                 setSearchQuery("");
                 onSuccess?.();
                 return;
@@ -57,7 +55,7 @@ export const useSearchForm = ({ onSuccess } = {}) => {
 
                 const { data, error: nameError } = await supabase
                     .from("profiles")
-                    .select("slug_value, first_name, last_name")
+                    .select("slug_value")
                     .ilike("first_name", firstName)
                     .ilike("last_name", lastName)
                     .limit(1)
@@ -68,7 +66,7 @@ export const useSearchForm = ({ onSuccess } = {}) => {
             } else {
                 const { data, error: firstNameError } = await supabase
                     .from("profiles")
-                    .select("slug_value, first_name, last_name")
+                    .select("slug_value")
                     .ilike("first_name", term)
                     .limit(1)
                     .maybeSingle();
@@ -77,9 +75,8 @@ export const useSearchForm = ({ onSuccess } = {}) => {
                 nameMatch = data;
             }
 
-            if (nameMatch) {
-                const slug = nameMatch.slug_value || buildProfileSlug(nameMatch.first_name, nameMatch.last_name);
-                navigate(`/profile/${slug}`);
+            if (nameMatch?.slug_value) {
+                navigate(`/profile/${nameMatch.slug_value}`);
                 setSearchQuery("");
                 onSuccess?.();
                 return;

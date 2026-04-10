@@ -11,7 +11,7 @@ const DEFAULT_IMAGE_TRANSFORM = { x: 0, y: 0, scale: 1 };
 const STEPS = { CROP: 'crop', POSITION: 'position' }
 
 // --- Main Component ---
-export function ImageUploader({ onUploadComplete }) {
+export function ImageUploader({ onUploadComplete, hasImage = false, onRemoveImage }) {
   const [step, setStep] = useState(STEPS.CROP)
   const [imageTransform, setImageTransform] = useState(DEFAULT_IMAGE_TRANSFORM)
   const [croppedPreviewUrl, setCroppedPreviewUrl] = useState('')
@@ -20,7 +20,10 @@ export function ImageUploader({ onUploadComplete }) {
   const { imageSrc, onImageLoad, onFileChange, crop, setCrop, getCroppedBlob, handleUpload, uploading, error, clearImage } =
     useImageUploader({ onUploadComplete })
 
-  // Reset everything when image is cleared
+ 
+
+
+  // Reset to crop step whenever a new image is selected
   useEffect(() => {
     if (!imageSrc) {
       setImageTransform(DEFAULT_IMAGE_TRANSFORM)
@@ -66,21 +69,36 @@ export function ImageUploader({ onUploadComplete }) {
   return (
     <div className="w-full min-h-15 flex items-center justify-center mx-4 relative">
 
-      {/* Upload button */}
-      <label htmlFor='imageUploader' className="w-full flex items-center justify-center">
-        <div className="p-3">
-          <GoUpload className="text-base" />
-        </div>
-        <span className="uppercase text-md">Ladda Upp</span>
-      </label>
+      {/* Upload/remove button */}
+      {hasImage ? (
+        <button
+          type="button"
+          onClick={onRemoveImage}
+          className="w-full flex items-center justify-center"
+        >
+          <div className="p-3">
+            <GoUpload className="text-base" />
+          </div>
+          <span className="uppercase text-md">Ta bort bild</span>
+        </button>
+      ) : (
+        <>
+          <label htmlFor='imageUploader' className="w-full flex items-center justify-center">
+            <div className="p-3">
+              <GoUpload className="text-base" />
+            </div>
+            <span className="uppercase text-md">Ladda upp</span>
+          </label>
 
-      <input
-        id='imageUploader'
-        type="file"
-        accept="image/jpeg, image/png, image/gif, image/webp"
-        onChange={onFileChange}
-        className="absolute inset-0 opacity-0 w-full h-full"
-      />
+          <input
+            id='imageUploader'
+            type="file"
+            accept="image/jpeg, image/png, image/gif, image/webp"
+            onChange={onFileChange}
+            className="absolute inset-0 opacity-0 w-full h-full"
+          />
+        </>
+      )}
 
       {/* Modal */}
       {imageSrc && (

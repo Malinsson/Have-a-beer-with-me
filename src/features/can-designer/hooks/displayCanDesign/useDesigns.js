@@ -33,8 +33,26 @@ export const useDesign = (shareId) => {
       };
       
       fetchDesigns();
+
+      const channel = supabase
+        .channel(`designs-share-${shareId}`)
+        .on(
+          "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "designs",
+            filter: `share_id=eq.${shareId}`,
+          },
+          () => {
+            fetchDesigns();
+          }
+        )
+        .subscribe();
+
       return () => {
         cancelled = true;
+        supabase.removeChannel(channel);
       };
     }, [shareId]);
   
