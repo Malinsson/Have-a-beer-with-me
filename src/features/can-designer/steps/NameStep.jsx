@@ -63,23 +63,23 @@ export const NameStep = () => {
     const { saveName, error } = useNameStep();
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
-            <div className="border px-4 py-6 w-full justify-center">
-
-                <div>
-                    <label htmlFor="firstName"><p>Förnamn</p></label>
-                    <input
-                        id="firstName"
-                        type="text"
-                        placeholder="Anders"
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        required
-                        max={20}
-                        maxLength={20}
-                        className="mt-2 mb-4 px-4 py-2 border border-gray-300 w-full"
-                    />
-                </div>
+        <form onSubmit={handleSubmit} className="flex flex-col flex-1 w-full items-stretch justify-between min-h-0">
+            <div className="w-full">
+                <div className="border px-4 py-6 w-full justify-center">
+                    <div>
+                        <label htmlFor="firstName"><p>Förnamn</p></label>
+                        <input
+                            id="firstName"
+                            type="text"
+                            placeholder="Anders"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            required
+                            max={20}
+                            maxLength={20}
+                            className="mt-2 mb-4 px-4 py-2 border border-gray-300 w-full"
+                        />
+                    </div>
 
                 <div>
                     <label htmlFor="lastName"><p>Efternamn</p></label>
@@ -120,15 +120,16 @@ export const NameStep = () => {
                     selected={selectedDrink} 
                     onSelect={(id) => setSelectedDrink(id)} 
                 />
+
+                    {drinkTypeError && (
+                        <p role="alert" className="text-red-500 text-center">
+                            Välj en dryckestyp för att fortsätta.
+                        </p>
+                    )}
+                </div>
             </div>
 
-            {drinkTypeError && (
-                <p role="alert" className="text-red-500">
-                    Välj en dryckestyp för att fortsätta.
-                </p>
-            )}
-
-            <div className="fixed bottom-0 left-0 right-0 flex flex-col p-4 justify-center items-center gap-6">
+            <div className="flex flex-col w-full p-4 justify-center items-center gap-6 mt-auto pb-4">
 
                 <section>
                     <ProgressDots total={3} current={3} />
@@ -139,6 +140,7 @@ export const NameStep = () => {
                     variant="primary"
                     text="Börja designa din ölburk"
                     disabled={isLoading}
+                    className="px-2"
                 >      
                 </Button>
 
