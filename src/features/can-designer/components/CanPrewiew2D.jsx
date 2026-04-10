@@ -235,7 +235,7 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
 
                             <div className="flex flex-col items-center">
                                 <p className="text-[7px] self-end pr-2">330 ML</p>
-                                <ProfileQRCode slug={effectiveSlug} size={70} />
+                                <ProfileQRCode slug={effectiveSlug} size={60} />
                             </div>
                         </div>
                     </div>

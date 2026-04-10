@@ -43,6 +43,7 @@ export const DesignerPage = () => {
 
     const timerRef = useRef(null);
     const hasHydratedRef = useRef(false);
+    const isHydratingRef = useRef(true);
 
     const front = useDesignStore((state) => state.front);
     const back = useDesignStore((state) => state.back);
@@ -65,44 +66,35 @@ export const DesignerPage = () => {
         });
 
         const hydrateLatestDesign = async () => {
-            const hasIncomingState =
-                typeof location.state?.firstName === "string" ||
-                typeof location.state?.lastName === "string" ||
-                typeof location.state?.department === "string";
+            try {
+                const result = await useDesignStore.getState().loadLatestDesignForCurrentUser();
+                const { firstName, lastName, drinkTypeId, drinkTypeLabel, department } = location.state || {};
 
-            if (hasIncomingState) {
-                setName(
-                    location.state?.firstName || "",
-                    location.state?.lastName || "",
-                    location.state?.drinkTypeLabel || ""
-                );
-                setFront({
-                    drinkTypeId: location.state?.drinkTypeId || "",
-                    drinkType: location.state?.drinkTypeLabel || "",
-                });
-                setBack({ department: location.state?.department || "" });
-                return;
-            }
-
-            const result = await useDesignStore.getState().loadLatestDesignForCurrentUser();
-            const { firstName, drinkTypeLabel, department } = location.state || {};
-
-            if (firstName) {
-                useDesignStore.getState().setName(firstName, drinkTypeLabel || "");
-            }
-            if (department) {
-                useDesignStore.getState().setBack({ department });
-            }
-            if (!result.success && result.error !== "No design found" && result.error !== "User not authenticated") {
-                console.log("Failed to hydrate latest design:", result.error);
+                if (typeof firstName === "string" || typeof lastName === "string" || typeof drinkTypeLabel === "string") {
+                    useDesignStore.getState().setName(firstName || "", lastName || "", drinkTypeLabel || "");
+                }
+                if (typeof drinkTypeId === "string" || typeof drinkTypeLabel === "string") {
+                    useDesignStore.getState().setFront({
+                        drinkTypeId: drinkTypeId || "",
+                        drinkType: drinkTypeLabel || "",
+                    });
+                }
+                if (typeof department === "string") {
+                    useDesignStore.getState().setBack({ department });
+                }
+                if (!result.success && result.error !== "No design found" && result.error !== "User not authenticated") {
+                    console.log("Failed to hydrate latest design:", result.error);
+                }
+            } finally {
+                hasHydratedRef.current = true;
+                isHydratingRef.current = false;
             }
         };
 
         hydrateLatestDesign();
 
         const unsubscribe = useDesignStore.subscribe((state, prevState) => {
-            if (!hasHydratedRef.current) {
-                hasHydratedRef.current = true;
+            if (!hasHydratedRef.current || isHydratingRef.current) {
                 return;
             }
 

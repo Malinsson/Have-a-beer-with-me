@@ -6,7 +6,7 @@ export const ProgressDots = ({ total, current }) => {
                 <div
                     key={index}
                     aria-label="Progress dot"
-                    pointer-events="none"
+                    pointerEvents="none"
                     className={`w-2 h-2 rounded-full ${index < current ? 'bg-yrgo-red' : 'bg-gray-300'}`}
                 />
             ))}
