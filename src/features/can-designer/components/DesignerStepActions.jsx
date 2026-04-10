@@ -61,13 +61,17 @@ export const DesignerStepActions = ({
                     </div>
                     <div className="flex flex-row gap-4 w-full mt-6">
                         <Button text="Skippa" onClick={handleSkipToAccount} variant="outlined" showIcon={false} />
-                        <Button text="Gå vidare" onClick={onSocialContinue} variant="primary" />
+                        <Button text={!canSkipKonto ? 'Gå vidare' : 'Spara'} 
+                        onClick={onSocialContinue} 
+                        variant="primary"
+                        className="px-2"
+                         />
                     </div>
                 </div>
             )}
 
             {step === "konto" && !canSkipKonto && (
-                <div className="fixed bottom-0 right-0 left-0 flex flex-col w-full p-4 bg-white/80">
+                <div className="flex flex-col w-full py-4 bg-white/80">
                     <div className="flex justify-center mb-4">
                         <ProgressDots total={4} current={4} />
                     </div>
@@ -85,6 +89,7 @@ export const DesignerStepActions = ({
                             text={primaryBtnText}
                             onClick={() => document.getElementById(formId)?.requestSubmit()}
                             variant="primary"
+                            className="px-2"
                         />
                     </div>
                 </div>
