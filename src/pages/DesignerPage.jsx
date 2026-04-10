@@ -151,6 +151,17 @@ export const DesignerPage = () => {
         });
     };
 
+    const handleRemoveImage = () => {
+        setFront({
+            imageUrl: null,
+            imageTransform: {
+                x: 0,
+                y: 0,
+                scale: 1,
+            },
+        });
+    };
+
     const toggleOption = (id) => {
         const MAX_TAGS = 3;
         const isAlreadySelected = back.tags.includes(id);
@@ -248,6 +259,7 @@ export const DesignerPage = () => {
                 onFontSelect={handleFontSelect}
                 onAlignmentChange={handleAlignmentChange}
                 onImageUpload={handleImageUpload}
+                onRemoveImage={handleRemoveImage}
                 onBackDescriptionChange={handleBackDescriptionChange}
                 onToggleTag={toggleOption}
                 onSocialChange={handleSocialChange}

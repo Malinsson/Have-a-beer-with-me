@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useDrag, usePinch, useWheel } from "@use-gesture/react";
 import baseCan from "../../../assets/images/baseCan.png";
 
@@ -17,41 +17,68 @@ const normalizeValue = (value) => ({
 
 export default function ImagePositioner({ imageUrl, value, onChange }) {
     const areaRef = useRef(null);
+    const rafRef = useRef(null);
+    const pendingTransformRef = useRef(null);
     const transform = normalizeValue(value);
 
+    useEffect(() => {
+        return () => {
+            if (rafRef.current) {
+                cancelAnimationFrame(rafRef.current);
+            }
+        };
+    }, []);
+
+    // Batch pointer updates to animation frames for smoother mobile interactions.
+    const scheduleChange = (nextTransform) => {
+        if (!onChange) return;
+        pendingTransformRef.current = nextTransform;
+
+        if (rafRef.current) return;
+
+        rafRef.current = requestAnimationFrame(() => {
+            rafRef.current = null;
+            if (pendingTransformRef.current) {
+                onChange(pendingTransformRef.current);
+            }
+        });
+    };
+
     // Updates the position of the image based on drag deltas, converting pixel movement to percentage and clamping within bounds
-    const updatePosition = (deltaX, deltaY) => {
+    const updatePosition = (startX, startY, deltaX, deltaY) => {
         const rect = areaRef.current?.getBoundingClientRect();
-        if (!rect || !onChange) return;
+        if (!rect) return;
 
         const xDeltaPercent = (deltaX / rect.width) * 100;
         const yDeltaPercent = (deltaY / rect.height) * 100;
 
-        onChange({
+        scheduleChange({
             ...transform,
-            x: clamp(transform.x + xDeltaPercent, -80, 80),
-            y: clamp(transform.y + yDeltaPercent, -80, 80),
+            x: clamp(startX + xDeltaPercent, -80, 80),
+            y: clamp(startY + yDeltaPercent, -80, 80),
         });
     };
 
     useDrag(
-        ({ delta: [dx, dy], event }) => {
+        ({ first, movement: [mx, my], memo, event }) => {
             event.preventDefault();
-            updatePosition(dx, dy);
+            const start = first ? [transform.x, transform.y] : memo;
+            updatePosition(start[0], start[1], mx, my);
+            return start;
         },
         {
             target: areaRef,
             eventOptions: { passive: false },
             pointer: { touch: true },
+            filterTaps: true,
+            preventScroll: true,
         }
     );
 
     useWheel(
         ({ delta: [, dy], event }) => {
             event.preventDefault();
-            if (!onChange) return;
-
-            onChange({
+            scheduleChange({
                 ...transform,
                 scale: clamp(transform.scale - dy * 0.0015, MIN_SCALE, MAX_SCALE),
             });
@@ -65,9 +92,7 @@ export default function ImagePositioner({ imageUrl, value, onChange }) {
     usePinch(
         ({ offset: [scale], event }) => {
             event.preventDefault();
-            if (!onChange) return;
-
-            onChange({
+            scheduleChange({
                 ...transform,
                 scale: clamp(scale, MIN_SCALE, MAX_SCALE),
             });
@@ -75,8 +100,9 @@ export default function ImagePositioner({ imageUrl, value, onChange }) {
         {
             target: areaRef,
             eventOptions: { passive: false },
+            from: () => [transform.scale, 0],
             scaleBounds: { min: MIN_SCALE, max: MAX_SCALE },
-            rubberband: true,
+            rubberband: false,
         }
     );
 
@@ -88,16 +114,17 @@ export default function ImagePositioner({ imageUrl, value, onChange }) {
                 <div
                     ref={areaRef}
                     className="absolute left-1/2 top-[20%] -translate-x-1/2 w-[98%] h-[72%] overflow-hidden touch-none border border-dashed border-neutral-400"
-                    style={{ cursor: "grab" }}
+                    style={{ cursor: "grab", touchAction: "none" }}
                 >
                     <img
                         src={imageUrl}
                         alt="Position preview"
-                        className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+                        className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
                         draggable={false}
                         style={{
-                            transform: `translate(${transform.x}%, ${transform.y}%) scale(${transform.scale})`,
+                            transform: `translate3d(${transform.x}%, ${transform.y}%, 0) scale(${transform.scale})`,
                             transformOrigin: "center center",
+                            willChange: "transform",
                         }}
                     />
                 </div>

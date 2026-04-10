@@ -19,6 +19,8 @@ export const FrontStep = ({
     onFontSelect,
     onAlignmentChange,
     onImageUpload,
+    hasImage,
+    onRemoveImage,
 }) => {
 
     const activeClass = "border-1 py-1 px-3";
@@ -70,7 +72,11 @@ export const FrontStep = ({
                 </div>
 
                 <section className="flex border items-center relative w-full mt-4 mb-12 mx-auto">
-                        <ImageUploader onUploadComplete={onImageUpload} />
+                    <ImageUploader
+                        onUploadComplete={onImageUpload}
+                        hasImage={hasImage}
+                        onRemoveImage={onRemoveImage}
+                    />
                 </section>
 
                 </>
