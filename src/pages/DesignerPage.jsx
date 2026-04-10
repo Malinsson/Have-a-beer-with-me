@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useUserSlug } from "../features/profile/hooks/useUserSlug";
 import supabase from "../lib/supabase";
  
-// import type { DesignerMode, Step } from "../features/can-designer/types.ts";
 import { DesignerStepContent } from "../features/can-designer/components/DesignerStepContent";
 import { DesignerStepActions } from "../features/can-designer/components/DesignerStepActions";
 import { CanPreview2D } from "../features/can-designer/components/CanPrewiew2D";
@@ -198,15 +197,21 @@ export const DesignerPage = () => {
     };
 
     const handleSocialContinue = async () => {
-        if (canSkipKonto) {
+        const { data: { session } } = await supabase.auth.getSession();
+        const canSkipNow = !!session && !session.user?.is_anonymous;
+
+        if (canSkipNow) {
+            setCanSkipKonto(true);
             await finalizeDesignAndOpenModal();
             return;
         }
+
+        setCanSkipKonto(false);
         setStep("konto");
     };
 
     return (
-        <div className="container mx-auto p-4 max-w-2xl flex flex-col min-h-[100dvh]">
+        <div className="container mx-auto p-4 max-w-2xl flex flex-col min-h-default-screen">
    
             <div className="flex items-center justify-between mb-6">
                 {(step === "front") && (
@@ -222,7 +227,7 @@ export const DesignerPage = () => {
                 )}
             </div>
 
-            <div className="mb-4 max-h-40vh flex justify-center">
+            <div className="mb-4 max-h-50vh flex justify-center">
                 <CanPreview2D side={previewSide} scale={1} />
             </div>
         

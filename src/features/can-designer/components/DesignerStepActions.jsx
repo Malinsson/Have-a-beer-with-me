@@ -13,6 +13,13 @@ export const DesignerStepActions = ({
     const isLogin = authMode === "login";
     const primaryBtnText = isLogin ? "Logga in" : "Skapa konto";
     const formId = isLogin ? "login-form" : "signup-form";
+    const handleSkipToAccount = () => {
+        if (canSkipKonto) {
+            onFinalizeAsGuest();
+            return;
+        }
+        onSetStep("konto");
+    };
 
     return (
         <>
@@ -28,7 +35,7 @@ export const DesignerStepActions = ({
                             <ProgressDots total={4} current={1} />
                         </div>
                         <div className="flex flex-row gap-4 w-full mt-6">
-                            <Button text="Skippa" onClick={() => onSetStep("konto")} variant="outlined" />
+                            <Button text="Skippa" onClick={handleSkipToAccount} variant="outlined" />
                             <Button text="Gå vidare" onClick={() => onSetStep("info")} variant="primary" />
                         </div>
                     </div>
@@ -40,7 +47,7 @@ export const DesignerStepActions = ({
                             <ProgressDots total={4} current={2} />
                         </div>
                         <div className="flex flex-row gap-4 w-full mt-6">
-                            <Button text="Skippa" onClick={() => onSetStep("konto")} variant="outlined" showIcon={false} />
+                            <Button text="Skippa" onClick={handleSkipToAccount} variant="outlined" showIcon={false} />
                             <Button text="Gå vidare" onClick={() => onSetStep("social")} variant="primary" />
                         </div>
                     </div>
@@ -53,7 +60,7 @@ export const DesignerStepActions = ({
                         <ProgressDots total={4} current={3} />
                     </div>
                     <div className="flex flex-row gap-4 w-full mt-6">
-                        <Button text="Skippa" onClick={() => onSetStep("konto")} variant="outlined" showIcon={false} />
+                        <Button text="Skippa" onClick={handleSkipToAccount} variant="outlined" showIcon={false} />
                         <Button text="Gå vidare" onClick={onSocialContinue} variant="primary" />
                     </div>
                 </div>

@@ -201,7 +201,7 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
                             <p className="text-[7px] h-8 overflow-hidden">{back.description || "Ingen beskrivning tillagd."}</p>
                         </div>
 
-                        <div className="flex justify-between mt-auto w-full min-w-0">
+                        <div className="flex justify-between mt-auto w-full min-w-0 h-20">
                             <div className="flex flex-col gap-2 flex-1 min-w-0">
                                 <div className="flex gap-1">
 

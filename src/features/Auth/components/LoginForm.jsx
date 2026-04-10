@@ -5,7 +5,7 @@ import { LuEye, LuEyeClosed } from "react-icons/lu";
 import { Button } from "../../../shared/components/Button";
 
 
-export const LoginForm = ({ onSwitchToSignup, onSuccess, hideSubmitButton = false }) => {
+export const LoginForm = ({ formId = "login-form", onSwitchToSignup, onSuccess, hideSubmitButton = false }) => {
 
     const { email, setEmail, password, setPassword, reset } = useAuthFields();
     const { login, error, isLoading } = useLogin();
@@ -22,6 +22,7 @@ export const LoginForm = ({ onSwitchToSignup, onSuccess, hideSubmitButton = fals
 
     return (
         <form 
+            id={formId}
             onSubmit={handleSubmit} 
             noValidate
             className="mt-2"
