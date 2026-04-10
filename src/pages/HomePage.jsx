@@ -1,9 +1,8 @@
-import { Carousel } from "../assets/carousel/Carousel"
-import { slides } from "../assets/carousel/carouselData.js"
 import { useNavigate } from "react-router-dom";
 import { Button } from "../shared/components/Button.jsx";
 import { Footer } from "../shared/components/Footer.jsx";
 import homeImgage from "../assets/images/home.png"
+import yrgoCanImage from "../assets/images/yrgo-can.png";
 
 
 export const HomePage = () => {
@@ -33,7 +32,7 @@ export const HomePage = () => {
 
             <section className="py-12 px-8 flex flex-col">
                 <div className="w-full max-w-sm mb-8 items-center text-center">
-                    <Carousel data={slides} />
+                    <img src={yrgoCanImage} alt="beercan" />
                 </div>
                 <div className="flex flex-col items-end">
                     <p className="large pb-6">
