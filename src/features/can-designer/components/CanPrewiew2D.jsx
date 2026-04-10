@@ -33,6 +33,14 @@ const SOCIAL_CONFIG = [
     { key: 'github', label: 'Github', Icon: SiGithub },
 ];
 
+const getAdaptiveNameSize = (value) => {
+    const length = (value || "").trim().length;
+    if (length <= 10) return "1.25rem";
+    if (length <= 14) return "1rem";
+    if (length <= 18) return "0.875rem";
+    return "0.78rem";
+};
+
 export const CanPreview2D = ({ side = "front", design = null, scale = 1, textScale = null }) => {
     const { slug: routeSlug } = useParams();
     const userSlug = useUserSlug();
@@ -95,6 +103,8 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
 
     const firstName = (name.firstName || "").trim();
     const firstNameEndsWithS = /s$/i.test(firstName);
+    const backFirstNameSize = getAdaptiveNameSize(profile?.first_name);
+    const backLastNameSize = getAdaptiveNameSize(profile?.last_name);
 
     const isFrontSide = side === "front";
     const socialsData = back?.socials || {};
@@ -171,11 +181,17 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
                 {!isFrontSide &&(
                     <div className=" absolute bg-white/80 w-full h-full inset-0 p-2 flex flex-col">
                         <div className="flex justify-between w-full">
-                            <div className="flex flex-col leading-tight">
-                                <h2 className="profileCan">{profile?.first_name}</h2>
-                                <h2 className="profileCan profile-italic">{profile?.last_name}</h2>
+
+                            <div className="flex flex-col leading-tight w-full max-w-[80%]">
+                                <h2 className="profileCan truncate" style={{ fontSize: backFirstNameSize, lineHeight: 1.05 }}>
+                                    {profile?.first_name}
+                                </h2>
+                                <h2 className="profileCan profile-italic truncate" style={{ fontSize: backLastNameSize, lineHeight: 1.05 }}>
+                                    {profile?.last_name}
+                                </h2>
                                 <h4 className="text-dark-blue text-lg">{back.department}</h4>
                             </div>
+
                             <img src={logo} alt="Yrgo Logo" className="w-8 h-8" />
                         </div>
 
@@ -185,7 +201,7 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
                             <p className="text-[7px] h-8 overflow-hidden">{back.description || "Ingen beskrivning tillagd."}</p>
                         </div>
 
-                        <div className="flex justify-between mt-2 w-full min-w-0 gap-2">
+                        <div className="flex justify-between mt-2 w-full min-w-0">
                             <div className="flex flex-col gap-2 flex-1 min-w-0">
                                 <div className="flex gap-1">
 
@@ -235,7 +251,7 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
 
                             <div className="flex flex-col items-center shrink-0 w-15">
                                 <p className="text-[7px] self-end pr-2">330 ML</p>
-                                <ProfileQRCode slug={effectiveSlug} size={60} />
+                                <ProfileQRCode slug={effectiveSlug} size={65} />
                             </div>
                         </div>
                     </div>
