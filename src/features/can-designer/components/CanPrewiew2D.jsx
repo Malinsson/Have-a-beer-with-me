@@ -110,7 +110,7 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
     const socialsData = back?.socials || {};
 
     return (
-        <div className="relative max-w-45 mx-auto" style={{ maxWidth: `${180 * scale}px` }}>
+        <div className="relative max-w-45 mx-auto" style={{ maxWidth: `${200 * scale}px` }}>
             <img src={baseCan} alt="Can template" className="w-full h-auto object-contain" />
 
             {/* Label area */}
