@@ -185,8 +185,8 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
                             <p className="text-[7px] h-8 overflow-hidden">{back.description || "Ingen beskrivning tillagd."}</p>
                         </div>
 
-                        <div className="flex justify-between mt-2">
-                            <div className="flex flex-col gap-2">
+                        <div className="flex justify-between mt-2 w-full min-w-0 gap-2">
+                            <div className="flex flex-col gap-2 flex-1 min-w-0">
                                 <div className="flex gap-1">
 
                                     {/* Show 3 tags max */}
@@ -217,23 +217,23 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
                                 </div>
                                 
                                 {/* Social media handles */}
-                                <div className="flex flex-col gap-1 pl-1">
+                                <div className="flex flex-col gap-1 pl-1 min-w-0 w-full">
                                     {SOCIAL_CONFIG.map((config) => {
                                         const username = socialsData[config.key];
                                         if (!username) return null;
                                         const { Icon } = config;
                                         
                                         return (
-                                            <div key={config.key} className="flex items-center gap-1">
-                                                {Icon && <Icon className="w-3 h-3" />}
-                                                <span className="text-[8px] truncate">{username}</span>
+                                            <div key={config.key} className="flex items-center gap-1 min-w-0 w-full">
+                                                {Icon && <Icon className="w-3 h-3 shrink-0" />}
+                                                <span className="text-[8px] truncate min-w-0 block w-full">{username}</span>
                                             </div>
                                         );
                                     })}
                                 </div>
                             </div>
 
-                            <div className="flex flex-col items-center">
+                            <div className="flex flex-col items-center shrink-0 w-15">
                                 <p className="text-[7px] self-end pr-2">330 ML</p>
                                 <ProfileQRCode slug={effectiveSlug} size={60} />
                             </div>
