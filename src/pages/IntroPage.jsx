@@ -62,11 +62,12 @@ export const IntroPage = () => {
 
                 {step === "secound" && (
                 <div className="flex flex-col flex-1 min-h-0 items-stretch p-4">
-                    <div className="flex flex-1 items-start p-4 w-5/6 mx-auto">
+                    <div className="flex flex-1 items-start p-4 w-5/6 mx-auto overflow-hidden">
                         <video 
                             src={onboardP2Comp} 
                             alt="Två animerade burkar som skålar mot varandra"
                             className="max-h-full max-w-full object-contain"
+                            playsInline
                             autoPlay
                             loop
                             muted
