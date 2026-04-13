@@ -5,7 +5,7 @@ import { useIsSignedIn } from "../hooks/useIsSignedIn";
 import { useLogout } from "../../features/Auth/hooks/useLogout";
 import { useIsGuest } from "../hooks/useIsGuest";
 import { useUserSlug } from "../../features/profile/hooks/useUserSlug";
-import Logo from "../../assets/images/yrgo.png";
+import Logo from "../../assets/images/logo/yrgo.png";
 import beerHeaderIcon from "../../assets/icons/beerHeaderIcon.svg";
 import { useSearchForm } from "../hooks/useSearchForm";
 import { SearchForm } from "./SearchForm";

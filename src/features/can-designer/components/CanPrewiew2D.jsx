@@ -4,7 +4,7 @@ import { useProfileInfo } from "../../profile/hooks/useProfileInfo";
 import { useUserSlug } from "../../profile/hooks/useUserSlug";
 
 import baseCan from "../../../assets/images/baseCan.png";
-import logo from "../../../assets/images/yrgo.png";
+import logo from "../../../assets/images/logo/yrgo.png";
 import overlay from "../../../assets/images/overlay.png";
 
 import TagRed from "../../../assets/images/tags/tag-red.svg";
@@ -12,7 +12,7 @@ import TagGreen from "../../../assets/images/tags/tag-green.svg";
 import TagBlue from "../../../assets/images/tags/tag-blue.svg";
 
 import { TEXT_ALIGNMENT, TEXTURES , getTagLabelById } from "../constants";
-import { ProfileQRCode } from "../../../components/ProfileQRCode.jsx";
+import { ProfileQRCode } from "../../../shared/components/ProfileQRCode.jsx";
 
 import { SiInstagram, SiGithub } from "react-icons/si";
 import { CiLinkedin } from "react-icons/ci";
