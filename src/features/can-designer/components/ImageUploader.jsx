@@ -10,6 +10,14 @@ import { ImageUploadFooterActions } from './ImageUploadFooterActions';
 const DEFAULT_IMAGE_TRANSFORM = { x: 0, y: 0, scale: 1 };
 const STEPS = { CROP: 'crop', POSITION: 'position' }
 
+// --- Sub-components ---
+const UploadTriggerContent = ({ label }) => (
+  <>
+    <div className="p-3"><GoUpload className="text-base" /></div>
+    <span className="uppercase text-md">{label}</span>
+  </>
+)
+
 // --- Main Component ---
 export function ImageUploader({ onUploadComplete, hasImage = false, onRemoveImage }) {
   const [step, setStep] = useState(STEPS.CROP)
@@ -52,12 +60,7 @@ export function ImageUploader({ onUploadComplete, hasImage = false, onRemoveImag
     try {
       const croppedBlob = await getCroppedBlob()
       const previewUrl = URL.createObjectURL(croppedBlob)
-      setCroppedPreviewUrl((previousUrl) => {
-        if (previousUrl) {
-          URL.revokeObjectURL(previousUrl)
-        }
-        return previewUrl
-      })
+      setCroppedPreviewUrl(previewUrl)
       setStep(STEPS.POSITION)
     } catch (caughtError) {
       console.error('Kunde inte skapa beskuren förhandsvisning:', caughtError)
@@ -71,25 +74,14 @@ export function ImageUploader({ onUploadComplete, hasImage = false, onRemoveImag
 
       {/* Upload/remove button */}
       {hasImage ? (
-        <button
-          type="button"
-          onClick={onRemoveImage}
-          className="w-full flex items-center justify-center"
-        >
-          <div className="p-3">
-            <GoUpload className="text-base" />
-          </div>
-          <span className="uppercase text-md">Ta bort bild</span>
+        <button type="button" onClick={onRemoveImage} className="w-full flex items-center justify-center">
+          <UploadTriggerContent label="Ta bort bild" />
         </button>
       ) : (
         <>
           <label htmlFor='imageUploader' className="w-full flex items-center justify-center">
-            <div className="p-3">
-              <GoUpload className="text-base" />
-            </div>
-            <span className="uppercase text-md">Ladda upp</span>
+            <UploadTriggerContent label="Ladda upp" />
           </label>
-
           <input
             id='imageUploader'
             type="file"
