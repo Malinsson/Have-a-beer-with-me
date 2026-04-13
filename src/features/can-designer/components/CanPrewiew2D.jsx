@@ -124,11 +124,12 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
                         {/* Text layer */}
                         <div className={`absolute w-full h-full p-3 z-50 flex ${textAlignClass}`}>
                             <p
-                                className="leading-tight text-2xl"
+                                className="leading-7"
                                 style={{ 
                                     color: front.textColor, 
                                     fontFamily: front.textFont, 
-                                    fontSize: `${1.5 * fontScale}rem`, 
+                                    fontSize: `${1.5 * fontScale}rem`,
+                                    lineHeight: 0.7, 
                                     fontWeight: front.textFont === "Inter, sans-serif" ? 600 : 400 
                                 }}
                             >
