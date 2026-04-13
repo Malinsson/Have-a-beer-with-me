@@ -1,21 +1,19 @@
 import { useEffect, useRef } from "react";
-import { useDesignStore } from "../stores/designStore";
+import { useDesignStore } from "../../../../store/designStore";
 
+export const useDesignAutosave = ({ hasHydratedRef, isHydratingRef }) => {
+    const timerRef = useRef(null);
 
-export const useDesignAutosave = ({state}) => {
+    useEffect(() => {
+        const unsubscribe = useDesignStore.subscribe((state, prevState) => {
+            if (!hasHydratedRef.current || isHydratingRef.current) return;
 
-        const timerRef = useRef(null);
-            const unsubscribe = useDesignStore.subscribe((state, prevState) => {
-            if (!hasHydratedRef.current || isHydratingRef.current) {
-                return;
-            }
+            const changed =
+                state.front !== prevState.front ||
+                state.back !== prevState.back;
 
-            const changed = 
-            state.front !== prevState.front ||
-            state.back !== prevState.back;
-            
             if (!changed) return;
-            
+
             clearTimeout(timerRef.current);
             timerRef.current = setTimeout(async () => {
                 const result = await useDesignStore.getState().saveDesign("Draft");
@@ -25,7 +23,9 @@ export const useDesignAutosave = ({state}) => {
             }, 1000);
         });
 
-    };
-
-    
-
+        return () => {
+            clearTimeout(timerRef.current);
+            unsubscribe();
+        };
+    }, [hasHydratedRef, isHydratingRef]);
+};
