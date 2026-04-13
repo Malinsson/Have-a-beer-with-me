@@ -1,4 +1,3 @@
-// 404 not found page
 import spilled404 from '../assets/images/spilled404.png';
 
 export const NotFoundPage = () => {
