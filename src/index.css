@@ -37,7 +37,7 @@
     h4 {
         font-family: 'Libre Caslon Text', serif;
         font-size: var(--text-3xl);
-        line-height: 1;
+        line-height: 1.1;
         color: var(--color-yrgo-red);
     }
 
