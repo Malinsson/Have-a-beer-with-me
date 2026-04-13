@@ -122,7 +122,7 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
                     <div className="absolute inset-0 bg-black/10" />
 
                         {/* Text layer */}
-                        <div className={`absolute w-full h-full p-3 z-50 flex ${textAlignClass}`}>
+                        <div className={`absolute w-full h-full p-3 z-15 flex ${textAlignClass}`}>
                             <p
                                 className="leading-tight text-2xl"
                                 style={{ 
