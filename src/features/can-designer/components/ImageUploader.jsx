@@ -20,9 +20,6 @@ export function ImageUploader({ onUploadComplete, hasImage = false, onRemoveImag
   const { imageSrc, onImageLoad, onFileChange, crop, setCrop, getCroppedBlob, handleUpload, uploading, error, clearImage } =
     useImageUploader({ onUploadComplete })
 
- 
-
-
   // Reset to crop step whenever a new image is selected
   useEffect(() => {
     if (!imageSrc) {
