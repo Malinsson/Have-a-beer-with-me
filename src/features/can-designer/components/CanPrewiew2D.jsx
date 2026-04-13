@@ -140,7 +140,7 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
                                         ) : (
                                             <>
                                                 {"'"}
-                                                <span className="text-[1em]" style={{ color: front.textColor, fontFamily: front.textFont, fontWeight: front.textFont === "Inter, sans-serif" ? 600 : 400 }}>
+                                                <span className="text-[1em]" style={{ color: front.textColor, fontFamily: front.textFont, fontWeight: front.textFont === "Inter, sans-serif" || front.textFont === "Bitcount Single, sans-serif" ? 600 : 400 }}>
                                                     s
                                                 </span>
                                             </>
