@@ -20,7 +20,13 @@ export default function ImagePositioner({ imageUrl, value, onChange }) {
     const rafRef = useRef(null);
     const pendingTransformRef = useRef(null);
     const transform = normalizeValue(value);
+    const liveTransformRef = useRef(transform);
 
+    useEffect(() => {
+        liveTransformRef.current = transform;
+    }, [transform.x, transform.y, transform.scale]);
+
+    // Clean up any pending animation frames when the component unmounts to prevent memory leaks or unintended updates
     useEffect(() => {
         return () => {
             if (rafRef.current) {
@@ -29,13 +35,15 @@ export default function ImagePositioner({ imageUrl, value, onChange }) {
         };
     }, []);
 
-    // Batch pointer updates to animation frames for smoother mobile interactions.
+    // Schedules an update to the image transformation, batching changes to optimize performance and prevent excessive re-renders during rapid interactions
     const scheduleChange = (nextTransform) => {
         if (!onChange) return;
         pendingTransformRef.current = nextTransform;
+        liveTransformRef.current = nextTransform;
 
         if (rafRef.current) return;
 
+        
         rafRef.current = requestAnimationFrame(() => {
             rafRef.current = null;
             if (pendingTransformRef.current) {
@@ -61,26 +69,26 @@ export default function ImagePositioner({ imageUrl, value, onChange }) {
 
     useDrag(
         ({ first, movement: [mx, my], memo, event }) => {
-            event.preventDefault();
-            const start = first ? [transform.x, transform.y] : memo;
+            if (event.cancelable) event.preventDefault();
+            const start = first ? [liveTransformRef.current.x, liveTransformRef.current.y] : memo;
             updatePosition(start[0], start[1], mx, my);
             return start;
         },
         {
             target: areaRef,
             eventOptions: { passive: false },
-            pointer: { touch: true },
-            filterTaps: true,
-            preventScroll: true,
+            pointer: { touch: true, capture: false },
+            threshold: 0,
+            filterTaps: false,
         }
     );
 
     useWheel(
         ({ delta: [, dy], event }) => {
-            event.preventDefault();
+            if (event.cancelable) event.preventDefault();
             scheduleChange({
-                ...transform,
-                scale: clamp(transform.scale - dy * 0.0015, MIN_SCALE, MAX_SCALE),
+                ...liveTransformRef.current,
+                scale: clamp(liveTransformRef.current.scale - dy * 0.0015, MIN_SCALE, MAX_SCALE),
             });
         },
         {
@@ -91,9 +99,9 @@ export default function ImagePositioner({ imageUrl, value, onChange }) {
 
     usePinch(
         ({ offset: [scale], event }) => {
-            event.preventDefault();
+            if (event.cancelable) event.preventDefault();
             scheduleChange({
-                ...transform,
+                ...liveTransformRef.current,
                 scale: clamp(scale, MIN_SCALE, MAX_SCALE),
             });
         },

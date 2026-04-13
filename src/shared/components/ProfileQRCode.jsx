@@ -8,7 +8,7 @@ export const ProfileQRCode = ({ slug, size = 128 }) => {
     
     return (
         <div 
-            className="qr-wrapper bg-white inline-block rounded-lg"
+            className="qr-wrapper inline-block"
             style={{ display: 'inline-block' }}
         >
             <ReactQRCode 

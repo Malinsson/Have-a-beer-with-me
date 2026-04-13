@@ -1,14 +1,16 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { useDesignStore } from "../store/designStore";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useUserSlug } from "../features/profile/hooks/useUserSlug";
-import supabase from "../lib/supabase";
- 
+import { useDesignAutosave } from "../features/can-designer/hooks/designPage/useDesignAutosave";
+import { useDesignAuthState } from "../features/can-designer/hooks/designPage/useDesignAuthState";
+import { useDesignHydration } from "../features/can-designer/hooks/designPage/useDesignHydration";
 import { DesignerStepContent } from "../features/can-designer/components/DesignerStepContent";
 import { DesignerStepActions } from "../features/can-designer/components/DesignerStepActions";
 import { CanPreview2D } from "../features/can-designer/components/CanPrewiew2D";
 import { Modal } from "../shared/components/Modal";
 import { BackButton } from "../shared/components/BackButton";
+import supabase from "../lib/supabase";
 
 
 const STEP_TITLE = {
@@ -41,10 +43,6 @@ export const DesignerPage = () => {
     const location = useLocation();
     const userSlug = useUserSlug();
 
-    const timerRef = useRef(null);
-    const hasHydratedRef = useRef(false);
-    const isHydratingRef = useRef(true);
-
     const front = useDesignStore((state) => state.front);
     const back = useDesignStore((state) => state.back);
     const setName = useDesignStore((state) => state.setName);
@@ -53,72 +51,16 @@ export const DesignerPage = () => {
     const redirectSlug = location.state?.slug || userSlug;
     const previewSide = step === "front" ? "front" : "back";
 
-    useEffect(() => {
-        const syncAuthState = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            setCanSkipKonto(!!session && !session.user?.is_anonymous);
-        };
+    useDesignAuthState({ setCanSkipKonto });
 
-        syncAuthState();
+    const { hasHydratedRef, isHydratingRef } = useDesignHydration({
+        locationState: location.state,
+        setBack,
+        setFront,
+        setName,
+    });
 
-        const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
-            setCanSkipKonto(!!session && !session?.user?.is_anonymous);
-        });
-
-        const hydrateLatestDesign = async () => {
-            try {
-                const result = await useDesignStore.getState().loadLatestDesignForCurrentUser();
-                const { firstName, lastName, drinkTypeId, drinkTypeLabel, department } = location.state || {};
-
-                if (typeof firstName === "string" || typeof lastName === "string" || typeof drinkTypeLabel === "string") {
-                    useDesignStore.getState().setName(firstName || "", lastName || "", drinkTypeLabel || "");
-                }
-                if (typeof drinkTypeId === "string" || typeof drinkTypeLabel === "string") {
-                    useDesignStore.getState().setFront({
-                        drinkTypeId: drinkTypeId || "",
-                        drinkType: drinkTypeLabel || "",
-                    });
-                }
-                if (typeof department === "string") {
-                    useDesignStore.getState().setBack({ department });
-                }
-                if (!result.success && result.error !== "No design found" && result.error !== "User not authenticated") {
-                    console.log("Failed to hydrate latest design:", result.error);
-                }
-            } finally {
-                hasHydratedRef.current = true;
-                isHydratingRef.current = false;
-            }
-        };
-
-        hydrateLatestDesign();
-
-        const unsubscribe = useDesignStore.subscribe((state, prevState) => {
-            if (!hasHydratedRef.current || isHydratingRef.current) {
-                return;
-            }
-
-            const changed = 
-            state.front !== prevState.front ||
-            state.back !== prevState.back;
-            
-            if (!changed) return;
-            
-            clearTimeout(timerRef.current);
-            timerRef.current = setTimeout(async () => {
-                const result = await useDesignStore.getState().saveDesign("Draft");
-                if (!result.success) {
-                    console.log("Auto-save failed:", result.error);
-                }
-            }, 1000);
-        });
-
-        return () => {
-            clearTimeout(timerRef.current);
-            unsubscribe();
-            authListener.subscription.unsubscribe();
-        };
-    }, [location.state, setBack, setFront, setName]);
+    useDesignAutosave({ hasHydratedRef, isHydratingRef });
 
     const handleTextureSelect = (textureId) => {
         setFront({ texturePreset: textureId });
@@ -193,7 +135,6 @@ export const DesignerPage = () => {
     };
 
     const finalizeDesignAndOpenModal = async () => {
-        clearTimeout(timerRef.current);
         const result = await useDesignStore.getState().saveDesign("Final design");
         if (result.success) {
             setModalOpen(true);

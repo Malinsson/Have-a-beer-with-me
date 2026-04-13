@@ -1,5 +1,3 @@
-import { ProgressDots } from "../../../shared/components/ProgressDots";
-
 export const SocialStep = ({ instagram, linkedin, github, onChange }) => {
     return (
         <>
