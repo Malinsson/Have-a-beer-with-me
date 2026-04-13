@@ -8,7 +8,6 @@ import { CanPreviewBack } from "./canPreview/CanPreviewBack.jsx";
 import { CanPreviewFront } from "./canPreview/CanPreviewFront.jsx";
 
 
-
 export const CanPreview2D = ({ side = "front", design = null, scale = 1, textScale = null }) => {
     const { slug: routeSlug } = useParams();
     const userSlug = useUserSlug();
@@ -22,6 +21,8 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
     const useStoreData = !design;
     
     const name = useStoreData ? nameFromStore : { firstName: "", drinkType: "", ...(design?.name || {}) };
+
+    // Prepare front and back data, prioritizing store data if useStoreData is true, otherwise using design prop or defaults
     const front = useStoreData
         ? frontFromStore
         : {
@@ -56,7 +57,6 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
         borderBottomLeftRadius: "48% 3%",
         borderBottomRightRadius: "48% 3%",
     };
-
 
     const isFrontSide = side === "front";
 
