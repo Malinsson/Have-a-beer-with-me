@@ -3,7 +3,8 @@ import { ProgressDots } from "../shared/components/ProgressDots";
 import { NameStep } from "../features/can-designer/steps/NameStep";
 import { GuestSignup } from "../features/Auth/components/GuestSignup";
 
-import can from "../assets/images/baseCan.svg";
+import LandingpageV1 from "../assets/animations/LandingpageV1.mp4";
+
 import onboardP2Comp from "../assets/animations/onbordP2Comp.mp4";
 import { Button } from "../shared/components/Button";
 
@@ -21,9 +22,6 @@ const STEP_SUBTITLE = {
     last:  "Namnge din burk med ditt eget namn.",
 };
 
-const STEP_IMG = {
-    first: can
-};
     
 export const IntroPage = () => {
     const [step, setStep] = useState("first");
@@ -36,13 +34,16 @@ export const IntroPage = () => {
                 </div>
 
                 {step === "first" && (
-                    <div className="flex justify-center items-center p-4 w-5/6 mx-auto">
-                        <img 
-                            src={STEP_IMG[step]} 
-                            alt=""
-                            className="max-h-full max-w-full object-contain" 
-                        />
-                    </div>
+                <div className="w-auto px-4 items-center text-center">
+                    <video
+                        src={LandingpageV1}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="w-full max-h-[55vh] mx-auto object-contain"
+                    />
+                </div>
                 )}
 
                 {step === "first" && (

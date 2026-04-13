@@ -3,7 +3,7 @@ import { Button } from "../shared/components/Button.jsx";
 import { Footer } from "../shared/components/Footer.jsx";
 import { useUserSlug } from "../features/profile/hooks/useUserSlug";
 import homeImgage from "../assets/images/home.png"
-import yrgoCanImage from "../assets/images/yrgo-can.png";
+import LandingpageV1 from "../assets/animations/LandingpageV1.mp4";
 
 export const HomePage = () => {
     const navigate = useNavigate();
@@ -39,8 +39,15 @@ export const HomePage = () => {
             </section>
 
             <section className="py-12 px-8 flex flex-col">
-                <div className="w-full max-w-sm mb-8 items-center text-center">
-                    <img src={yrgoCanImage} alt="beercan" />
+                <div className="w-full px-4 mb-8 items-center text-center">
+                    <video
+                        src={LandingpageV1}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="w-full h-auto mx-auto object-cover"
+                    />
                 </div>
                 <div className="flex flex-col items-end">
                     <p className="large pb-6">
