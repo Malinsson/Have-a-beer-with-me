@@ -138,7 +138,7 @@ export const NameStep = () => {
                 <Button
                     type="submit"
                     variant="primary"
-                    text="Börja designa din ölburk"
+                    text="Börja designa din burk"
                     disabled={isLoading}
                     className="px-2"
                 >      

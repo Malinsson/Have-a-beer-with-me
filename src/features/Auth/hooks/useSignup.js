@@ -67,7 +67,7 @@ export const useSignup = () => {
                 throw new Error('Konto skapades inte. Inget användar-ID returnerades.');
             }
             
-            setSuccess('Konto skapat! Skapa din öl nu.');
+            setSuccess('Konto skapat! Skapa din burk nu.');
             const redirectTo = await resolveProfileRedirect();
             return { success: true, redirectTo };
 

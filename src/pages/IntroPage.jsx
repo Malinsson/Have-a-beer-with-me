@@ -20,7 +20,7 @@ const STEP_TITLE = {
 const STEP_SUBTITLE = {
     first: "Uttryck dig själv med en personlig design",
     secound:  "Scanna andras burkar och samla dem i din Barhylla",
-    last:  "Namnge din öl med ditt eget namn.",
+    last:  "Namnge din burk med ditt eget namn.",
 };
 
 const STEP_IMG = {

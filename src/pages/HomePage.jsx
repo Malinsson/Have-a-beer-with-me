@@ -31,7 +31,7 @@ export const HomePage = () => {
                             </div>
                         )}
                         <div className={slug ? "flex-[2]" : "w-3/5 ml-auto"}>
-                            <Button text="Bygg din öl nu" onClick={() => navigate("/intro")} />
+                            <Button text="Designa din burk" onClick={() => navigate("/intro")} />
                         </div>
                     </div>
 
@@ -48,7 +48,7 @@ export const HomePage = () => {
                         Lindholmen. Här möter Digitala Designers och Webbutvecklare branschen
                     </p>
                     <div className="w-50">
-                        <Button text="Bygg din öl nu" onClick={() => navigate("/intro")} />
+                        <Button text="Designa din burk" onClick={() => navigate("/intro")} />
                     </div>
                 </div>
             </section>

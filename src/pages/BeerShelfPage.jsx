@@ -81,7 +81,7 @@ export const BeerShelfPage = () => {
                     </p>
 
                     <QRScanner 
-                        text="Scanna din första öl" 
+                        text="Scanna din första burk" 
                         variant="primary" 
                         onScan={(data) => {
                             const url = new URL(data);
