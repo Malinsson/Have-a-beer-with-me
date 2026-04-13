@@ -1,14 +1,18 @@
 
-import textureBlommor from "../../assets/textures/Blommor.png";
+import textureYrgo from "../../assets/textures/Yrgo.png";
 import textureRodaTaxen from "../../assets/textures/RödaTaxen.png";
-import textureIconBlommor from "../../assets/textures/icons/blommor.png";
+import textureCirkel from "../../assets/textures/Cirkel.png";
+import textureBlommor from "../../assets/textures/Blommor.png";
+
+import textureIconYrgo from "../../assets/textures/icons/yrgo.png";
 import textureIconTax from "../../assets/textures/icons/tax.png";
+import textureIconBlommor from "../../assets/textures/icons/blommor.png";
 
  export const TEXTURES = [
-  { id: "texture-1", label: "Blommor", src: textureBlommor, icon: textureIconBlommor },
+  { id: "texture-1", label: "Yrgo", src: textureYrgo, icon: textureIconYrgo },
   { id: "texture-2", label: "Röda taxen", src: textureRodaTaxen, icon: textureIconTax },
+  { id: "texture-4", label: "Cirkel", src: textureCirkel, icon: textureCirkel },
   { id: "texture-3", label: "Blommor", src: textureBlommor, icon: textureIconBlommor },
-  { id: "texture-4", label: "Röda taxen", src: textureRodaTaxen, icon: textureIconTax },
 ];
  
 export const COLORS = [
