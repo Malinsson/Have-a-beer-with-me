@@ -6,7 +6,8 @@ export const useUserSlug = () => {
 
     useEffect(() => {
         const fetchSlug = async () => {
-            const { data: { user }} = await supabase.auth.getUser();
+            const { data: { session }} = await supabase.auth.getSession();
+            const user = session?.user;
 
             if (!user) return;
 
@@ -15,7 +16,7 @@ export const useUserSlug = () => {
                 .from("profiles")
                 .select("slug_value")
                 .eq("id", user.id)
-                .single();
+                .maybeSingle();
             
             if (data) {
                 setSlug(data.slug_value);
