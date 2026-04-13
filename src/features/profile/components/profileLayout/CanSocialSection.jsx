@@ -54,7 +54,7 @@ export const CanSocialSection = ({ socialsData, profile }) => {
                         className="flex items-center gap-4 hover:opacity-70 transition-opacity"
                     >
                         <Icon className="text-3xl shrink-0" />
-                        <div className="grow">
+                        <div>
                             <span>{link.label}</span>
                         </div>
                         <MdOutlineArrowOutward className="text-2xl text-black" />
