@@ -67,7 +67,7 @@ export const NameStep = () => {
             <div className="w-full">
                 <div className="border px-4 py-6 w-full justify-center">
                     <div>
-                        <label htmlFor="firstName"><p>Förnamn</p></label>
+                        <label htmlFor="firstName"><p>Förnamn<sup>*</sup></p></label>
                         <input
                             id="firstName"
                             type="text"
@@ -82,7 +82,7 @@ export const NameStep = () => {
                     </div>
 
                 <div>
-                    <label htmlFor="lastName"><p>Efternamn</p></label>
+                    <label htmlFor="lastName"><p>Efternamn<sup>*</sup></p></label>
                     <input
                         id="lastName"
                         type="text"
@@ -97,7 +97,7 @@ export const NameStep = () => {
                 </div>
 
                 <div>
-                    <label htmlFor="department"><p>Jobb/Studier</p></label>
+                    <label htmlFor="department"><p>Jobb/Studier<sup>*</sup></p></label>
                     <input
                         id="department"
                         type="text"

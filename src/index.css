@@ -35,11 +35,14 @@
     }
 
     h4 {
-        font-family: 'Instrument Serif', serif;
+        font-family: 'Libre Caslon Text', serif;
         font-size: var(--text-3xl);
-        font-weight: 400;
         line-height: 1;
         color: var(--color-yrgo-red);
+    }
+
+    em {
+        font-family: 'Libre Caslon Text', serif;
     }
 
     .large {

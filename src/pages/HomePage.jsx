@@ -19,7 +19,7 @@ export const HomePage = () => {
                 
                 <div>
                     <h1>Ta en öl* <br /> Med Yrgo</h1>
-                    <h4>14:00 – 16:30 <br /> Onsdag <br /> 22 April</h4>
+                    <h4>14:00 – 16:30 <br /> <em>Onsdag</em> <br /> 22 April</h4>
                 </div>
 
                 <div className="flex flex-col gap-6">
@@ -44,8 +44,9 @@ export const HomePage = () => {
                 </div>
                 <div className="flex flex-col items-end">
                     <p className="large pb-6">
-                        *SKAPA DIN EGNA DIGITALA burk för YRGOS LIA-event på Visual Arena, 
-                        Lindholmen. Här möter Digitala Designers och Webbutvecklare branschen
+                    SKAPA DIN EGEN DIGITALA BURK för YRGO:s LIA-event på Visual Arena, 
+                    Lindholmen. Här möts framtida digitala designers, webbutvecklare och 
+                    folk från branschen.
                     </p>
                     <div className="w-50">
                         <Button text="Designa din burk" onClick={() => navigate("/intro")} />
