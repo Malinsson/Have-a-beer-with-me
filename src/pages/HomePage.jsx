@@ -30,7 +30,7 @@ export const HomePage = () => {
                                 <Button text="Profil" onClick={() => navigate(`/profile/${slug}`)} />
                             </div>
                         )}
-                        <div className={slug ? "flex-[2]" : "w-3/5 ml-auto"}>
+                        <div className={slug ? "flex-2" : "w-3/5 ml-auto"}>
                             <Button text="Designa din burk" onClick={() => navigate("/intro")} />
                         </div>
                     </div>

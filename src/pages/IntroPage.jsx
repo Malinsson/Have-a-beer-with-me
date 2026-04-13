@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { ProgressDots } from "../shared/components/ProgressDots";
 import { NameStep } from "../features/can-designer/steps/NameStep";
 import { GuestSignup } from "../features/Auth/components/GuestSignup";
-
 
 import can from "../assets/images/baseCan.svg";
 import onboardP2Comp from "../assets/animations/onbordP2Comp.mp4";
@@ -29,7 +27,6 @@ const STEP_IMG = {
     
 export const IntroPage = () => {
     const [step, setStep] = useState("first");
-    const navigate = useNavigate();
 
     return (
         <section className="flex flex-col min-h-[calc(100vh-80px)]">

@@ -1,4 +1,3 @@
-// The beercan shelf page, where you can see all the cans you have collected.
 import { useState, useEffect } from "react";
 import scanCanImage from "../assets/images/yrgo-can.png";
 import { useDesignStore } from "../store/designStore.js";
