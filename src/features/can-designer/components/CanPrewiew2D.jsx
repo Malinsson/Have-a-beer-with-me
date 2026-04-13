@@ -174,7 +174,7 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
                             <img
                             src={front.imageUrl}
                             alt="Uploaded label"
-                            className="absolute inset-0 w-full h-full object-cover z-10 select-none pointer-events-none"
+                            className="absolute inset-0 w-full h-full object-contain z-10 select-none pointer-events-none"
                             style={imageLayerStyle}
                             />
                         </>
