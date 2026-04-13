@@ -25,12 +25,12 @@ export const CanIdentitySection = ({
                     <h4 className="text-dark-blue text-2xl">{department}</h4>
                 </div>
 
-                <div className="flex flex-col gap-2 items-center">
+                <div className="flex flex-col gap-2">
                     <ProfileQRCode slug={slug} size={130} />
                 </div>
             </div>
 
-            <div className="flex flex-row justify-between gap-4">
+            <div className="flex flex-row justify-between gap-4 items-center">
                 <div className="w-1/2 items-center"> 
                     {isOwnProfile ? (
                         <QRScanner
