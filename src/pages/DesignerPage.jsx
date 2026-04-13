@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { useDesignStore } from "../store/designStore";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useUserSlug } from "../features/profile/hooks/useUserSlug";
+import { useDesignAutosave } from "../features/can-designer/hooks/designPage/useDesignAutosave";
+import { useDesignAuthState } from "../features/can-designer/hooks/designPage/useDesignAuthState";
 import supabase from "../lib/supabase";
  
 import { DesignerStepContent } from "../features/can-designer/components/DesignerStepContent";
@@ -53,18 +55,9 @@ export const DesignerPage = () => {
     const redirectSlug = location.state?.slug || userSlug;
     const previewSide = step === "front" ? "front" : "back";
 
+    useDesignAuthState({ setCanSkipKonto });
+
     useEffect(() => {
-        const syncAuthState = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            setCanSkipKonto(!!session && !session.user?.is_anonymous);
-        };
-
-        syncAuthState();
-
-        const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
-            setCanSkipKonto(!!session && !session?.user?.is_anonymous);
-        });
-
         const hydrateLatestDesign = async () => {
             try {
                 const result = await useDesignStore.getState().loadLatestDesignForCurrentUser();
@@ -93,27 +86,9 @@ export const DesignerPage = () => {
 
         hydrateLatestDesign();
 
-        const unsubscribe = useDesignStore.subscribe((state, prevState) => {
-            if (!hasHydratedRef.current || isHydratingRef.current) {
-                return;
-            }
+        useDesignAutosave({ state });
 
-            const changed = 
-            state.front !== prevState.front ||
-            state.back !== prevState.back;
-            
-            if (!changed) return;
-            
-            clearTimeout(timerRef.current);
-            timerRef.current = setTimeout(async () => {
-                const result = await useDesignStore.getState().saveDesign("Draft");
-                if (!result.success) {
-                    console.log("Auto-save failed:", result.error);
-                }
-            }, 1000);
-        });
-
-        return () => {
+        return() => {
             clearTimeout(timerRef.current);
             unsubscribe();
             authListener.subscription.unsubscribe();
