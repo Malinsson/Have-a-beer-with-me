@@ -1,12 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "../shared/components/Button.jsx";
 import { Footer } from "../shared/components/Footer.jsx";
+import { useUserSlug } from "../features/profile/hooks/useUserSlug";
 import homeImgage from "../assets/images/home.png"
 import yrgoCanImage from "../assets/images/yrgo-can.png";
 
-
 export const HomePage = () => {
     const navigate = useNavigate();
+    const slug = useUserSlug();
 
     return (
         <>
@@ -21,10 +22,17 @@ export const HomePage = () => {
                     <h4>14:00 – 16:30 <br /> Onsdag <br /> 22 April</h4>
                 </div>
 
-                <div className="flex flex-col items-end gap-6">
+                <div className="flex flex-col gap-6">
                     
-                    <div className="w-50">
-                        <Button text="Bygg din öl nu" onClick={() => navigate("/intro")} />
+                    <div className="flex gap-4">
+                        {slug && (
+                            <div className="flex-1">
+                                <Button text="Profil" onClick={() => navigate(`/profile/${slug}`)} />
+                            </div>
+                        )}
+                        <div className={slug ? "flex-[2]" : "w-3/5 ml-auto"}>
+                            <Button text="Bygg din öl nu" onClick={() => navigate("/intro")} />
+                        </div>
                     </div>
 
                 </div>
