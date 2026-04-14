@@ -87,7 +87,7 @@ export const FrontStep = ({
                 <div className="flex flex-col justify-center gap-4 w-full">
                 <h5 className="text-center mt-4"><strong>TYPSNITT DESIGN</strong></h5>
 
-                    <div className="flex justify-center flex-row items-center gap-4 mx-6">
+                    <div className="flex justify-center flex-row items-start gap-4 mx-6">
 
                         <FontPicker selectedFont={selectedFont} onSelect={onFontSelect} />
                         <AlignmentToggle value={selectedAlignment} onChange={onAlignmentChange} />
