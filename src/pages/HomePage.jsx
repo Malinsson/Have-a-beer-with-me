@@ -20,7 +20,7 @@ export const HomePage = () => {
                 
                 <div>
                     <h1>Ta en öl<sup>*</sup> <br /> Med Yrgo</h1>
-                    <h4>14:00 – 16:30 <br /> <em>Onsdag</em> <br /> 22 April</h4>
+                    <h4>14:00 – 16:30 <br /> <em>Onsdag</em> <br /> 22 april</h4>
                 </div>
 
                 <div className="flex flex-col gap-6">

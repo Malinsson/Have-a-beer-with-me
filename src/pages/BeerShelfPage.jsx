@@ -131,11 +131,11 @@ export const BeerShelfPage = () => {
                         className="w-60 h-auto object-contain mt-10"
                     />
                     <p className="text-center">
-                        Din barhylla är tom. Scanna andras burkar för att fylla din barhylla.
+                        Din barhylla är tom. Skanna andras burkar för att fylla din barhylla.
                     </p>
 
                     <QRScanner 
-                        text="Scanna din första burk" 
+                        text="Skanna din första burk" 
                         variant="primary" 
                         onScan={(data) => {
                             const url = new URL(data);
