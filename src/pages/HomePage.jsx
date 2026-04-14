@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "../shared/components/Button.jsx";
 import { Footer } from "../shared/components/Footer.jsx";
 import { useUserSlug } from "../features/profile/hooks/useUserSlug";
-import homeImgage from "../assets/images/home.png"
+import homeImgage from "../assets/images/home.webp"
 import LandingpageV2comp from "../assets/animations/LandingpageV2comp.mp4";
 
 export const HomePage = () => {
