@@ -45,12 +45,11 @@ export const CanPreviewFront = ({ front, name, fontScale }) => {
 
                 {/* Text layer */}
                 <div className={`absolute w-full h-full p-3 z-15 flex ${textAlignClass}`}>
-                    <p className="w-full overflow-clip"
-                        style={{ 
+                    <p style={{ 
                             color: front.textColor, 
                             fontFamily: front.textFont, 
                             fontSize: `${frontFirstNameSize}rem`,
-                            lineHeight: 0.7, 
+                            lineHeight: 1.05, 
                             fontWeight: front.textFont === "Inter, sans-serif" || front.textFont === "Monda, sans-serif" ? 600 : 400 
                         }}
                     >
