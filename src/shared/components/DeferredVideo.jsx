@@ -12,14 +12,22 @@ export const DeferredVideo = ({
     poster,
 }) => {
     const containerRef = useRef(null);
+    const videoRef = useRef(null);
     const [shouldLoad, setShouldLoad] = useState(false);
+    const [autoplayBlocked, setAutoplayBlocked] = useState(false);
 
     useEffect(() => {
         if (shouldLoad) return;
 
+        // iOS Safari can occasionally miss observer callbacks in certain layouts.
+        const fallbackTimer = window.setTimeout(() => {
+            setShouldLoad(true);
+        }, 1200);
+
         const target = containerRef.current;
         if (!target || typeof IntersectionObserver === "undefined") {
             setShouldLoad(true);
+            window.clearTimeout(fallbackTimer);
             return;
         }
 
@@ -28,6 +36,7 @@ export const DeferredVideo = ({
                 const [entry] = entries;
                 if (!entry?.isIntersecting) return;
                 setShouldLoad(true);
+                window.clearTimeout(fallbackTimer);
                 observer.disconnect();
             },
             { rootMargin }
@@ -35,19 +44,45 @@ export const DeferredVideo = ({
 
         observer.observe(target);
 
-        return () => observer.disconnect();
+        return () => {
+            window.clearTimeout(fallbackTimer);
+            observer.disconnect();
+        };
     }, [rootMargin, shouldLoad]);
+
+    useEffect(() => {
+        if (!shouldLoad || !autoPlay) return;
+
+        const video = videoRef.current;
+        if (!video) return;
+
+        // Ensure iOS Safari treats the video as muted before autoplay attempts.
+        video.defaultMuted = muted || autoPlay;
+        video.muted = muted || autoPlay;
+
+        const tryPlay = async () => {
+            try {
+                await video.play();
+            } catch {
+                // Autoplay is often blocked on iOS (e.g. Low Power Mode); show controls as fallback.
+                setAutoplayBlocked(true);
+            }
+        };
+
+        tryPlay();
+    }, [autoPlay, muted, shouldLoad]);
 
     return (
         <div ref={containerRef} className="w-full">
             <video
+                ref={videoRef}
                 src={shouldLoad ? src : undefined}
                 preload={shouldLoad ? "metadata" : "none"}
                 autoPlay={shouldLoad && autoPlay}
                 loop={loop}
-                muted={muted}
+                muted={muted || autoPlay}
                 playsInline={playsInline}
-                controls={controls}
+                controls={controls || autoplayBlocked}
                 poster={poster}
                 className={className}
             />

@@ -32,14 +32,14 @@ export const CanPreviewFront = ({ front, name, fontScale }) => {
             <div className="absolute inset-0 bg-black/10" />
 
                 {/* Text layer */}
-                <div className={`absolute w-full h-full p-3 z-10 flex ${textAlignClass}`}>
+                <div className={`absolute w-full h-full p-3 z-15 flex ${textAlignClass}`}>
                     <p
                         style={{ 
                             color: front.textColor, 
                             fontFamily: front.textFont, 
                             fontSize: `${1.5 * fontScale}rem`,
                             lineHeight: 0.7, 
-                            fontWeight: front.textFont === "Inter, sans-serif" ? 600 : 400 
+                            fontWeight: front.textFont === "Inter, sans-serif" || front.textFont === "Monda, sans-serif" ? 600 : 400 
                         }}
                     >
                         {firstName && (
@@ -75,7 +75,7 @@ export const CanPreviewFront = ({ front, name, fontScale }) => {
                 <img
                     src={overlay}
                     alt="Overlay"
-                    className="absolute inset-0 w-full h-full object-fill z-10 pointer-events-none"
+                    className="absolute inset-0 w-full h-full object-fill z-20 pointer-events-none"
                     
                 />
 
@@ -84,7 +84,7 @@ export const CanPreviewFront = ({ front, name, fontScale }) => {
                     <img
                     src={front.imageUrl}
                     alt="Uploaded label"
-                    className="absolute inset-0 w-full h-full object-contain z-15 select-none pointer-events-none"
+                    className="absolute inset-0 w-full h-full object-contain z-10 select-none pointer-events-none"
                     style={imageLayerStyle}
                     />
                 </>

@@ -25,7 +25,7 @@ export const FontPicker = ({ selectedFont, onSelect }) => {
     };
 
     return (
-        <div className="relative w-full" ref={dropdownRef}>
+        <div className={`relative w-full ${isOpen ? "mb-24" : ""}`} ref={dropdownRef}>
             <button
                 type="button"
                 onClick={() => setIsOpen((open) => !open)}
@@ -45,7 +45,7 @@ export const FontPicker = ({ selectedFont, onSelect }) => {
             {isOpen && (
                 <ul
                     role="listbox"
-                    className="absolute z-50 mt-1 w-full max-h-56 overflow-y-auto border border-black bg-white"
+                    className="absolute z-50 mt-1 w-full max-h-56 overflow-y-auto border border-black bg-white shadow-md"
                 >
                     {FONTS.map((font) => {
                         const isSelected = font.style === selectedFontDef.style;
