@@ -12,7 +12,7 @@ import { Button } from "../shared/components/Button";
 const STEPS = ["first", "secound", "last"];
 
 const STEP_TITLE = {
-    first: "Skapa din egna burk",
+    first: "Skapa din egen burk",
     secound: "Mingla",
     last:  "Vem är du?",
 };
