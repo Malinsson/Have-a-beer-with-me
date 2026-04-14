@@ -50,18 +50,30 @@ export const DeferredVideo = ({
         };
     }, [rootMargin, shouldLoad]);
 
+    // React doesn't render the `muted` attribute to the DOM (known React bug).
+    // Set it imperatively whenever the value changes so iOS Safari respects it.
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+        video.defaultMuted = muted;
+        video.muted = muted;
+    }, [muted]);
+
     useEffect(() => {
         if (!shouldLoad || !autoPlay) return;
 
         const video = videoRef.current;
         if (!video) return;
 
-        // Ensure iOS Safari treats the video as muted before autoplay attempts.
-        video.defaultMuted = muted || autoPlay;
-        video.muted = muted || autoPlay;
+        // Ensure iOS Safari treats the video as muted for autoplay.
+        video.defaultMuted = true;
+        video.muted = true;
 
         const tryPlay = async () => {
             try {
+                // iOS Safari requires an explicit load() after src is set dynamically.
+                // Without it, play() can silently fail even with correct attributes.
+                video.load();
                 await video.play();
             } catch {
                 // Autoplay is often blocked on iOS (e.g. Low Power Mode); show controls as fallback.
