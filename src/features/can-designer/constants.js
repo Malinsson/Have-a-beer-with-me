@@ -1,7 +1,7 @@
 
 import textureYrgo from "../../assets/textures/Yrgo.png";
 import textureRodaTaxen from "../../assets/textures/RödaTaxen.png";
-import textureCirkel from "../../assets/textures/Cirkel.png";
+import textureCirkel from "../../assets/textures/Cirkel.webp";
 import textureBlommor from "../../assets/textures/Blommor.png";
 
 import textureIconYrgo from "../../assets/textures/icons/yrgo.png";
