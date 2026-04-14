@@ -4,15 +4,15 @@ import textureRodaTaxen from "../../assets/textures/RödaTaxen.png";
 import textureCirkel from "../../assets/textures/Cirkel.webp";
 import textureBlommor from "../../assets/textures/Blommor.png";
 
-import textureIconYrgo from "../../assets/textures/icons/yrgo.png";
+import textureIconYrgo from "../../assets/textures/icons/Yrgo.png";
 import textureIconTax from "../../assets/textures/icons/tax.png";
 import textureIconBlommor from "../../assets/textures/icons/blommor.png";
 
  export const TEXTURES = [
   { id: "texture-1", label: "Yrgo", src: textureYrgo, icon: textureIconYrgo },
   { id: "texture-2", label: "Röda taxen", src: textureRodaTaxen, icon: textureIconTax },
-  { id: "texture-4", label: "Cirkel", src: textureCirkel, icon: textureCirkel },
-  { id: "texture-3", label: "Blommor", src: textureBlommor, icon: textureIconBlommor },
+  { id: "texture-3", label: "Cirkel", src: textureCirkel, icon: textureCirkel },
+  { id: "texture-4", label: "Blommor", src: textureBlommor, icon: textureIconBlommor },
 ];
  
 export const COLORS = [
@@ -27,6 +27,7 @@ export const FONTS = [
   { id: "font-2", label: "Bitcount single", style: "Bitcount Single, sans-serif", weight: 600, url: "https://fonts.googleapis.com/css2?family=Bitcount+Single&display=swap" },
   { id: "font-3", label: "Knewave", style: "Knewave, sans-serif", weight: 400, url: "https://fonts.googleapis.com/css2?family=Knewave&display=swap" },
   { id: "font-4", label: "Libre Caslon Text", style: "Libre Caslon Text, serif", weight: 700, url: "https://fonts.googleapis.com/css2?family=Libre+Caslon+Text&display=swap" },
+  { id: "font-5", label: "Monda", style: "Monda, sans-serif", weight: 600, url: "https://fonts.googleapis.com/css2?family=Monda:wght@400..700&display=swap" },
 ];
 
 FONTS.forEach(({ url }) => {
