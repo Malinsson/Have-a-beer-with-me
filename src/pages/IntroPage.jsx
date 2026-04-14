@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ProgressDots } from "../shared/components/ProgressDots";
 import { NameStep } from "../features/can-designer/steps/NameStep";
 import { GuestSignup } from "../features/Auth/components/GuestSignup";
@@ -26,6 +26,10 @@ const STEP_SUBTITLE = {
     
 export const IntroPage = () => {
     const [step, setStep] = useState("first");
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [step])
 
     return (
         <section className="flex flex-col min-h-[calc(100vh-80px)]">
