@@ -55,6 +55,7 @@ export const Header = () => {
         }
 
         navigate(link.href);
+        if (link.href === "/") window.scrollTo(0, 0);
         closeMenu();
     };
 
@@ -65,7 +66,7 @@ export const Header = () => {
                     src={Logo}
                     alt="yrgo-logo" 
                     className="w-full h-full object-contain" 
-                    onClick={() => navigate("/")}
+                    onClick={() => { navigate("/"); window.scrollTo(0, 0); }}
                 />
             </div>
 

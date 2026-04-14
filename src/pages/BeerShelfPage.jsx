@@ -116,7 +116,7 @@ export const BeerShelfPage = () => {
     return (
         <section className="container mx-auto p-4 flex flex-col">
             <div className="flex items-center justify-between mb-6">
-                <BackButton />
+                <BackButton to={`/profile/${slug}`} />
                 <h2 className="absolute left-1/2 transform -translate-x-1/2 text-2xl">
                     Min Barhylla
                 </h2>
