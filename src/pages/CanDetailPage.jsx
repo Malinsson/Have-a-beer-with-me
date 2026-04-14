@@ -12,6 +12,8 @@ import { CanTagSection } from "../features/profile/components/profileLayout/CanT
 import { CanInfoSection } from "../features/profile/components/profileLayout/CanInfoSection.jsx";
 import { CanSocialSection } from "../features/profile/components/profileLayout/CanSocialSection.jsx";
 import { CanActionSection } from "../features/profile/components/profileLayout/CanActionSection.jsx";
+import { normalizeError, createNotFoundError } from "../shared/utils/errors.js";
+import { Button } from "../shared/components/Button.jsx";
 
 export const CanDetailPage = () => {
     const navigate = useNavigate();
@@ -24,6 +26,7 @@ export const CanDetailPage = () => {
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [reloadKey, setReloadKey] = useState(0);
 
     const { saveCanToShelf } = useSaveCanToShelf();
     const { isSaved, setIsSaved, saving, setSaving } = useSavedCan(design?.share_id);
@@ -66,7 +69,7 @@ export const CanDetailPage = () => {
 
                 if (designError) throw designError;
                 if (!designData?.user_id) {
-                    throw new Error("Design not found");
+                    throw createNotFoundError("Burken kunde inte hittas.");
                 }
 
                 const { data: profileData, error: profileError } = await supabase
@@ -77,7 +80,7 @@ export const CanDetailPage = () => {
 
                 if (profileError) throw profileError;
                 if (!profileData) {
-                    throw new Error("Profile not found");
+                    throw createNotFoundError("Profilen kunde inte hittas.");
                 }
 
                 if (cancelled) return;
@@ -87,7 +90,7 @@ export const CanDetailPage = () => {
                 setCurrentUserId(user?.id || null);
             } catch (caughtError) {
                 if (cancelled) return;
-                setError(caughtError);
+                setError(normalizeError(caughtError, "Kunde inte ladda burken."));
                 setDesign(null);
                 setProfile(null);
                 setCurrentUserId(null);
@@ -103,7 +106,7 @@ export const CanDetailPage = () => {
         return () => {
             cancelled = true;
         };
-    }, [shareId]);
+    }, [shareId, reloadKey]);
 
     const handleSave = async () => {
         if (!design?.share_id) return;
@@ -122,7 +125,17 @@ export const CanDetailPage = () => {
         return <p className="text-center">Laddar burk...</p>;
     }
 
-    if (error) return <Navigate to="/404" replace />;
+    if (error?.code === "not_found") return <Navigate to="/404" replace />;
+    if (error) {
+        return (
+            <div className="text-center mt-10 px-4">
+                <p className="text-red-500 mb-4">{error.message || "Något gick fel när burken laddades."}</p>
+                <div className="mx-auto w-44">
+                    <Button text="Försök igen" onClick={() => setReloadKey((key) => key + 1)} />
+                </div>
+            </div>
+        );
+    }
     if (!design || !profile) return <Navigate to="/404" replace />;
 
     const ownerSlug = profile?.slug_value || mySlug;
