@@ -14,7 +14,7 @@ export const HomePage = () => {
         <>
         <div className="min-h-screen font-sans text-gray-900 bg-white">
             <section 
-                className="relative h-[65vh] w-full bg-cover bg-center flex flex-col justify-between p-6 overflow-hidden" 
+                className="relative h-[65vh] min-h-[550px] w-full bg-cover bg-center flex flex-col justify-between p-6 overflow-hidden" 
                 style={{ backgroundImage: homeImgage ? `url(${homeImgage})` : "none" }}
             >
                 
