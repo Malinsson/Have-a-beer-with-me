@@ -1,4 +1,7 @@
 
+[db]
+shadow_port = 54340
+
 [functions.designer-bootstrap]
 enabled = true
 verify_jwt = true
