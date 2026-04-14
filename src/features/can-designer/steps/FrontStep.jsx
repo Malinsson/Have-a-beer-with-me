@@ -71,7 +71,7 @@ export const FrontStep = ({
                     ))}
                 </div>
 
-                <section className="flex border items-center relative w-full mt-4 mb-12 mx-auto">
+                <section className="flex border items-center relative w-full mt-4 mb-2 mx-auto">
                     <ImageUploader
                         onUploadComplete={onImageUpload}
                         hasImage={hasImage}

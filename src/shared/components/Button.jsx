@@ -14,7 +14,7 @@ export const Button = ({
 
   const styles = {
     primary: "bg-dark-blue text-white",
-    outlined: "border border-black text-black",
+    outlined: "border border-black bg-white",
   };
 
   return (
