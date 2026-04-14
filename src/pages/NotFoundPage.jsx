@@ -1,5 +1,4 @@
-// 404 not found page
-import spilled404 from '../assets/images/spilled404.png';
+import spilled404 from '../assets/images/spilled404.webp';
 
 export const NotFoundPage = () => {
     return (

@@ -23,7 +23,7 @@ const STEP_TITLE = {
 
 const STEP_SUBTITLE = {
     front: "",
-    back:  'Beskriv din största "AHA-Upplevelse" (max 140 tecken)',
+    back:  <>Beskriv något oväntat om dig som inte står i ditt CV <span className="text-xs font-normal uppercase">(max 140 tecken)</span></>,
     info:  "",
     social: "Lägg till kontaktuppgifter",
     konto: "Skapa ett konto för att spara din burk"
@@ -208,14 +208,16 @@ export const DesignerPage = () => {
             />
 
             {/* Navigation buttons */}
-            <DesignerStepActions
-                step={step}
-                canSkipKonto={canSkipKonto}
-                authMode={authMode}
-                onSetStep={setStep}
-                onSocialContinue={handleSocialContinue}
-                onFinalizeAsGuest={finalizeDesignAndOpenModal}
-            />
+            <div className="bottom-0 bg-white pt-2 pb-4">
+                <DesignerStepActions
+                    step={step}
+                    canSkipKonto={canSkipKonto}
+                    authMode={authMode}
+                    onSetStep={setStep}
+                    onSocialContinue={handleSocialContinue}
+                    onFinalizeAsGuest={finalizeDesignAndOpenModal}
+                />
+            </div>
                   
             {/* Modal */}
             {modalOpen && (

@@ -1,14 +1,18 @@
 
-import textureBlommor from "../../assets/textures/Blommor.png";
+import textureYrgo from "../../assets/textures/Yrgo.png";
 import textureRodaTaxen from "../../assets/textures/RödaTaxen.png";
-import textureIconBlommor from "../../assets/textures/icons/blommor.png";
+import textureCirkel from "../../assets/textures/Cirkel.webp";
+import textureBlommor from "../../assets/textures/Blommor.png";
+
+import textureIconYrgo from "../../assets/textures/icons/yrgo.png";
 import textureIconTax from "../../assets/textures/icons/tax.png";
+import textureIconBlommor from "../../assets/textures/icons/blommor.png";
 
  export const TEXTURES = [
-  { id: "texture-1", label: "Blommor", src: textureBlommor, icon: textureIconBlommor },
+  { id: "texture-1", label: "Yrgo", src: textureYrgo, icon: textureIconYrgo },
   { id: "texture-2", label: "Röda taxen", src: textureRodaTaxen, icon: textureIconTax },
+  { id: "texture-4", label: "Cirkel", src: textureCirkel, icon: textureCirkel },
   { id: "texture-3", label: "Blommor", src: textureBlommor, icon: textureIconBlommor },
-  { id: "texture-4", label: "Röda taxen", src: textureRodaTaxen, icon: textureIconTax },
 ];
  
 export const COLORS = [
@@ -20,9 +24,9 @@ export const COLORS = [
 
 export const FONTS = [
   { id: "font-1", label: "Inter", style: "Inter, sans-serif", weight: 600, url: "https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,600&display=swap" },
-  { id: "font-2", label: "Bitcount single", style: "Bitcount Single, sans-serif", weight: 400, url: "https://fonts.googleapis.com/css2?family=Bitcount+Single&display=swap" },
+  { id: "font-2", label: "Bitcount single", style: "Bitcount Single, sans-serif", weight: 600, url: "https://fonts.googleapis.com/css2?family=Bitcount+Single&display=swap" },
   { id: "font-3", label: "Knewave", style: "Knewave, sans-serif", weight: 400, url: "https://fonts.googleapis.com/css2?family=Knewave&display=swap" },
-  { id: "font-4", label: "Instrument serif", style: "Instrument Serif, serif", weight: 400, url: "https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" },
+  { id: "font-4", label: "Libre Caslon Text", style: "Libre Caslon Text, serif", weight: 700, url: "https://fonts.googleapis.com/css2?family=Libre+Caslon+Text&display=swap" },
 ];
 
 FONTS.forEach(({ url }) => {

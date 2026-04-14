@@ -19,8 +19,8 @@ export const LoginPage = () => {
             <h2>{signUp ? "Skapa konto" : "Logga in"}</h2>
             <p className='pt-3 w-55'>
                 {signUp
-                    ? "Skapa ett konto för att spara din ölhylla"
-                    : "Logga in för att se din profil och designa din egen öl"}
+                    ? "Skapa ett konto för att spara din barhylla"
+                    : "Logga in för att se din profil och designa din egen burk"}
             </p>
 
             <div className="flex flex-col md:flex-row items-center justify-center gap-8">

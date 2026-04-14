@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { ProgressDots } from "../shared/components/ProgressDots";
 import { NameStep } from "../features/can-designer/steps/NameStep";
 import { GuestSignup } from "../features/Auth/components/GuestSignup";
+import { DeferredVideo } from "../shared/components/DeferredVideo.jsx";
 
+import LandingpageV2comp from "../assets/animations/LandingpageV2comp.mp4";
 
-import can from "../assets/images/baseCan.svg";
 import onboardP2Comp from "../assets/animations/onbordP2Comp.mp4";
 import { Button } from "../shared/components/Button";
 
@@ -20,16 +20,12 @@ const STEP_TITLE = {
 const STEP_SUBTITLE = {
     first: "Uttryck dig själv med en personlig design",
     secound:  "Scanna andras burkar och samla dem i din Barhylla",
-    last:  "Namnge din öl med ditt eget namn.",
+    last:  "Namnge din burk med ditt eget namn.",
 };
 
-const STEP_IMG = {
-    first: can
-};
     
 export const IntroPage = () => {
     const [step, setStep] = useState("first");
-    const navigate = useNavigate();
 
     return (
         <section className="flex flex-col min-h-[calc(100vh-80px)]">
@@ -39,13 +35,17 @@ export const IntroPage = () => {
                 </div>
 
                 {step === "first" && (
-                    <div className="flex justify-center items-center p-4 w-5/6 mx-auto">
-                        <img 
-                            src={STEP_IMG[step]} 
-                            alt=""
-                            className="max-h-full max-w-full object-contain" 
-                        />
-                    </div>
+                <div className="w-auto px-4 items-center text-center">
+                    <DeferredVideo
+                        src={LandingpageV2comp}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        rootMargin="200px"
+                        className="w-full max-h-[55vh] mx-auto object-contain"
+                    />
+                </div>
                 )}
 
                 {step === "first" && (
@@ -63,14 +63,14 @@ export const IntroPage = () => {
                 {step === "secound" && (
                 <div className="flex flex-col flex-1 min-h-0 items-stretch p-4">
                     <div className="flex flex-1 items-start p-4 w-5/6 mx-auto overflow-hidden">
-                        <video 
+                        <DeferredVideo 
                             src={onboardP2Comp} 
-                            alt="Två animerade burkar som skålar mot varandra"
                             className="max-h-full max-w-full object-contain"
                             playsInline
                             autoPlay
                             loop
                             muted
+                            rootMargin="150px"
                         />
                     </div>
                     <div className="flex flex-col w-full gap-6 mt-auto">

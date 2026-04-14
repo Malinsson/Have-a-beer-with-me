@@ -3,41 +3,10 @@ import { useDesignStore } from "../../../store/designStore";
 import { useProfileInfo } from "../../profile/hooks/useProfileInfo";
 import { useUserSlug } from "../../profile/hooks/useUserSlug";
 
-import baseCan from "../../../assets/images/baseCan.png";
-import logo from "../../../assets/images/logo/yrgo.png";
-import overlay from "../../../assets/images/overlay.png";
+import baseCan from "../../../assets/images/baseCan.webp";
+import { CanPreviewBack } from "./canPreview/CanPreviewBack.jsx";
+import { CanPreviewFront } from "./canPreview/CanPreviewFront.jsx";
 
-import TagRed from "../../../assets/images/tags/tag-red.svg";
-import TagGreen from "../../../assets/images/tags/tag-green.svg";
-import TagBlue from "../../../assets/images/tags/tag-blue.svg";
-
-import { TEXT_ALIGNMENT, TEXTURES , getTagLabelById } from "../constants";
-import { ProfileQRCode } from "../../../shared/components/ProfileQRCode.jsx";
-
-import { SiInstagram, SiGithub } from "react-icons/si";
-import { CiLinkedin } from "react-icons/ci";
-
-const TAG_ASSETS = [TagRed, TagGreen, TagBlue];
-
-const DEFAULT_TEXTURE_BG = "linear-gradient(135deg, #f0f0f090 0%, #e2e2e290 100%)";
-const TEXTURE_SRC_BY_ID = TEXTURES.reduce((acc, texture) => {
-    acc[texture.id] = texture.src;
-    return acc;
-}, {});
-
-const SOCIAL_CONFIG = [
-    { key: 'linkedin', label: 'LinkedIn', Icon: CiLinkedin },
-    { key: 'instagram', label: 'Instagram', Icon: SiInstagram },
-    { key: 'github', label: 'Github', Icon: SiGithub },
-];
-
-const getAdaptiveNameSize = (value) => {
-    const length = (value || "").trim().length;
-    if (length <= 10) return "1.25rem";
-    if (length <= 14) return "1rem";
-    if (length <= 18) return "0.875rem";
-    return "0.78rem";
-};
 
 export const CanPreview2D = ({ side = "front", design = null, scale = 1, textScale = null }) => {
     const { slug: routeSlug } = useParams();
@@ -52,6 +21,8 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
     const useStoreData = !design;
     
     const name = useStoreData ? nameFromStore : { firstName: "", drinkType: "", ...(design?.name || {}) };
+
+    // Prepare front and back data, prioritizing store data if useStoreData is true, otherwise using design prop or defaults
     const front = useStoreData
         ? frontFromStore
         : {
@@ -79,19 +50,7 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
               ...(design?.back || {}),
           };
 
-    const textureSrc = TEXTURE_SRC_BY_ID[front.texturePreset] || null;
-    const textAlignClass = TEXT_ALIGNMENT[front.textAlignment] || TEXT_ALIGNMENT.center;
-    const imageTransform = {
-        x: front.imageTransform?.x || 0,
-        y: front.imageTransform?.y || 0,
-        scale: front.imageTransform?.scale || 1,
-    };
-    const imageLayerStyle = {
-        transform: `translate(${imageTransform.x}%, ${imageTransform.y}%) scale(${imageTransform.scale})`,
-        transformOrigin: "center center",
-    };
-
-    //Bottom curve
+    //Label curve
     const labelClipStyle = {
         borderTopLeftRadius: "48% 1%",
         borderTopRightRadius: "48% 1%",
@@ -99,13 +58,7 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
         borderBottomRightRadius: "48% 3%",
     };
 
-    const firstName = (name.firstName || "").trim();
-    const firstNameEndsWithS = /s$/i.test(firstName);
-    const backFirstNameSize = getAdaptiveNameSize(profile?.first_name);
-    const backLastNameSize = getAdaptiveNameSize(profile?.last_name);
-
     const isFrontSide = side === "front";
-    const socialsData = back?.socials || {};
 
     return (
         <div className="relative max-w-45 mx-auto" style={{ maxWidth: `${200 * scale}px` }}>
@@ -113,154 +66,24 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
 
             {/* Label area */}
             <div
-                className="absolute left-1/2 top-[18.5%] -translate-x-1/2 w-[98%] h-[75%] overflow-hidden"
+                className="absolute left-1/2 top-[18.5%] -translate-x-1/2 w-[97.5%] h-[75%] overflow-hidden"
                 style={labelClipStyle}
             >
             
                 {isFrontSide && (
-                <div>
-                    <div className="absolute inset-0 bg-black/10" />
-
-                        {/* Text layer */}
-                        <div className={`absolute w-full h-full p-3 z-50 flex ${textAlignClass}`}>
-                            <p
-                                className="leading-tight text-2xl"
-                                style={{ 
-                                    color: front.textColor, 
-                                    fontFamily: front.textFont, 
-                                    fontSize: `${1.5 * fontScale}rem`, 
-                                    fontWeight: front.textFont === "Inter, sans-serif" ? 600 : 400 
-                                }}
-                            >
-                                {firstName && (
-                                    <>
-                                        {firstName}
-                                        {firstNameEndsWithS ? (
-                                            "'"
-                                        ) : (
-                                            <>
-                                                {"'"}
-                                                <span className="text-[1em]" style={{ color: front.textColor, fontFamily: front.textFont, fontWeight: front.textFont === "Inter, sans-serif" ? 600 : 400 }}>
-                                                    s
-                                                </span>
-                                            </>
-                                        )}
-                                    </>
-                                )}
-                                <br />
-                                {name.drinkType}
-                            </p>
-                        </div>
-
-                    {/* Texture layer */}
-                    {textureSrc ? (
-                        <img
-                            src={textureSrc}
-                            alt="Texture"
-                            className="absolute inset-0 w-full h-full object-cover z-5 pointer-events-none"
-                        />
-                    ) : (
-                        <div className="absolute inset-0 z-5" style={{ background: DEFAULT_TEXTURE_BG }} />
-                    )}
-                        <img
-                            src={overlay}
-                            alt="Overlay"
-                            className="absolute inset-0 w-full h-full object-fill z-20 pointer-events-none"
-                            
-                        />
-
-                    {front.imageUrl && (
-                        <>
-                            <img
-                            src={front.imageUrl}
-                            alt="Uploaded label"
-                            className="absolute inset-0 w-full h-full object-contain z-10 select-none pointer-events-none"
-                            style={imageLayerStyle}
-                            />
-                        </>
-                    )}
-                    </div>
-
+                    <CanPreviewFront 
+                    front={front} 
+                    name={name} 
+                    fontScale={fontScale} 
+                    />
                 )}
 
-                {/* Back side content */}
                 {!isFrontSide &&(
-                    <div className=" absolute bg-white/80 w-full h-full inset-0 p-2 flex flex-col">
-                        <div className="flex justify-between w-full">
-
-                            <div className="flex flex-col leading-tight w-full max-w-[80%]">
-                                <h2 className="profileCan truncate" style={{ fontSize: backFirstNameSize, lineHeight: 1.05 }}>
-                                    {profile?.first_name}
-                                </h2>
-                                <h2 className="profileCan profile-italic truncate" style={{ fontSize: backLastNameSize, lineHeight: 1.05 }}>
-                                    {profile?.last_name}
-                                </h2>
-                                <h4 className="text-dark-blue text-lg">{back.department}</h4>
-                            </div>
-
-                            <img src={logo} alt="Yrgo Logo" className="w-8 h-8" />
-                        </div>
-
-                        {/* Description */}
-                        <div className="">
-                            <h3 className="text-[10px] pb-1">Innehållsförteckning</h3>
-                            <p className="text-[7px] h-8 overflow-hidden">{back.description || "Ingen beskrivning tillagd."}</p>
-                        </div>
-
-                        <div className="flex justify-between mt-auto w-full min-w-0 h-20">
-                            <div className="flex flex-col gap-2 flex-1 min-w-0">
-                                <div className="flex gap-1">
-
-                                    {/* Show 3 tags max */}
-                                    {back.tags?.slice(0, 3).map((tagId, index) => {
-                                        const label = getTagLabelById(tagId);
-                                        
-                                        return (
-                                            <div key={tagId} className="flex flex-col items-center gap-1">
-                                                <span className="text-[7px] uppercase tracking-tighter">
-                                                    {label}
-                                                </span>
-                                                <div className="w-4 h-4">
-                                                    <img 
-                                                        src={TAG_ASSETS[index]} 
-                                                        alt={`${label} tag`} 
-                                                        className="w-full h-full object-contain"
-                                                    />
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
-
-                                    {!back.tags?.length && (
-                                        <p className="uppercase text-[7px] tracking-widest mt-1">
-                                            Inga kompetenser valda
-                                        </p>
-                                    )}
-                                </div>
-                                
-                                {/* Social media handles */}
-                                <div className="flex flex-col gap-1 pl-1 min-w-0 w-full">
-                                    {SOCIAL_CONFIG.map((config) => {
-                                        const username = socialsData[config.key];
-                                        if (!username) return null;
-                                        const { Icon } = config;
-                                        
-                                        return (
-                                            <div key={config.key} className="flex items-center gap-1 min-w-0 w-full">
-                                                {Icon && <Icon className="w-3 h-3 shrink-0" />}
-                                                <span className="text-[8px] truncate min-w-0 block w-full">{username}</span>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-
-                            <div className="flex flex-col items-center shrink-0 w-15">
-                                <p className="text-[7px] self-end pr-2">330 ML</p>
-                                <ProfileQRCode slug={effectiveSlug} size={65} />
-                            </div>
-                        </div>
-                    </div>
+                    <CanPreviewBack 
+                    back={back} 
+                    profile={profile} 
+                    effectiveSlug={effectiveSlug}
+                    />
                 )}
             </div>
         </div>

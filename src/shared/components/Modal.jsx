@@ -28,7 +28,7 @@ export const Modal = ({ onConfirm }) => {
                 </div>
                 
                 <Button 
-                    text="Till min öl"
+                    text="Till min burk"
                     type="button"
                     onClick={onConfirm}
                     showIcon={true}

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import supabase from "../../../../lib/supabase";
+import { invokeDesignerBootstrap } from "./designerBootstrap";
 
 export const useDesignAuthState = ({ setCanSkipKonto }) => {
     useEffect(() => {
@@ -10,6 +11,21 @@ export const useDesignAuthState = ({ setCanSkipKonto }) => {
         let isMounted = true;
 
         const syncAuthState = async () => {
+            const { data, error } = await invokeDesignerBootstrap();
+            const bootstrapCanSkip = data?.auth?.canSkipKonto;
+
+            if (!error && typeof bootstrapCanSkip === "boolean") {
+                if (!isMounted) return;
+                setCanSkipKonto(bootstrapCanSkip);
+                return;
+            }
+
+            if (!supabase?.auth) {
+                if (!isMounted) return;
+                setCanSkipKonto(false);
+                return;
+            }
+
             const {
                 data: { session },
             } = await supabase.auth.getSession();
@@ -19,6 +35,12 @@ export const useDesignAuthState = ({ setCanSkipKonto }) => {
         };
 
         syncAuthState();
+
+        if (!supabase?.auth) {
+            return () => {
+                isMounted = false;
+            };
+        }
 
         const {
             data: { subscription },
