@@ -49,7 +49,7 @@ export const CanPreviewFront = ({ front, name, fontScale }) => {
                             color: front.textColor, 
                             fontFamily: front.textFont, 
                             fontSize: `${frontFirstNameSize}rem`,
-                            lineHeight: 0.7, 
+                            lineHeight: 1.05, 
                             fontWeight: front.textFont === "Inter, sans-serif" || front.textFont === "Monda, sans-serif" ? 600 : 400 
                         }}
                     >
