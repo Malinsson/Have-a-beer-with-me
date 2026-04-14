@@ -56,6 +56,10 @@ export const DeferredVideo = ({
         const video = videoRef.current;
         if (!video) return;
 
+        // Ensure iOS Safari treats the video as muted before autoplay attempts.
+        video.defaultMuted = muted || autoPlay;
+        video.muted = muted || autoPlay;
+
         const tryPlay = async () => {
             try {
                 await video.play();
@@ -66,7 +70,7 @@ export const DeferredVideo = ({
         };
 
         tryPlay();
-    }, [autoPlay, shouldLoad]);
+    }, [autoPlay, muted, shouldLoad]);
 
     return (
         <div ref={containerRef} className="w-full">
@@ -77,7 +81,6 @@ export const DeferredVideo = ({
                 autoPlay={shouldLoad && autoPlay}
                 loop={loop}
                 muted={muted || autoPlay}
-                defaultMuted={muted || autoPlay}
                 playsInline={playsInline}
                 controls={controls || autoplayBlocked}
                 poster={poster}
