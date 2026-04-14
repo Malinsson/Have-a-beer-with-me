@@ -1,8 +1,16 @@
-import { Suspense, lazy } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Suspense, lazy, useEffect } from 'react'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import './App.css'
 
 import { Layout } from './shared/components/Layout.jsx'
+
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+  return null
+}
 
 const HomePage = lazy(() => import('./pages/HomePage.jsx').then((m) => ({ default: m.HomePage })))
 const LoginPage = lazy(() => import('./pages/LoginPage.jsx').then((m) => ({ default: m.LoginPage })))
@@ -18,6 +26,7 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage.jsx').then((m) => (
 export function App() {
   return (
     <Layout>
+      <ScrollToTop />
       <Suspense fallback={<p className="text-center mt-10">Laddar...</p>}>
         <Routes>
           <Route path="/" element={<HomePage />}></Route>

@@ -14,7 +14,7 @@ export const CanActionSection = ({
             {isOwnProfile ? (
                 <>
                     <Button
-                        text="Editera burk"
+                        text="Redigera burk"
                         onClick={onEditCan}
                         variant="outlined"
                         showIcon={false}

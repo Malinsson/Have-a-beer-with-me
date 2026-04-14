@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ProgressDots } from "../shared/components/ProgressDots";
 import { NameStep } from "../features/can-designer/steps/NameStep";
 import { GuestSignup } from "../features/Auth/components/GuestSignup";
@@ -12,7 +12,7 @@ import { Button } from "../shared/components/Button";
 const STEPS = ["first", "secound", "last"];
 
 const STEP_TITLE = {
-    first: "Skapa din egna burk",
+    first: "Skapa din egen burk",
     secound: "Mingla",
     last:  "Vem är du?",
 };
@@ -26,6 +26,10 @@ const STEP_SUBTITLE = {
     
 export const IntroPage = () => {
     const [step, setStep] = useState("first");
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [step])
 
     return (
         <section className="flex flex-col min-h-[calc(100vh-80px)]">
@@ -62,7 +66,7 @@ export const IntroPage = () => {
 
                 {step === "secound" && (
                 <div className="flex flex-col flex-1 min-h-0 items-stretch p-4">
-                    <div className="flex flex-1 items-start p-4 w-5/6 mx-auto overflow-hidden">
+                    <div className="flex items-start p-4 w-5/6 mx-auto overflow-hidden">
                         <DeferredVideo 
                             src={onboardP2Comp} 
                             className="max-h-full max-w-full object-contain"
@@ -73,7 +77,7 @@ export const IntroPage = () => {
                             rootMargin="150px"
                         />
                     </div>
-                    <div className="flex flex-col w-full gap-6 mt-auto">
+                    <div className="fixed flex flex-col w-full gap-6 bottom-0 left-0 right-0 p-4">
                         <section>
                             <ProgressDots total={3} current={2} />
                         </section>

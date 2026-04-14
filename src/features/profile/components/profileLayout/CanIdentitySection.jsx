@@ -4,6 +4,23 @@ import { MdCheck, MdAdd } from "react-icons/md";
 import { Button } from "../../../../shared/components/Button.jsx";
 import { useNavigate } from "react-router-dom";
 
+
+const getAdaptiveNameSize = (length) => {
+    const safeLength = Number.isFinite(length) ? length : 0;
+    if (safeLength <= 10) return "2rem";
+    if (safeLength <= 14) return "1.7rem";
+    if (safeLength <= 18) return "1.3rem";
+    return "1rem";
+};
+
+const getLongestWordLength = (...values) => {
+    return values
+        .flatMap((value) => String(value || "").trim().split(/[\s-]+/))
+        .filter(Boolean)
+        .reduce((max, word) => Math.max(max, word.length), 0);
+};
+
+
 export const CanIdentitySection = ({
     profile,
     isOwnProfile,
@@ -15,14 +32,30 @@ export const CanIdentitySection = ({
     onSave,
 }) => {
     const navigate = useNavigate();
+    
+    const longestWordLength = getLongestWordLength(
+        profile?.first_name,
+        profile?.last_name,
+    );
+
+    const maxFontSize = getAdaptiveNameSize(longestWordLength);
+    const maxDepartmentSize = getAdaptiveNameSize(String(department || "").length);
+    
 
     return (
         <div className="flex flex-col">
             <div className="flex flex-row justify-between">
-                <div className="flex flex-col gap-2">
-                    <h2 className="profile">{profile?.first_name} <br/></h2>
-                    <h2 className="profile profile-italic">{profile?.last_name}</h2>
-                    <h4 className="text-dark-blue text-2xl">{department}</h4>
+
+                <div className="flex flex-col gap-2 truncate justify-center">
+                    <h2 className="profile" style={{ fontSize: maxFontSize, lineHeight: 1.05 }}>
+                        {profile?.first_name} <br/>
+                    </h2>
+                    <h2 className="profile profile-italic" style={{ fontSize: maxFontSize, lineHeight: 1.05 }}>
+                        {profile?.last_name}
+                    </h2>
+                    <h4 className="text-dark-blue text-wrap" style={{ fontSize: maxDepartmentSize }}>
+                        {department}
+                    </h4>
                 </div>
 
                 <div className="flex flex-col gap-2">

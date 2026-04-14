@@ -14,13 +14,13 @@ export const HomePage = () => {
         <>
         <div className="min-h-screen font-sans text-gray-900 bg-white">
             <section 
-                className="relative h-[65vh] w-full bg-cover bg-center flex flex-col justify-between p-6 overflow-hidden" 
+                className="relative h-[65vh] min-h-[550px] w-full bg-cover bg-center flex flex-col justify-between p-6 overflow-hidden" 
                 style={{ backgroundImage: homeImgage ? `url(${homeImgage})` : "none" }}
             >
                 
                 <div>
                     <h1>Ta en öl<sup>*</sup> <br /> Med Yrgo</h1>
-                    <h4>14:00 – 16:30 <br /> <em>Onsdag</em> <br /> 22 April</h4>
+                    <h4>14:00 – 16:30 <br /> <em>Onsdag</em> <br /> 22 april</h4>
                 </div>
 
                 <div className="flex flex-col gap-6">
