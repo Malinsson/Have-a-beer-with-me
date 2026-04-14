@@ -5,15 +5,16 @@ import { useImageUploader } from '../hooks/uploadUserImages/useImageUploader'
 import { GoUpload } from "react-icons/go";
 import ImagePositioner from './ImagePositioner';
 import { ImageUploadFooterActions } from './ImageUploadFooterActions';
+import { IoCloseSharp } from "react-icons/io5";
 
 // --- Constants ---
 const DEFAULT_IMAGE_TRANSFORM = { x: 0, y: 0, scale: 1 };
 const STEPS = { CROP: 'crop', POSITION: 'position' }
 
 // --- Sub-components ---
-const UploadTriggerContent = ({ label }) => (
+const UploadTriggerContent = ({ label, icon: Icon }) => (
   <>
-    <div className="p-3"><GoUpload className="text-base" /></div>
+    <Icon className="text-xl shrink-0" />
     <span className="uppercase text-md">{label}</span>
   </>
 )
@@ -72,13 +73,13 @@ export function ImageUploader({ onUploadComplete, hasImage = false, onRemoveImag
 
       {/* Upload/remove button */}
       {hasImage ? (
-        <button type="button" onClick={onRemoveImage} className="w-full flex items-center justify-center">
-          <UploadTriggerContent label="Ta bort bild" />
+        <button type="button" onClick={onRemoveImage} className="w-full flex items-center justify-center gap-2">
+          <UploadTriggerContent label="Ta bort bild" icon={IoCloseSharp} />
         </button>
       ) : (
         <>
-          <label htmlFor='imageUploader' className="w-full flex items-center justify-center">
-            <UploadTriggerContent label="Ladda upp" />
+          <label htmlFor='imageUploader' className="w-full flex items-center justify-center gap-2 pr-2">
+            <UploadTriggerContent label="Välj egen bild" icon={GoUpload} />
           </label>
           <input
             id='imageUploader'
