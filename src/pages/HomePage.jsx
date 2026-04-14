@@ -51,9 +51,9 @@ export const HomePage = () => {
                 </div>
                 <div className="flex flex-col items-end">
                     <p className="large pb-6">
-                    SKAPA DIN EGEN DIGITALA BURK för YRGO:s LIA-event på Visual Arena, 
-                    Lindholmen. Här möts framtida digitala designers, webbutvecklare och 
-                    folk från branschen.
+                        SKAPA DIN EGEN DIGITALA BURK för YRGO:s LIA-event på Visual Arena, 
+                        Lindholmen. Här möts framtida digitala designers, webbutvecklare och 
+                        folk från branschen.
                     </p>
                     <div className="w-50">
                         <Button text="Designa din burk" onClick={() => navigate("/intro")} />
