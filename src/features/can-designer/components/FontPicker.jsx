@@ -45,7 +45,7 @@ export const FontPicker = ({ selectedFont, onSelect }) => {
             {isOpen && (
                 <ul
                     role="listbox"
-                    className="absolute z-50 mt-1 w-full max-h-56 overflow-y-auto border border-black bg-white"
+                    className="absolute z-50 mt-1 mb-12 w-full max-h-56 overflow-y-auto border border-black bg-white"
                 >
                     {FONTS.map((font) => {
                         const isSelected = font.style === selectedFontDef.style;
