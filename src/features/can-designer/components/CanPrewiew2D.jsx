@@ -66,7 +66,7 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
 
             {/* Label area */}
             <div
-                className="absolute left-1/2 top-[18.5%] -translate-x-1/2 w-[98%] h-[75%] overflow-hidden"
+                className="absolute left-1/2 top-[18.5%] -translate-x-1/2 w-[97.5%] h-[75%] overflow-hidden"
                 style={labelClipStyle}
             >
             
