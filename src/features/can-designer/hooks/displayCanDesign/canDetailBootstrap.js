@@ -5,13 +5,24 @@ export const invokeCanDetailBootstrap = async ({ shareId } = {}) => {
         return { data: null, error: null };
     }
 
-    const { data, error } = await supabase.functions.invoke("can-detail-bootstrap", {
-        body: { shareId },
-    });
+    try {
+        const {
+            data: { session },
+        } = await supabase.auth.getSession();
 
-    if (error) {
-        return { data: null, error };
+        const { data, error } = await supabase.functions.invoke("can-detail-bootstrap", {
+            body: {
+                shareId,
+                accessToken: session?.access_token || null,
+            },
+        });
+
+        if (error) {
+            return { data: null, error };
+        }
+
+        return { data, error: null };
+    } catch (caughtError) {
+        return { data: null, error: caughtError };
     }
-
-    return { data, error: null };
 };

@@ -5,16 +5,25 @@ export const invokeProfileBootstrap = async ({ slug, includeShelf = false } = {}
         return { data: null, error: null };
     }
 
-    const { data, error } = await supabase.functions.invoke("profile-bootstrap", {
-        body: {
-            slug,
-            includeShelf,
-        },
-    });
+    try {
+        const {
+            data: { session },
+        } = await supabase.auth.getSession();
 
-    if (error) {
-        return { data: null, error };
+        const { data, error } = await supabase.functions.invoke("profile-bootstrap", {
+            body: {
+                slug,
+                includeShelf,
+                accessToken: session?.access_token || null,
+            },
+        });
+
+        if (error) {
+            return { data: null, error };
+        }
+
+        return { data, error: null };
+    } catch (caughtError) {
+        return { data: null, error: caughtError };
     }
-
-    return { data, error: null };
 };

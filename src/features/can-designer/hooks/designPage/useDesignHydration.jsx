@@ -45,6 +45,8 @@ export const useDesignHydration = ({ locationState, setBack, setFront, setName }
                 const { data, error } = await invokeDesignerBootstrap();
                 if (!error && applyBootstrapDesignToStore(data)) {
                     result = { success: true };
+                } else if (!error && data?.auth?.isAuthenticated === false) {
+                    result = { success: true };
                 } else if (error) {
                     result = { success: false, error: error.message };
                 }
