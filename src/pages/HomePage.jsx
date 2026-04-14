@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "../shared/components/Button.jsx";
 import { Footer } from "../shared/components/Footer.jsx";
 import { useUserSlug } from "../features/profile/hooks/useUserSlug";
-import homeImgage from "../assets/images/home.png"
+import homeImgage from "../assets/images/home.webp"
 import LandingpageV2comp from "../assets/animations/LandingpageV2comp.mp4";
 
 export const HomePage = () => {
@@ -51,9 +51,9 @@ export const HomePage = () => {
                 </div>
                 <div className="flex flex-col items-end">
                     <p className="large pb-6">
-                    SKAPA DIN EGEN DIGITALA BURK för YRGO:s LIA-event på Visual Arena, 
-                    Lindholmen. Här möts framtida digitala designers, webbutvecklare och 
-                    folk från branschen.
+                        SKAPA DIN EGEN DIGITALA BURK för YRGO:s LIA-event på Visual Arena, 
+                        Lindholmen. Här möts framtida digitala designers, webbutvecklare och 
+                        folk från branschen.
                     </p>
                     <div className="w-50">
                         <Button text="Designa din burk" onClick={() => navigate("/intro")} />
