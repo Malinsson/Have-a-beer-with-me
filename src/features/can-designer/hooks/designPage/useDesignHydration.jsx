@@ -1,5 +1,37 @@
 import { useEffect, useRef } from "react";
 import { useDesignStore } from "../../../../store/designStore";
+import { invokeDesignerBootstrap } from "./designerBootstrap";
+
+const isObject = (value) => value !== null && typeof value === "object";
+
+const applyBootstrapDesignToStore = (payload) => {
+    const latestDesign = payload?.latestDesign;
+    if (!isObject(latestDesign)) return false;
+
+    const designData = isObject(latestDesign.design_data) ? latestDesign.design_data : {};
+    const nameData = isObject(designData.name) ? designData.name : {};
+    const frontData = isObject(designData.front) ? designData.front : {};
+    const backData = isObject(designData.back) ? designData.back : {};
+
+    useDesignStore.getState().setName(
+        typeof nameData.firstName === "string" ? nameData.firstName : "",
+        typeof nameData.lastName === "string" ? nameData.lastName : "",
+        typeof nameData.drinkType === "string" ? nameData.drinkType : ""
+    );
+
+    useDesignStore.getState().setFront(frontData);
+    useDesignStore.getState().setBack({
+        ...backData,
+        socials: isObject(backData.socials) ? backData.socials : {},
+    });
+
+    useDesignStore.setState((state) => ({
+        ...state,
+        currentShareId: latestDesign.share_id || state.currentShareId || null,
+    }));
+
+    return true;
+};
 
 export const useDesignHydration = ({ locationState, setBack, setFront, setName }) => {
     const hasHydratedRef = useRef(false);
@@ -8,7 +40,19 @@ export const useDesignHydration = ({ locationState, setBack, setFront, setName }
     useEffect(() => {
         const hydrateLatestDesign = async () => {
             try {
-                const result = await useDesignStore.getState().loadLatestDesignForCurrentUser();
+                let result = { success: false, error: "No design found" };
+
+                const { data, error } = await invokeDesignerBootstrap();
+                if (!error && applyBootstrapDesignToStore(data)) {
+                    result = { success: true };
+                } else if (error) {
+                    result = { success: false, error: error.message };
+                }
+
+                if (!result.success) {
+                    result = await useDesignStore.getState().loadLatestDesignForCurrentUser();
+                }
+
                 const { firstName, lastName, drinkTypeId, drinkTypeLabel, department } = locationState || {};
 
                 if (typeof firstName === "string" || typeof lastName === "string" || typeof drinkTypeLabel === "string") {

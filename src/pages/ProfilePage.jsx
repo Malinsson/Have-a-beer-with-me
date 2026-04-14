@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useProfileInfo } from "../features/profile/hooks/useProfileInfo.js";
 import { useUserSlug } from "../features/profile/hooks/useUserSlug.js";
 import { supabase } from "../lib/supabase.js";
-import { useProfileDesigns } from "../features/profile/hooks/useProfileDesigns.js";
 import { useSaveCanToShelf } from "../features/can-designer/hooks/displayCanDesign/useSaveCanToShelf.js";
 import { CanPreviewSection } from "../features/profile/components/profileLayout/CanPreviewSection.jsx";
 import { CanTagSection } from "../features/profile/components/profileLayout/CanTagSection.jsx";
@@ -13,12 +11,16 @@ import { CanInfoSection } from "../features/profile/components/profileLayout/Can
 import { CanActionSection } from "../features/profile/components/profileLayout/CanActionSection.jsx";
 import { useSavedCan } from "../features/profile/hooks/useSavedCan.js";
 import { LoginRedirectMessage } from "../shared/components/LoginRedirectMessage.jsx";
+import { invokeProfileBootstrap } from "../features/profile/hooks/profileBootstrap.js";
 
 
 export const ProfilePage = () => {
     
     const [currentUserId, setCurrentUserId] = useState(null);
-    const [authLoading, setAuthLoading] = useState(true);
+    const [profile, setProfile] = useState(null);
+    const [design, setDesign] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     // Get slug from URL and current user's slug for comparison
     const navigate = useNavigate();
@@ -34,30 +36,99 @@ export const ProfilePage = () => {
         }
     }, [slug, mySlug, navigate]);
 
-    // Redirect to own profile if slug is "me"
-    const { profile, loading, error } = useProfileInfo(slug);
-
     useEffect(() => {
-        const fetchCurrentUser = async () => {
-            const { data: { user } } = await supabase.auth.getUser();
-            setCurrentUserId(user?.id || null);
-            setAuthLoading(false);
-        };
-        fetchCurrentUser();
-    }, []);
+        if (!slug) {
+            setProfile(null);
+            setDesign(null);
+            setCurrentUserId(null);
+            setError(null);
+            setLoading(false);
+            return;
+        }
 
-    // Fetch the current design for this profile
-    const { design, loading: designLoading, error: designError } = useProfileDesigns(profile?.id);
+        let cancelled = false;
+
+        const fetchProfilePageData = async () => {
+            setLoading(true);
+            setError(null);
+
+            try {
+                const { data: bootstrapData, error: bootstrapError } = await invokeProfileBootstrap({ slug });
+
+                if (!cancelled && !bootstrapError && bootstrapData?.profile) {
+                    const bootstrapViewerId =
+                        bootstrapData?.viewer?.id ||
+                        bootstrapData?.auth?.userId ||
+                        null;
+
+                    setProfile(bootstrapData.profile || null);
+                    setDesign(bootstrapData.design || bootstrapData.latestDesign || null);
+                    setCurrentUserId(bootstrapViewerId);
+                    setLoading(false);
+                    return;
+                }
+
+                const {
+                    data: { user },
+                } = await supabase.auth.getUser();
+
+                const { data: profileData, error: profileError } = await supabase
+                    .from("profiles")
+                    .select("*")
+                    .eq("slug_value", slug)
+                    .maybeSingle();
+
+                if (profileError) throw profileError;
+
+                let designData = null;
+                if (profileData?.id) {
+                    const { data: latestDesign, error: designError } = await supabase
+                        .from("designs")
+                        .select("id, name, design_data, share_id, created_at, updated_at, user_id")
+                        .eq("user_id", profileData.id)
+                        .not("design_data", "is", null)
+                        .order("updated_at", { ascending: false })
+                        .limit(1)
+                        .maybeSingle();
+
+                    if (designError) throw designError;
+                    designData = latestDesign || null;
+                }
+
+                if (cancelled) return;
+                setProfile(profileData || null);
+                setDesign(designData);
+                setCurrentUserId(user?.id || null);
+            } catch (caughtError) {
+                if (cancelled) return;
+                setError(caughtError);
+                setProfile(null);
+                setDesign(null);
+                setCurrentUserId(null);
+            } finally {
+                if (!cancelled) {
+                    setLoading(false);
+                }
+            }
+        };
+
+        fetchProfilePageData();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [slug]);
+
     const { isSaved, setIsSaved, saving, setSaving } = useSavedCan(design?.share_id);
     
     const backData = design?.design_data?.back || {};
     const socialsData = backData.socials || {};
 
-    if (!profile && !loading && !authLoading) return (
+    if (!profile && !loading) return (
         <LoginRedirectMessage message="Du behöver ett konto för att se din profil." />
     );
     
-    if (loading || authLoading) return <p className="text-center mt-10">Laddar profil...</p>;
+    if (loading) return <p className="text-center mt-10">Laddar profil...</p>;
 
     const isOwnProfile = currentUserId && profile?.id === currentUserId;
     
@@ -82,9 +153,9 @@ export const ProfilePage = () => {
         <div id="top" className="container mx-auto p-4">
 
             {/* Beer can preview section */}
-            {designLoading ? (
+            {loading ? (
                 <p>Laddar burk...</p>
-            ) : designError ? (
+            ) : error ? (
                 <p>Något gick fel när burken laddades.</p>
             ) : (
                 <CanPreviewSection design={design} />

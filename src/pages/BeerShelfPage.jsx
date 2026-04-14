@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import scanCanImage from "../assets/images/yrgo-can.png";
 import { useDesignStore } from "../store/designStore.js";
-import { useProfileInfo } from "../features/profile/hooks/useProfileInfo.js";
+import { supabase } from "../lib/supabase.js";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSearchForm } from "../shared/hooks/useSearchForm.js";
+import { invokeProfileBootstrap } from "../features/profile/hooks/profileBootstrap.js";
 
 import { BackButton } from "../shared/components/BackButton.jsx";
 import { QRScanner } from "../shared/components/QRScanner.jsx";
@@ -14,47 +15,101 @@ import { LoginRedirectMessage } from "../shared/components/LoginRedirectMessage.
 export const BeerShelfPage = () => {
     const { slug } = useParams();
     const navigate = useNavigate();
-    const { profile, loading: profileLoading, error: profileError } = useProfileInfo(slug);
     const getSavedDesigns = useDesignStore((state) => state.getSavedDesignsByUserId);
 
+    const [profile, setProfile] = useState(null);
     const [savedCans, setSavedCans] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [fetchError, setFetchError] = useState(null);
+    const [error, setError] = useState(null);
     const { searchQuery, setSearchQuery, handleSearch, searchError, isSearching } = useSearchForm();
 
     useEffect(() => {
-        if (profileLoading) return;
-        if (!profile?.id) {
+        if (!slug) {
+            setProfile(null);
+            setSavedCans([]);
             setLoading(false);
+            setError(null);
             return;
         }
 
-        const fetchCans = async () => {
-            const result = await getSavedDesigns(profile.id);
+        let cancelled = false;
 
-            if (result.success) {
-                setSavedCans(result.designs);
-            } else {
-                setFetchError(result.error);
+        const fetchShelfData = async () => {
+            setLoading(true);
+            setError(null);
+
+            try {
+                const { data: bootstrapData, error: bootstrapError } = await invokeProfileBootstrap({
+                    slug,
+                    includeShelf: true,
+                });
+
+                if (!cancelled && !bootstrapError && bootstrapData?.profile) {
+                    setProfile(bootstrapData.profile || null);
+                    setSavedCans(bootstrapData.savedCans || bootstrapData.shelf || []);
+                    setLoading(false);
+                    return;
+                }
+
+                const { data: profileData, error: profileError } = await supabase
+                    .from("profiles")
+                    .select("*")
+                    .eq("slug_value", slug)
+                    .maybeSingle();
+
+                if (profileError) throw profileError;
+
+                if (!profileData?.id) {
+                    if (cancelled) return;
+                    setProfile(null);
+                    setSavedCans([]);
+                    setLoading(false);
+                    return;
+                }
+
+                const result = await getSavedDesigns(profileData.id);
+
+                if (cancelled) return;
+                setProfile(profileData);
+
+                if (result.success) {
+                    setSavedCans(result.designs);
+                } else {
+                    setError(new Error(result.error));
+                    setSavedCans([]);
+                }
+            } catch (caughtError) {
+                if (cancelled) return;
+                setError(caughtError);
+                setProfile(null);
+                setSavedCans([]);
+            } finally {
+                if (!cancelled) {
+                    setLoading(false);
+                }
             }
-            setLoading(false);
-        }
-        fetchCans();
-    }, [profile?.id, profileLoading]);
+        };
 
-    if (profile?.id == null && !loading && !profileLoading) return (
+        fetchShelfData();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [getSavedDesigns, slug]);
+
+    if (profile?.id == null && !loading) return (
         <LoginRedirectMessage message="Du behöver ett konto för att se din barhylla." />
     );
 
-    if (loading || profileLoading) return (
+    if (loading) return (
         <div className="flex justify-center items-center mt-12">
             <p>Hämtar din barhylla...</p>
         </div>
     );
 
-    if (profileError || fetchError) return (
+    if (error) return (
         <div className="flex justify-center items-center mt-12">
-            <p>Något gick fel: {profileError?.message || fetchError}</p>;
+            <p>Något gick fel: {error?.message || "Okänt fel"}</p>
         </div>
     );
 
