@@ -4,7 +4,7 @@ import { NameStep } from "../features/can-designer/steps/NameStep";
 import { GuestSignup } from "../features/Auth/components/GuestSignup";
 import { DeferredVideo } from "../shared/components/DeferredVideo.jsx";
 
-import LandingpageV2comp from "../assets/animations/LandingpageV2comp.mp4";
+import LandingpageV3comp from "../assets/animations/LandingpageV3comp.mp4";
 
 import onboardP2Comp from "../assets/animations/onbordP2Comp.mp4";
 import { Button } from "../shared/components/Button";
@@ -37,7 +37,7 @@ export const IntroPage = () => {
                 {step === "first" && (
                 <div className="w-auto px-4 items-center text-center">
                     <DeferredVideo
-                        src={LandingpageV2comp}
+                        src={LandingpageV3comp}
                         autoPlay
                         loop
                         muted

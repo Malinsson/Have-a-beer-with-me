@@ -4,7 +4,7 @@ import { Footer } from "../shared/components/Footer.jsx";
 import { DeferredVideo } from "../shared/components/DeferredVideo.jsx";
 import { useUserSlug } from "../features/profile/hooks/useUserSlug";
 import homeImgage from "../assets/images/home.webp"
-import LandingpageV2comp from "../assets/animations/LandingpageV2comp.mp4";
+import LandingpageV3comp from "../assets/animations/LandingpageV3comp.mp4";
 
 export const HomePage = () => {
     const navigate = useNavigate();
@@ -42,7 +42,7 @@ export const HomePage = () => {
             <section className="py-12 px-8 flex flex-col">
                 <div className="w-full px-4 mb-8 items-center text-center">
                     <DeferredVideo
-                        src={LandingpageV2comp}
+                        src={LandingpageV3comp}
                         autoPlay
                         loop
                         muted
