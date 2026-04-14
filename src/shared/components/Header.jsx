@@ -73,24 +73,24 @@ export const Header = () => {
             <div className="flex items-center gap-4">
 
                 {isSignedIn && (
-                    <div className="flex gap-3 items-center">
+                    <div className="flex items-center">
                         {isGuest && (
                             <p className="inline text-xl">Gäst</p>
                         )}
                         <button
                             type="button"
-                            className="text-4xl relative z-60 transition-transform duration-300 hover:opacity-70"
+                            className="text-xl p-1 relative z-60 transition-transform duration-300 hover:opacity-70"
                             onClick={handleProfileClick}
                             aria-label="Go to profile"
                         >
-                            <img src={beerHeaderIcon} alt="Profile" className="text-3xl" />
+                            <img src={beerHeaderIcon} alt="Profile" className="text-3xl p-1" />
                         </button>
                     </div>
                 )}
 
                 <button
                     type="button"
-                    className="text-4xl relative z-60 transition-transform duration-300"
+                    className="text-4xl p-1 relative z-60 transition-transform duration-300"
                     onClick={toggleMenu}
                     aria-label={menuOpen ? "Close menu" : "Open menu"}
                     aria-expanded={menuOpen}

@@ -30,18 +30,18 @@ export const CanPreviewSection = ({ design }) => {
                 <button
                     type="button"
                     onClick={handleSideToggle}
-                    className="p-2 hover:opacity-70"
+                    className="p-2.5 hover:opacity-70"
                     aria-label="Previous side"
                 >
-                    <MdOutlineArrowBackIosNew className="text-xl" />
+                    <MdOutlineArrowBackIosNew className="text-2xl" />
                 </button>
                 <button
                     type="button"
                     onClick={handleSideToggle}
-                    className="p-2 hover:opacity-70"
+                    className="p-2.5 hover:opacity-70"
                     aria-label="Next side"
                 >
-                    <MdOutlineArrowForwardIos className="text-xl" />
+                    <MdOutlineArrowForwardIos className="text-2xl" />
                 </button>
             </div>
         </section>

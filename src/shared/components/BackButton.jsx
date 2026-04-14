@@ -13,7 +13,7 @@ export const BackButton = ({ to, onClick }) => {  // ← onClick was missing her
 
     return (
         <button onClick={handleClick} aria-label="Go back">
-            <MdArrowBackIos className="p-2 text-4xl" />
+            <MdArrowBackIos className="p-2 text-5xl" />
         </button>
     );
 };

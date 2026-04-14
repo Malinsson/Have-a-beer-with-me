@@ -7,10 +7,17 @@ import { useNavigate } from "react-router-dom";
 
 const getAdaptiveNameSize = (length) => {
     const safeLength = Number.isFinite(length) ? length : 0;
-    if (safeLength <= 10) return "2rem";
-    if (safeLength <= 14) return "1.7rem";
+    if (safeLength <= 10) return "2.25rem";
+    if (safeLength <= 14) return "1.75rem";
     if (safeLength <= 18) return "1.3rem";
     return "1rem";
+};
+const getAdaptiveDepartmentSize = (length) => {
+    const safeLength = Number.isFinite(length) ? length : 0;
+    if (safeLength <= 10) return "1.5rem";
+    if (safeLength <= 14) return "1.2rem";
+    if (safeLength <= 18) return "1rem";
+    return "0.8rem";
 };
 
 const getLongestWordLength = (...values) => {
@@ -39,7 +46,7 @@ export const CanIdentitySection = ({
     );
 
     const maxFontSize = getAdaptiveNameSize(longestWordLength);
-    const maxDepartmentSize = getAdaptiveNameSize(String(department || "").length);
+    const maxDepartmentSize = getAdaptiveDepartmentSize(String(department || "").length);
     
 
     return (
