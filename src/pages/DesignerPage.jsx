@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDesignStore } from "../store/designStore";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useUserSlug } from "../features/profile/hooks/useUserSlug";
@@ -35,6 +35,10 @@ export const DesignerPage = () => {
     
     const [step, setStep] = useState("front");
     const [mode, setMode] = useState("image");
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [step])
     const [authMode, setAuthMode] = useState("signup");
     const [modalOpen, setModalOpen] = useState(false);
     const [canSkipKonto, setCanSkipKonto] = useState(false);

@@ -11,6 +11,8 @@ import { QRScanner } from "../shared/components/QRScanner.jsx";
 import { ShelfItem } from "../features/profile/components/beershelfLayout/ShelfItem.jsx";
 import { SearchForm } from "../shared/components/SearchForm.jsx";
 import { LoginRedirectMessage } from "../shared/components/LoginRedirectMessage.jsx";
+import { normalizeError } from "../shared/utils/errors.js";
+import { Button } from "../shared/components/Button.jsx";
 
 export const BeerShelfPage = () => {
     const { slug } = useParams();
@@ -21,6 +23,7 @@ export const BeerShelfPage = () => {
     const [savedCans, setSavedCans] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [reloadKey, setReloadKey] = useState(0);
     const { searchQuery, setSearchQuery, handleSearch, searchError, isSearching } = useSearchForm();
 
     useEffect(() => {
@@ -75,12 +78,12 @@ export const BeerShelfPage = () => {
                 if (result.success) {
                     setSavedCans(result.designs);
                 } else {
-                    setError(new Error(result.error));
+                    setError(normalizeError(new Error(result.error), "Kunde inte ladda barhyllan."));
                     setSavedCans([]);
                 }
             } catch (caughtError) {
                 if (cancelled) return;
-                setError(caughtError);
+                setError(normalizeError(caughtError, "Kunde inte ladda barhyllan."));
                 setProfile(null);
                 setSavedCans([]);
             } finally {
@@ -95,9 +98,9 @@ export const BeerShelfPage = () => {
         return () => {
             cancelled = true;
         };
-    }, [getSavedDesigns, slug]);
+    }, [getSavedDesigns, slug, reloadKey]);
 
-    if (profile?.id == null && !loading) return (
+    if (profile?.id == null && !loading && !error) return (
         <LoginRedirectMessage message="Du behöver ett konto för att se din barhylla." />
     );
 
@@ -108,8 +111,11 @@ export const BeerShelfPage = () => {
     );
 
     if (error) return (
-        <div className="flex justify-center items-center mt-12">
-            <p>Något gick fel: {error?.message || "Okänt fel"}</p>
+        <div className="flex flex-col justify-center items-center mt-12 gap-4">
+            <p>{error?.message || "Okänt fel"}</p>
+            <div className="w-44">
+                <Button text="Försök igen" onClick={() => setReloadKey((key) => key + 1)} />
+            </div>
         </div>
     );
 

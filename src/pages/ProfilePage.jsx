@@ -12,6 +12,8 @@ import { CanActionSection } from "../features/profile/components/profileLayout/C
 import { useSavedCan } from "../features/profile/hooks/useSavedCan.js";
 import { LoginRedirectMessage } from "../shared/components/LoginRedirectMessage.jsx";
 import { invokeProfileBootstrap } from "../features/profile/hooks/profileBootstrap.js";
+import { normalizeError } from "../shared/utils/errors.js";
+import { Button } from "../shared/components/Button.jsx";
 
 
 export const ProfilePage = () => {
@@ -21,6 +23,7 @@ export const ProfilePage = () => {
     const [design, setDesign] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [reloadKey, setReloadKey] = useState(0);
 
     // Get slug from URL and current user's slug for comparison
     const navigate = useNavigate();
@@ -101,7 +104,7 @@ export const ProfilePage = () => {
                 setCurrentUserId(user?.id || null);
             } catch (caughtError) {
                 if (cancelled) return;
-                setError(caughtError);
+                setError(normalizeError(caughtError, "Kunde inte ladda profilen."));
                 setProfile(null);
                 setDesign(null);
                 setCurrentUserId(null);
@@ -117,22 +120,31 @@ export const ProfilePage = () => {
         return () => {
             cancelled = true;
         };
-    }, [slug]);
+    }, [slug, reloadKey]);
 
     const { isSaved, setIsSaved, saving, setSaving } = useSavedCan(design?.share_id);
     
     const backData = design?.design_data?.back || {};
     const socialsData = backData.socials || {};
 
-    if (!profile && !loading) return (
-        <LoginRedirectMessage message="Du behöver ett konto för att se din profil." />
-    );
-    
     if (loading) return <p className="text-center mt-10">Laddar profil...</p>;
 
+    if (error) {
+        return (
+            <div className="text-center mt-10 px-4">
+                <p className="text-red-500 mb-4">{error.message || "Något gick fel."}</p>
+                <div className="mx-auto w-44">
+                    <Button text="Försök igen" onClick={() => setReloadKey((key) => key + 1)} />
+                </div>
+            </div>
+        );
+    }
+
+    if (!profile && !loading) return (
+        <LoginRedirectMessage message="Kunde inte hitta profilen." />
+    );
+
     const isOwnProfile = currentUserId && profile?.id === currentUserId;
-    
-    if (error) return <p className="text-center mt-10 text-red-500">Något gick fel.</p>;
     
     // Check if the current design is being saved to disable the save button
     const handleSave = async () => {
