@@ -3,7 +3,7 @@ import { useDesignStore } from "../../../store/designStore";
 import { useProfileInfo } from "../../profile/hooks/useProfileInfo";
 import { useUserSlug } from "../../profile/hooks/useUserSlug";
 
-import baseCan from "../../../assets/images/baseCan.png";
+import baseCan from "../../../assets/images/baseCan.webp";
 import { CanPreviewBack } from "./canPreview/CanPreviewBack.jsx";
 import { CanPreviewFront } from "./canPreview/CanPreviewFront.jsx";
 

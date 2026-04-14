@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useDrag, usePinch, useWheel } from "@use-gesture/react";
-import baseCan from "../../../assets/images/baseCan.png";
+import baseCan from "../../../assets/images/baseCan.webp";
 
 const MIN_SCALE = 0.5;
 const MAX_SCALE = 3;

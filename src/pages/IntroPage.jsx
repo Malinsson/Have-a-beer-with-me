@@ -3,7 +3,7 @@ import { ProgressDots } from "../shared/components/ProgressDots";
 import { NameStep } from "../features/can-designer/steps/NameStep";
 import { GuestSignup } from "../features/Auth/components/GuestSignup";
 
-import LandingpageV1 from "../assets/animations/LandingpageV1.mp4";
+import LandingpageV2comp from "../assets/animations/LandingpageV2comp.mp4";
 
 import onboardP2Comp from "../assets/animations/onbordP2Comp.mp4";
 import { Button } from "../shared/components/Button";
@@ -36,7 +36,7 @@ export const IntroPage = () => {
                 {step === "first" && (
                 <div className="w-auto px-4 items-center text-center">
                     <video
-                        src={LandingpageV1}
+                        src={LandingpageV2comp}
                         autoPlay
                         loop
                         muted
