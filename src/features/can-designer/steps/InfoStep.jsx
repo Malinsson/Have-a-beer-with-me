@@ -62,12 +62,7 @@ export const InfoStep = ({ selected, onToggle }) => {
                     </div>
                 )}
                     
-              
-
-            {count >= MAX_TAGS && (
-                <p className="text-center text-sm text-neutral-600">Du kan välja max 3 tags.</p>
-            )}
-            
         </div>
+
      );
 }
