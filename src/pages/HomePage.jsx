@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "../shared/components/Button.jsx";
 import { Footer } from "../shared/components/Footer.jsx";
+import { DeferredVideo } from "../shared/components/DeferredVideo.jsx";
 import { useUserSlug } from "../features/profile/hooks/useUserSlug";
 import homeImgage from "../assets/images/home.webp"
 import LandingpageV2comp from "../assets/animations/LandingpageV2comp.mp4";
@@ -40,12 +41,13 @@ export const HomePage = () => {
 
             <section className="py-12 px-8 flex flex-col">
                 <div className="w-full px-4 mb-8 items-center text-center">
-                    <video
+                    <DeferredVideo
                         src={LandingpageV2comp}
                         autoPlay
                         loop
                         muted
                         playsInline
+                        rootMargin="300px"
                         className="w-full h-auto mx-auto object-cover"
                     />
                 </div>

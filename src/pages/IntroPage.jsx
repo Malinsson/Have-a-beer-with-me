@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ProgressDots } from "../shared/components/ProgressDots";
 import { NameStep } from "../features/can-designer/steps/NameStep";
 import { GuestSignup } from "../features/Auth/components/GuestSignup";
+import { DeferredVideo } from "../shared/components/DeferredVideo.jsx";
 
 import LandingpageV2comp from "../assets/animations/LandingpageV2comp.mp4";
 
@@ -35,12 +36,13 @@ export const IntroPage = () => {
 
                 {step === "first" && (
                 <div className="w-auto px-4 items-center text-center">
-                    <video
+                    <DeferredVideo
                         src={LandingpageV2comp}
                         autoPlay
                         loop
                         muted
                         playsInline
+                        rootMargin="200px"
                         className="w-full max-h-[55vh] mx-auto object-contain"
                     />
                 </div>
@@ -61,14 +63,14 @@ export const IntroPage = () => {
                 {step === "secound" && (
                 <div className="flex flex-col flex-1 min-h-0 items-stretch p-4">
                     <div className="flex flex-1 items-start p-4 w-5/6 mx-auto overflow-hidden">
-                        <video 
+                        <DeferredVideo 
                             src={onboardP2Comp} 
-                            alt="Två animerade burkar som skålar mot varandra"
                             className="max-h-full max-w-full object-contain"
                             playsInline
                             autoPlay
                             loop
                             muted
+                            rootMargin="150px"
                         />
                     </div>
                     <div className="flex flex-col w-full gap-6 mt-auto">
