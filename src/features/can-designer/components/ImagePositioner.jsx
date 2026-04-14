@@ -4,6 +4,7 @@ import baseCan from "../../../assets/images/baseCan.webp";
 
 const MIN_SCALE = 0.5;
 const MAX_SCALE = 3;
+const PINCH_SENSITIVITY = 0.006;
 const DEFAULT_VALUE = { x: 0, y: 0, scale: 1 };
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
@@ -19,6 +20,7 @@ export default function ImagePositioner({ imageUrl, value, onChange }) {
     const areaRef = useRef(null);
     const rafRef = useRef(null);
     const pendingTransformRef = useRef(null);
+    const isPinchingRef = useRef(false);
     const transform = normalizeValue(value);
     const liveTransformRef = useRef(transform);
 
@@ -70,6 +72,7 @@ export default function ImagePositioner({ imageUrl, value, onChange }) {
     useDrag(
         ({ first, movement: [mx, my], memo, event }) => {
             if (event.cancelable) event.preventDefault();
+            if (isPinchingRef.current || event.touches?.length > 1) return memo;
             const start = first ? [liveTransformRef.current.x, liveTransformRef.current.y] : memo;
             updatePosition(start[0], start[1], mx, my);
             return start;
@@ -98,17 +101,29 @@ export default function ImagePositioner({ imageUrl, value, onChange }) {
     );
 
     usePinch(
-        ({ offset: [scale], event }) => {
+        ({ first, last, movement: [distanceDelta], memo, event }) => {
             if (event.cancelable) event.preventDefault();
+            if (first) {
+                isPinchingRef.current = true;
+            }
+
+            const startScale = first ? liveTransformRef.current.scale : memo;
+            const scale = clamp(startScale + distanceDelta * PINCH_SENSITIVITY, MIN_SCALE, MAX_SCALE);
+
             scheduleChange({
                 ...liveTransformRef.current,
                 scale: clamp(scale, MIN_SCALE, MAX_SCALE),
             });
+
+            if (last) {
+                isPinchingRef.current = false;
+            }
+
+            return startScale;
         },
         {
             target: areaRef,
             eventOptions: { passive: false },
-            from: () => [transform.scale, 0],
             scaleBounds: { min: MIN_SCALE, max: MAX_SCALE },
             rubberband: false,
         }
