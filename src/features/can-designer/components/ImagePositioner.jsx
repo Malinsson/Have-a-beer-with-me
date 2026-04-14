@@ -4,7 +4,7 @@ import baseCan from "../../../assets/images/baseCan.webp";
 
 const MIN_SCALE = 0.5;
 const MAX_SCALE = 3;
-const PINCH_SENSITIVITY = 0.006;
+const PINCH_SENSITIVITY = 1.18;
 const DEFAULT_VALUE = { x: 0, y: 0, scale: 1 };
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
@@ -71,8 +71,8 @@ export default function ImagePositioner({ imageUrl, value, onChange }) {
 
     useDrag(
         ({ first, movement: [mx, my], memo, event }) => {
-            if (event.cancelable) event.preventDefault();
             if (isPinchingRef.current || event.touches?.length > 1) return memo;
+            if (event.cancelable) event.preventDefault();
             const start = first ? [liveTransformRef.current.x, liveTransformRef.current.y] : memo;
             updatePosition(start[0], start[1], mx, my);
             return start;
@@ -101,29 +101,29 @@ export default function ImagePositioner({ imageUrl, value, onChange }) {
     );
 
     usePinch(
-        ({ first, last, movement: [distanceDelta], memo, event }) => {
+        ({ first, last, offset: [scale], event }) => {
             if (event.cancelable) event.preventDefault();
             if (first) {
                 isPinchingRef.current = true;
             }
 
-            const startScale = first ? liveTransformRef.current.scale : memo;
-            const scale = clamp(startScale + distanceDelta * PINCH_SENSITIVITY, MIN_SCALE, MAX_SCALE);
+            const boostedScale = clamp(scale * PINCH_SENSITIVITY, MIN_SCALE, MAX_SCALE);
 
             scheduleChange({
                 ...liveTransformRef.current,
-                scale: clamp(scale, MIN_SCALE, MAX_SCALE),
+                scale: boostedScale,
             });
 
             if (last) {
                 isPinchingRef.current = false;
             }
-
-            return startScale;
         },
         {
             target: areaRef,
             eventOptions: { passive: false },
+            pointer: { touch: true },
+            threshold: 0,
+            from: () => [liveTransformRef.current.scale / PINCH_SENSITIVITY, 0],
             scaleBounds: { min: MIN_SCALE, max: MAX_SCALE },
             rubberband: false,
         }
