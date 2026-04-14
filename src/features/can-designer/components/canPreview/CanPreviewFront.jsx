@@ -9,6 +9,8 @@ const TEXTURE_SRC_BY_ID = TEXTURES.reduce((acc, texture) => {
 }, {});
 
 
+
+
 export const CanPreviewFront = ({ front, name, fontScale }) => {
 
     const firstName = (name.firstName || "").trim();
@@ -26,6 +28,16 @@ export const CanPreviewFront = ({ front, name, fontScale }) => {
         transformOrigin: "center center",
     };
 
+    const frontNameSize = (value) => {
+        const length = (value || "").trim().length;
+        const safeScale = Number.isFinite(fontScale) ? fontScale : 1;
+        if (length <= 10) return 1.4 * safeScale;
+        if (length <= 14) return 1.2 * safeScale;
+        if (length <= 18) return 1 * safeScale;
+        return 0.8 * safeScale;
+    };
+
+    const frontFirstNameSize = frontNameSize(name.firstName);
 
     return (
         <div>
@@ -33,11 +45,11 @@ export const CanPreviewFront = ({ front, name, fontScale }) => {
 
                 {/* Text layer */}
                 <div className={`absolute w-full h-full p-3 z-15 flex ${textAlignClass}`}>
-                    <p
+                    <p className="w-full overflow-clip"
                         style={{ 
                             color: front.textColor, 
                             fontFamily: front.textFont, 
-                            fontSize: `${1.5 * fontScale}rem`,
+                            fontSize: `${frontFirstNameSize}rem`,
                             lineHeight: 0.7, 
                             fontWeight: front.textFont === "Inter, sans-serif" || front.textFont === "Monda, sans-serif" ? 600 : 400 
                         }}
