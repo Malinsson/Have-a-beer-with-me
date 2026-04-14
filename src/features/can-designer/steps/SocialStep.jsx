@@ -1,51 +1,39 @@
+import { SocialmediaField } from "../components/SocialmediaField";
+
 export const SocialStep = ({ instagram, linkedin, github, onChange }) => {
     return (
         <>
             <div className="flex flex-col gap-4">
 
-                <div className="flex flex-col gap-2">
-                    <p>
-                        <label>LinkedIn</label>
-                    </p>
-                    <input
-                        value={linkedin}
-                        onChange={(e) => onChange("linkedin", e.target.value)}
-                        placeholder="Anders Andersson"
-                        max={30}
-                        maxLength={30}
-                        className="border border-b-grey px-4 py-2 w-full"
-                    />
-                </div>
+                <SocialmediaField
+                    label="LinkedIn"
+                    fieldKey="linkedin"
+                    value={linkedin}
+                    placeholder="Anders Andersson"
+                    onChange={onChange}
+                />
 
-                <div className="flex flex-col gap-2">
-                    <p>
-                        <label>Instagram</label>
-                    </p>
-                    <input
-                        value={instagram}
-                        onChange={(e) => onChange("instagram", e.target.value)}
-                        placeholder="@Andersandersson54"
-                        max={30}
-                        maxLength={30}
-                        className="border border-b-grey px-4 py-2 w-full"
-                    />
-                </div>
+                <SocialmediaField
+                    label="Instagram"
+                    fieldKey="instagram"
+                    value={instagram}
+                    placeholder="@Andersandersson54"
+                    onChange={onChange}
 
-                <div className="flex flex-col gap-2">
-                    <p>
-                        <label>GitHub</label>
-                    </p>
-                    <input
-                        value={github}
-                        onChange={(e) => onChange("github", e.target.value)}
-                        placeholder="AndersAndersson"
-                        max={30}
-                        maxLength={30}
-                        className="border border-b-grey px-4 py-2 w-full"
-                    />
-                </div>
+                />
+
+                <SocialmediaField
+                    label="GitHub"
+                    fieldKey="github"
+                    value={github}
+                    placeholder="AndersAndersson"
+                    onChange={onChange}
+
+                />
             </div>
         </>
      );
 }   
+
+
 

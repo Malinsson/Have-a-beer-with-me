@@ -50,7 +50,7 @@ export const CanPreview2D = ({ side = "front", design = null, scale = 1, textSca
               ...(design?.back || {}),
           };
 
-    //Bottom curve
+    //Label curve
     const labelClipStyle = {
         borderTopLeftRadius: "48% 1%",
         borderTopRightRadius: "48% 1%",

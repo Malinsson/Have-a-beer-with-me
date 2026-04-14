@@ -1,4 +1,3 @@
-import { ProgressDots } from "../../../shared/components/ProgressDots";
 
 export const BackStep = ({ value, onChange }) => {
     return (
