@@ -99,8 +99,16 @@ export const Header = () => {
                 </button>
             </div>
 
-            <nav 
-                id="nav-menu" 
+            {menuOpen && (
+                <div
+                    className="fixed inset-0 z-40"
+                    onClick={closeMenu}
+                    aria-hidden="true"
+                />
+            )}
+
+            <nav
+                id="nav-menu"
                 className={`
                     fixed top-16 left-0 right-0 w-full z-100 bg-white flex flex-col p-6
                     transition-all duration-300 ease-in-out
