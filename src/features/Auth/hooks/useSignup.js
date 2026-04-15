@@ -18,6 +18,11 @@ export const useSignup = () => {
             return false;
         }
 
+        if (password.length < 8) {
+            setError('Lösenordet måste vara minst 8 tecken långt.');
+            return false;
+        }
+
         if (!supabase) {
             setError('Supabase är inte konfigurerat. Kontrollera dina VITE_SUPABASE_URL och VITE_SUPABASE_ANON_KEY.');
             return false;

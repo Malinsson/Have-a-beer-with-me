@@ -43,7 +43,6 @@ export const AuthForm = ({ formId, mode = "signup", onModeChange, hideSubmitButt
         <form 
             id={effectiveFormId}
             onSubmit={handleSubmit} 
-            noValidate
             className="mt-2"
         >
             <div className="flex flex-col gap-4 border p-4 my-4 justify-center">
@@ -59,6 +58,7 @@ export const AuthForm = ({ formId, mode = "signup", onModeChange, hideSubmitButt
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
+                        maxLength={100}
                         autoComplete="email"
                         autoCapitalize="none"
                         autoCorrect="off"
@@ -81,6 +81,7 @@ export const AuthForm = ({ formId, mode = "signup", onModeChange, hideSubmitButt
                             onChange={(e) => setPassword(e.target.value)}
                             required    
                             minLength={8}
+                            maxLength={100}
                             autoComplete={passwordAutoComplete}
                             style={{ fontSize: "0.8rem" }}
                         />
